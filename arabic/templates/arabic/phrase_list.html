@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+<div class="container budget_heading" >
+        <h2>My Phrases</h2>
+</div>
+<div class="container" align="center">
+    {% for phrase in phrase_list %}
+    <h3>
+        <a href="{% url 'arabic:phrase_detail' pk=phrase.id %}">{{ phrase.text }}</a>
+    </h3>
+    <hr>
+	{% endfor %}
+
+    {% if user.is_authenticated %}
+        <div id="phrase_controls" class="container" align="center">
+        <br><br>
+        <a href="{% url 'arabic:add_phrase' %}" role="button" class="btn btn-outline-secondary w-80">Create Phrase</a>
+        </div><br><br>
+    {% endif %}
+</div>
+{% endblock %}

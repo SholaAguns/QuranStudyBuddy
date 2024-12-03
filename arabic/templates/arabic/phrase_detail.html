@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+<div class="container budget_heading">
+        <h2>{{ phrase.text}} </h2>
+        <h3>{{phrase.translation }}</h3>
+
+    {% if phrase.image %}
+    <div>
+            <span><img src="{{phrase.image.url}}" alt="connect" style="max-height:1000px"></span>
+    </div>
+{% endif %}
+</div>
+
+<div class="container" align="center">
+    {% if user.is_authenticated %}
+        <div id="phrase_controls" class="container" align="center">
+        <br><br>
+        <a href="{% url 'arabic:update_phrase' pk=phrase.id %}" role="button" class="btn btn-outline-secondary  w-80">Edit phrase</a>
+        <a href="{% url 'arabic:delete_phrase' pk=phrase.id %}" role="button" class="btn btn-outline-danger  w-80">Delete phrase</a>
+        </div><br><br>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+        }
+        input, select, button {
+            margin-top: 5px;
+        }
+        .id-dropdown, .juz-dropdown {
+            display: flex;
+            align-items: center;
+            margin-top: 5px;
+        }
+        .id-dropdown select, .juz-dropdown select {
+            margin-right: 10px;
+        }
+    </style>
+    <div class="container" align="center">
+        <h1>Flashcard Form</h1>
+            <form id="flashcardForm">
+                          {% csrf_token %}
+            <select id="serviceType" name="service_type">
+                <option value="">Select a service type</option>
+            </select>
+
+            <select id="requestType" name="request_type">
+                <option value="">Select a request type</option>
+            </select>
+
+            <div id="idListContainer" style="display: none;">
+                <div id="idListFields"></div>
+                <button type="button" id="addIdField">Add ID</button>
+            </div>
+
+            <div id="juzListContainer" style="display: none;">
+                <div id="juzListFields"></div>
+                <button type="button" id="addJuzField">Add Juz</button>
+            </div>
+
+            <div id="rangeContainer" style="display: none;">
+                <select id="rangeStart" name="range_start">
+                    <option value="">Select range start</option>
+                </select>
+                <select id="rangeEnd" name="range_end">
+                    <option value="">Select range end</option>
+                </select>
+            </div>
+
+            <div id="categoryContainer" style="display: none;">
+                <select id="category" name="category">
+                    <option value="">Select a category</option>
+                </select>
+            </div>
+
+            <input type="number" name="amount" placeholder="Amount" required>
+            <button type="submit">Submit</button>
+        </form>
+
+    </div>
+
+
+
+    <script>
+        $(document).ready(function () {
+    // Fetch service types
+    $.get('/flashcards/get_service_types/', function (data) {
+        const serviceTypeSelect = $('#serviceType');
+        data.service_types.forEach(service => {
+            serviceTypeSelect.append(new Option(service, service));
+        });
+    });
+
+    // Fetch request types when service type changes
+    $('#serviceType').change(function () {
+        const serviceType = $(this).val();
+        const requestTypeSelect = $('#requestType');
+        requestTypeSelect.empty().append(new Option('Select a request type', ''));
+
+        if (serviceType) {
+            $.get(`/flashcards/get_request_types/${serviceType}/`, function (data) {
+                data.request_types.forEach(requestType => {
+                    requestTypeSelect.append(new Option(requestType, requestType));
+                });
+            });
+        }
+    });
+
+    // Handle request type change
+    $('#requestType').change(function () {
+        const requestType = $(this).val();
+
+        // Show or hide input sections based on request type
+        $('#idListContainer').toggle(requestType === 'byIds');
+        $('#juzListContainer').toggle(requestType === 'byJuz');
+        $('#rangeContainer').toggle(requestType === 'byRange');
+        $('#categoryContainer').toggle(requestType === 'byCategory');
+
+        // Load options for category if "byCategory" is selected
+        if (requestType === 'byCategory') {
+            loadOptions('/flashcards/get_category_options/' + $('#serviceType').val(), '#category');
+        }
+
+        if (requestType === 'byRange') {
+                loadOptions('/flashcards/get_range_options/' + $('#serviceType').val(), '#rangeStart');
+                loadOptions('/flashcards/get_range_options/' + $('#serviceType').val(), '#rangeEnd');
+        }
+    });
+
+    // Load options dynamically
+    function loadOptions(url, selector) {
+        $.get(url, function (data) {
+            const select = $(selector);
+            select.empty();
+            select.append(new Option('Select an option', ''));
+            data.options.forEach(option => {
+                select.append(new Option(option.label, option.value));
+            });
+        });
+    }
+
+    // Dynamic ID List
+    $('#addIdField').click(function () {
+        const idDropdown = `
+            <div class="id-dropdown">
+                <select class="id-select"></select>
+                <button type="button" class="removeIdField">Remove</button>
+            </div>
+        `;
+        $('#idListFields').append(idDropdown);
+        loadOptions('/flashcards/get_id_options/' + $('#serviceType').val(), '#idListFields .id-select:last');
+    });
+
+    // Dynamic Juz List
+    $('#addJuzField').click(function () {
+        const juzDropdown = `
+            <div class="juz-dropdown">
+                <select class="juz-select"></select>
+                <button type="button" class="removeJuzField">Remove</button>
+            </div>
+        `;
+        $('#juzListFields').append(juzDropdown);
+        loadOptions('/flashcards/get_juz_options/' + $('#serviceType').val(), '#juzListFields .juz-select:last');
+    });
+
+    // Remove dropdowns
+    $(document).on('click', '.removeIdField', function () {
+        $(this).parent().remove();
+    });
+    $(document).on('click', '.removeJuzField', function () {
+        $(this).parent().remove();
+    });
+
+    // Form submission
+    $('#flashcardForm').submit(function (e) {
+        e.preventDefault();
+
+        // Collect dynamic ID List
+        const idList = [];
+        $('#idListFields .id-select').each(function () {
+            idList.push($(this).val());
+        });
+
+        // Collect dynamic Juz List
+        const juzList = [];
+        $('#juzListFields .juz-select').each(function () {
+            juzList.push($(this).val());
+        });
+
+        // Prepare form data
+        const formData = $(this).serializeArray();
+        formData.push({ name: 'idList', value: JSON.stringify(idList) });
+        formData.push({ name: 'juzList', value: JSON.stringify(juzList) });
+
+        // Submit the form via AJAX
+        $.post('/flashcards/submit_flashcardset_form/', formData, function (response) {
+            if (response.redirect_url) {
+                window.location.href = response.redirect_url;
+            } else {
+                alert('Flashcard set created successfully!');
+            }
+        }).fail(function (xhr) {
+            alert('Form submission failed: ' + xhr.responseText);
+        });
+    });
+});
+
+    </script>
+
+{% endblock %}

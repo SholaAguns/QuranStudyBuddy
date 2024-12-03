@@ -1,0 +1,9 @@
+- Phrase Flashcard service
+- Marking service
+- Navigation
+- Verse design
+- Flashcard design (modal?)
+- Admin only
+- Multi select
+- Range validator
+- Flashcard names

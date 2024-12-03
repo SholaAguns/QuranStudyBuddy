@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+<div class="container budget_heading" >
+        <h2>My Flashcards</h2>
+</div>
+<div class="container" align="center">
+    {% for flashcardset in flashcardset_list %}
+    <h3>
+        <a href="{% url 'flashcards:flashcardset_detail' pk=flashcardset.id %}">{{ flashcardset.title }}</a>
+    </h3>
+    <hr>
+	{% endfor %}
+
+    {% if user.is_authenticated %}
+        <div id="phrase_controls" class="container" align="center">
+        <br><br>
+        <a href="{% url 'flashcards:add_flashcardset' %}" role="button" class="btn btn-outline-secondary w-80">Create Flashcards Set</a>
+        </div><br><br>
+    {% endif %}
+</div>
+{% endblock %}

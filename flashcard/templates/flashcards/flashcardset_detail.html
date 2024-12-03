@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+<div class="container budget_heading">
+
+    <a href="{% url 'flashcards:update_flashcardset' pk=flashcardset.id %}"><h2>{{ flashcardset.title}} </h2></a>
+        <h3>{{flashcardset.type }}</h3>
+
+    {% for flashcard in flashcardset.flashcards.all %}
+        <div class="card my-3">
+            <div class="card-body">
+                <p class="text-start">{{ flashcard.question }}</p>
+            </div>
+        </div>
+{% endfor %}
+</div>
+
+<div class="container" align="center">
+    {% if user.is_authenticated %}
+        <div id="phrase_controls" class="container" align="center">
+        <br><br>
+        <a href="{% url 'flashcards:delete_flashcardset' pk=flashcardset.id %}" role="button" class="btn btn-outline-danger  w-80">Delete Flashcards</a>
+        </div><br><br>
+    {% endif %}
+</div>
+{% endblock %}

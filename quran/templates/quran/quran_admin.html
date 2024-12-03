@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+  <div class="jumbotron" align="center" >
+      <a href="{% url 'quran:populate_chapters' %}" role="button" class="btn btn-outline-secondary w-80">Add Chapters</a>
+      <a href="{% url 'quran:populate_verses' %}" role="button" class="btn btn-outline-secondary w-80">Add Verses</a>
+  </div>
+
+
+{% endblock %}
