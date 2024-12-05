@@ -8,15 +8,19 @@ class IFlashcardService(ABC):
         pass
 
     @abstractmethod
-    def get_id_options(self):
+    def get_id_options(self, user):
         pass
 
     @abstractmethod
-    def get_juz_options(self):
+    def get_juz_options(self, user):
         pass
 
     @abstractmethod
-    def get_category_options(self):
+    def get_category_options(self, user):
+        pass
+
+    @abstractmethod
+    def get_range_options(self, user):
         pass
 
     @abstractmethod
@@ -37,8 +41,4 @@ class IFlashcardService(ABC):
 
     @abstractmethod
     def get_flashcards_by_range(self, flashcardset, amount, start, end):
-        pass
-
-    @abstractmethod
-    def get_range_options(self):
         pass

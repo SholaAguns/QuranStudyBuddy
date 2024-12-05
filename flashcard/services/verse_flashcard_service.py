@@ -26,10 +26,10 @@ class VerseFlashcardService(IFlashcardService):
     def get_request_types(self):
         return ["default", "byIds", "byJuz", "byRange"]
 
-    def get_juz_options(self):
+    def get_juz_options(self, user):
         return [{'label': f'Juz {i}', 'value': i} for i in range(1, 31)]
 
-    def get_id_options(self):
+    def get_id_options(self, user):
         all_chapters = Chapter.objects.all()
         options = []
         for chapter in all_chapters:
@@ -40,8 +40,11 @@ class VerseFlashcardService(IFlashcardService):
             })
         return options
 
-    def get_range_options(self):
-        return self.get_id_options()
+    def get_range_options(self, user):
+        return self.get_id_options(user)
+
+    def get_category_options(self, user):
+        pass
 
     def get_flashcards(self, flashcardset, amount):
         print("Inside get_flashcards ")
@@ -109,7 +112,4 @@ class VerseFlashcardService(IFlashcardService):
         return flashcardset
 
     def get_flashcards_by_category(self, flashcardset, amount, category):
-        pass
-
-    def get_category_options(self):
         pass

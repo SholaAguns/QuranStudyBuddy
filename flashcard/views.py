@@ -19,6 +19,11 @@ class FlashcardSetList(LoginRequiredMixin, ListView):
     model = FlashcardSet
     template_name = 'flashcards/flashcardset_list.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['flashcardset_list'] = FlashcardSet.objects.filter(user=self.request.user)
+        return context
+
 class FlashcardSetDetail(LoginRequiredMixin, DetailView):
     model = FlashcardSet
     template_name = 'flashcards/flashcardset_detail.html'
@@ -61,7 +66,7 @@ def get_request_types(request, service_type):
 def get_id_options(request, service_type):
     try:
         service = FlashcardServiceFactory.get_service(service_type + "FlashcardService")
-        options = service.get_id_options()
+        options = service.get_id_options(request.user)
         return JsonResponse({'options': options})
     except ValueError:
         return JsonResponse({'error': 'Invalid service type'}, status=400)
@@ -69,7 +74,7 @@ def get_id_options(request, service_type):
 def get_juz_options(request, service_type):
     try:
         service = FlashcardServiceFactory.get_service(service_type + "FlashcardService")
-        options = service.get_juz_options()
+        options = service.get_juz_options(request.user)
         return JsonResponse({'options': options})
     except ValueError:
         return JsonResponse({'error': 'Invalid service type'}, status=400)
@@ -77,7 +82,7 @@ def get_juz_options(request, service_type):
 def get_range_options(request, service_type):
     try:
         service = FlashcardServiceFactory.get_service(service_type + "FlashcardService")
-        options = service.get_range_options()
+        options = service.get_range_options(request.user)
         return JsonResponse({'options': options})
     except ValueError:
         return JsonResponse({'error': 'Invalid service type'}, status=400)
@@ -85,7 +90,7 @@ def get_range_options(request, service_type):
 def get_category_options(request, service_type):
     try:
         service = FlashcardServiceFactory.get_service(service_type + "FlashcardService")
-        options = service.get_category_options()
+        options = service.get_category_options(request.user)
         return JsonResponse({'options': options})
     except ValueError:
         return JsonResponse({'error': 'Invalid service type'}, status=400)
@@ -93,6 +98,7 @@ def get_category_options(request, service_type):
 def submit_flashcardset_form(request):
     new_flashcardset = FlashcardSet()
     new_flashcardset.user = request.user
+    #new_flashcardset.save()
 
     if request.method == 'POST':
         service_type = request.POST.get('service_type')
@@ -101,8 +107,15 @@ def submit_flashcardset_form(request):
         id_list = json.loads(request.POST.get('idList', '[]'))
         juz_list = json.loads(request.POST.get('juzList', '[]'))
         category = request.POST.get('category', None)
-        range_start = int(request.POST.get('range_start', None))
-        range_end = int(request.POST.get('range_end', None))
+        range_start = request.POST.get('range_start', '')
+        range_end = request.POST.get('range_end', '')
+
+        if request_type == 'byRange':
+            range_start = int(range_start) if range_start.isdigit() else None
+            range_end = int(range_end) if range_end.isdigit() else None
+        else:
+            range_start = None
+            range_end = None
 
         try:
             service = FlashcardServiceFactory.get_service(service_type + "FlashcardService")
