@@ -3,18 +3,52 @@
 
 {% block content %}
 <div class="container budget_heading">
-
     <a href="{% url 'flashcards:update_flashcardset' pk=flashcardset.id %}"><h2>{{ flashcardset.title}} </h2></a>
         <h3>{{flashcardset.type }}</h3>
-
-    {% for flashcard in flashcardset.flashcards.all %}
-        <div class="card my-3">
-            <div class="card-body">
-                <p class="text-start">{{ flashcard.question }}</p>
-            </div>
-        </div>
-{% endfor %}
 </div>
+
+{% if flashcardset.score %}
+    <div class="report_card">
+        {% for flashcard in flashcardset.flashcards.all %}
+            <div class="card my-3">
+                <div class="card-body">
+                    <p class="text-start">{{ flashcard.question }}</p>
+                    {% if flashcard.correct_anwser_given %}
+                        <span class="correct_answer">
+                            <p class="text-start">Answer: {{ flashcard.user_answer }}</p> <span class="green-tick">✔️</span>
+                        </span>
+                    {% else %}
+                        <span class="incorrect_answer">
+                            <p class="text-start">Answer: {{ flashcard.answer }}</p> <span class="red-cross">❌</span>
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="question_sheet container" align="center">
+        <form id="flashcards_questions_form">
+            {% csrf_token %}
+            <div id="flashcardCarousel" class="carousel">
+                {% for flashcard in flashcardset.flashcards.all %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}" data-id="{{ flashcard.id }}">
+                        <p>{{ flashcard.question }}</p><br><br>
+                        {% if flashcard.image %}
+                            <div>
+                                <img src="{{ flashcard.image.url }}" alt="Question Image" style="max-height: 200px;">
+                            </div><br><br>
+                        {% endif %}
+                        <input type="text" name="user_answer_{{ flashcard.id }}" placeholder="Your Answer" required>
+                    </div>
+                {% endfor %}
+            </div><br><br>
+            <button type="button" id="prevBtn">Previous</button>
+            <button type="button" id="nextBtn">Next</button>
+            <button type="submit" id="submitBtn" disabled>Submit</button>
+        </form>
+    </div>
+{% endif %}
 
 <div class="container" align="center">
     {% if user.is_authenticated %}
@@ -24,4 +58,88 @@
         </div><br><br>
     {% endif %}
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        console.log("jQuery is working!");
+        const carouselItems = document.querySelectorAll(".carousel-item");
+        let currentIndex = 0;
+
+        const prevBtn = document.getElementById("prevBtn");
+        const nextBtn = document.getElementById("nextBtn");
+        const submitBtn = document.getElementById("submitBtn");
+        const form = document.getElementById("flashcards_questions_form");
+
+        function updateCarousel() {
+            // Hide all items
+            carouselItems.forEach((item, index) => {
+                item.style.display = index === currentIndex ? "block" : "none";
+            });
+
+            // Enable/Disable navigation buttons
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.disabled = currentIndex === carouselItems.length - 1;
+
+            // Enable Submit button if all questions are answered
+            const allAnswered = [...carouselItems].every(item => {
+                const input = item.querySelector("input[type='text']");
+                return input && input.value.trim() !== "";
+            });
+            submitBtn.disabled = !allAnswered;
+        }
+
+        // Initial setup
+        updateCarousel();
+
+        prevBtn.addEventListener("click", function () {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateCarousel();
+            }
+        });
+
+        nextBtn.addEventListener("click", function () {
+            if (currentIndex < carouselItems.length - 1) {
+                currentIndex++;
+                updateCarousel();
+            }
+        });
+
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            // Collect answers
+            const answers = {};
+            carouselItems.forEach(item => {
+                const input = item.querySelector("input[type='text']");
+                if (input) {
+                    const flashcardId = item.getAttribute("data-id");
+                    answers[flashcardId] = input.value.trim();
+                }
+            });
+
+            // Send the data to the server
+            const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
+            fetch(`/flashcards/submit_flashcardset_answers/{{ flashcardset.id }}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrfToken,
+                },
+                body: JSON.stringify(answers),
+            })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.reload(); // Reload page to show results
+                    } else {
+                        alert("Failed to submit answers. Please try again.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error submitting answers:", error);
+                    alert("An error occurred. Please try again.");
+                });
+        });
+    });
+</script>
 {% endblock %}

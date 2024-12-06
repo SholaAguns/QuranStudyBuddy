@@ -143,3 +143,27 @@ def submit_flashcardset_form(request):
             return JsonResponse({'error': str(e)}, status=500)
 
     return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+
+def submit_flashcardset_answers(request, flashcardset_id):
+    if request.method == 'POST':
+        try:
+            flashcardset = FlashcardSet.objects.get(pk=flashcardset_id)
+            data = json.loads(request.body)
+
+            for flashcard_id, user_answer in data.items():
+                flashcard = flashcardset.flashcards.get(pk=flashcard_id)
+                flashcard.user_answer = user_answer
+                flashcard.correct_anwser_given = (flashcard.answer.strip().lower() == user_answer.strip().lower())
+                flashcard.save()
+
+            total_flashcards = flashcardset.flashcards.count()
+            correct_answers = flashcardset.flashcards.filter(correct_anwser_given=True).count()
+            flashcardset.score = round((correct_answers / total_flashcards) * 100, 2)
+            flashcardset.save()
+
+            return JsonResponse({'success': True})
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+
+    return JsonResponse({'error': 'Invalid request method'}, status=400)

@@ -17,5 +17,6 @@ urlpatterns = [
     path('get_range_options/<str:service_type>/', views.get_range_options, name='get_range_options'),
     path('get_category_options/<str:service_type>/', views.get_category_options, name='get_category_options'),
     path('submit_flashcardset_form/', views.submit_flashcardset_form, name='submit_form'),
+    path('submit_flashcardset_answers/<int:pk>/', views.submit_flashcardset_answers, name='submit_answers')
 
 ]
