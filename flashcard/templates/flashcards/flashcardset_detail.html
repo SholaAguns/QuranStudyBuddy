@@ -50,7 +50,7 @@
                       <img src="{{ flashcard.image.url }}" alt="Question Image" style="max-height: 200px;">
                   </div><br><br>
               {% endif %}
-              <input type="text" name="user_answer_{{ flashcard.id }}" placeholder="Your Answer" size="50" required>
+              <input type="text" name="user_answer_{{ flashcard.id }}" placeholder="Your Answer" size="50">
             </div>
           {% endfor %}
         </div>
@@ -97,40 +97,99 @@
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("flashcards_questions_form");
+    const carousel = new bootstrap.Carousel('#carouselExampleDark');
+
+    document.querySelectorAll("input[name^='user_answer_']").forEach(input => {
+      input.addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          // Check if input is valid before moving to the next slide
+          if (input.checkValidity()) {
+            carousel.next();
+          }
+        }
+      });
+    });
 
     form.addEventListener("submit", function (event) {
         event.preventDefault();
 
         const answers = {};
-        document.querySelectorAll("input[name^='user_answer_']").forEach(input => {
+        let unanswered = false;
+        let unansweredFlashcards = [];
+
+        document.querySelectorAll('.carousel-indicators button').forEach(button => {
+           button.classList.remove("bg-danger");
+       });
+
+        // Check for unanswered flashcards and highlight the indicators
+        document.querySelectorAll("input[name^='user_answer_']").forEach((input, index) => {
             const flashcardId = input.name.split("_")[2];
             answers[flashcardId] = input.value.trim();
+
+            if (!answers[flashcardId]) {
+                unanswered = true;
+                unansweredFlashcards.push(flashcardId);
+                const indicatorButton = document.querySelector(`[data-bs-slide-to="${index}"]`);
+                if (indicatorButton) {
+                    indicatorButton.classList.add("bg-danger");
+                }
+            }
         });
 
-        const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
+        if (unanswered) {
+            // Show confirmation alert
+            const confirmSubmission = confirm("Not all flashcards have been answered.\n\nAre you sure you want to submit? ");
+            if (confirmSubmission) {
+                // Submit the form data
+                const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
 
-        fetch(`/flashcards/submit_flashcardset_answers/{{ flashcardset.id }}/`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": csrfToken,
-            },
-            body: JSON.stringify(answers),
-        })
-            .then(response => {
-                if (response.ok) {
-                    window.location.reload();
-                } else {
-                    alert("Failed to submit answers. Please try again.");
-                }
+                fetch(`/flashcards/submit_flashcardset_answers/{{ flashcardset.id }}/`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": csrfToken,
+                    },
+                    body: JSON.stringify(answers),
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            window.location.reload();
+                        } else {
+                            alert("Failed to submit answers. Please try again.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error submitting answers:", error);
+                        alert("An error occurred. Please try again.");
+                    });
+            }
+        } else {
+            // If all flashcards have been answered, submit the form immediately
+            const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
+
+            fetch(`/flashcards/submit_flashcardset_answers/{{ flashcardset.id }}/`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": csrfToken,
+                },
+                body: JSON.stringify(answers),
             })
-            .catch(error => {
-                console.error("Error submitting answers:", error);
-                alert("An error occurred. Please try again.");
-            });
+                .then(response => {
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        alert("Failed to submit answers. Please try again.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error submitting answers:", error);
+                    alert("An error occurred. Please try again.");
+                });
+        }
     });
   });
 </script>
-
 
 {% endblock %}

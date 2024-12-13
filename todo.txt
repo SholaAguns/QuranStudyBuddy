@@ -1,10 +1,8 @@
-- Phrase Flashcard service
-- Marking service
 - Navigation
-- Verse design
-- Flashcard design (modal?)
-- If Ids or Juz don't need amount
 - Admin only
 - Multi select
+- Verse design
+- If Ids or Juz don't need amount
 - Range validator
 - Flashcard names
+- Marking service
