@@ -46,8 +46,10 @@
             <div class="carousel-item {% if forloop.first %}active{% endif %} data-id="{{ flashcard.id }}"">
               <h5>{{ flashcard.question }}</h5>
               {% if flashcard.image %}
-                  <div>
-                      <img src="{{ flashcard.image.url }}" alt="Question Image" style="max-height: 200px;">
+                  <div class="image-container">
+                      <img src="{{ flashcard.image.url }}" alt="Question Image" class="flashcard-image" style="max-height: 200px; filter: blur(8px);">
+                      <br>
+                      <input type="checkbox" class="show-image-checkbox"> Show Image
                   </div><br><br>
               {% endif %}
               <input type="text" name="user_answer_{{ flashcard.id }}" placeholder="Your Answer" size="50">
@@ -98,6 +100,20 @@
   document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("flashcards_questions_form");
     const carousel = new bootstrap.Carousel('#carouselExampleDark');
+
+    // Add event listener to all checkboxes to toggle image visibility
+    document.querySelectorAll('.show-image-checkbox').forEach((checkbox, index) => {
+      checkbox.addEventListener('change', function () {
+        const image = checkbox.closest('.image-container').querySelector('.flashcard-image');
+
+        // Toggle blur on image based on checkbox state
+        if (this.checked) {
+          image.style.filter = "none";  // Remove blur
+        } else {
+          image.style.filter = "blur(8px)";  // Add blur
+        }
+      });
+    });
 
     document.querySelectorAll("input[name^='user_answer_']").forEach(input => {
       input.addEventListener("keydown", function(event) {

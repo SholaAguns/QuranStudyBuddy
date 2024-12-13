@@ -44,12 +44,32 @@
             <li class="nav-item">
             <a class="nav-link" href="{% url 'home' %}"> Home </a>
             </li>
-            <li class="nav-item">
-            <a class="nav-link" href="{% url 'quran:chapter_list' %}">Chapters</a>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {{user.username}}
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="{% url 'arabic:phrase_list' %}">My Phrases</a></li>
+                <li><a class="dropdown-item" href="{% url 'flashcards:flashcardset_list' %}">My Flashcards</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Create
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="{% url 'arabic:add_phrase' %}">Create Phrase</a></li>
+                <li><a class="dropdown-item" href="{% url 'flashcards:add_flashcardset' %}">Create Flashcard set</a></li>
+              </ul>
             </li>
             <li class="nav-item">
-            <a class="nav-link" href="{% url 'quran:admin' %}">Quran Admin</a>
+            <a class="nav-link" href="{% url 'quran:chapter_list' %}">Quran</a>
             </li>
+            {% if user.username == 'admin' %}
+              <li class="nav-item">
+              <a class="nav-link" href="{% url 'quran:admin' %}">Quran Admin</a>
+              </li>
+            {% endif %}
             <li class="nav-item">
               <form action="{% url 'accounts:logout' %}" method="post">
                   {% csrf_token %}
@@ -59,12 +79,6 @@
             {% else %}
             <li class="nav-item">
             <a class="nav-link" href="{% url 'home' %}"> Home </a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link" href="{% url 'quran:chapter_list' %}">Chapters</a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link" href="{% url 'quran:admin' %}">Quran Admin</a>
             </li>
             <li class="nav-item">
             <a id="loginbtn" class="nav-link" href="{% url 'accounts:login' %}">Login</a>
