@@ -2,9 +2,10 @@ import json
 import traceback
 
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, TemplateView
 
@@ -172,3 +173,10 @@ def submit_flashcardset_answers(request, pk):
             return JsonResponse({'error': str(e)}, status=400)
 
     return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+@login_required
+def delete_flashcardsets(request):
+    if request.method == 'POST':
+        selected_flashcardsets = request.POST.getlist('selected_flashcardsets')
+        FlashcardSet.objects.filter(id__in=selected_flashcardsets).delete()
+    return redirect('flashcards:flashcardset_list')

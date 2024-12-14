@@ -2,22 +2,58 @@
 {% load django_bootstrap5 %}
 
 {% block content %}
+<style>
+    .phrase-checkbox{
+    float: right;
+    }
+</style>
 <div class="container budget_heading" >
         <h2>My Phrases</h2>
 </div>
-<div class="container" align="center">
-    {% for phrase in phrase_list %}
-    <h3>
-        <a href="{% url 'arabic:phrase_detail' pk=phrase.id %}">{{ phrase.text }}</a>
-    </h3>
-    <hr>
-	{% endfor %}
-
     {% if user.is_authenticated %}
         <div id="phrase_controls" class="container" align="center">
         <br><br>
         <a href="{% url 'arabic:add_phrase' %}" role="button" class="btn btn-outline-secondary w-80">Create Phrase</a>
         </div><br><br>
     {% endif %}
+<div class="container" align="center">
+  <form id="delete_phrases_form" method="POST" action="{% url 'arabic:delete_phrases' %}">
+      {% csrf_token %}
+      <div id="phrase-list">
+          {% for phrase in phrase_list %}
+          <div class="phrase-item">
+              <h4>
+                <a href="{% url 'arabic:phrase_detail' pk=phrase.id %}">{{ phrase.text }}</a>
+                <input  type="checkbox" name="selected_phrases" value="{{ phrase.id }}" class="phrase-checkbox">
+              </h4>
+              <hr>
+          </div>
+          {% endfor %}
+      </div>
+      <button type="submit" class="btn btn-danger" id="delete-button" disabled>Delete Selected</button>
+  </form>
+
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const checkboxes = document.querySelectorAll('.phrase-checkbox');
+        const deleteButton = document.getElementById('delete-button');
+        const form = document.getElementById('delete_phrases_form');
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
+                deleteButton.disabled = !anyChecked;
+            });
+        });
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const confirmDeletion = confirm("Are you sure you want to delete the selected phrases? This action cannot be undone.");
+            if (confirmDeletion) {
+                form.submit();
+            }
+        });
+    });
+</script>
 {% endblock %}

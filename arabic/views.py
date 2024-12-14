@@ -1,6 +1,7 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Phrase
 from .forms import PhraseForm
 from django.views.generic import CreateView, DetailView, ListView, DeleteView, UpdateView, TemplateView
@@ -55,3 +56,10 @@ class DeletePhrase(LoginRequiredMixin, DeleteView):
     def delete(self, *args, **kwargs):
         messages.success(self.request, "Phrase Deleted")
         return super().delete(*args, **kwargs)
+
+@login_required
+def delete_phrases(request):
+    if request.method == 'POST':
+        selected_phrases= request.POST.getlist('selected_phrases')
+        Phrase.objects.filter(id__in=selected_phrases).delete()
+    return redirect('arabic:phrase_list')

@@ -1,7 +1,9 @@
-- Multi select
-- Verse design
+- Quran Flashcard: Chapter name
 - Flashcardset form design
 - If Ids or Juz don't need amount
 - Range validator
 - Flashcard names
 - Marking service
+- Audio files
+- Verse range/selection
+- Custom Flashcards

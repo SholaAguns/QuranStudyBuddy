@@ -11,4 +11,5 @@ urlpatterns = [
     path('create_phrase/', views.CreatePhrase.as_view(), name="add_phrase"),
     path('phrase/<int:pk>/update', views.PhraseUpdate.as_view(), name='update_phrase'),
     path('phrase/<int:pk>/delete', views.DeletePhrase.as_view(), name='delete_phrase'),
+    path('phrases/delete/', views.delete_phrases, name='delete_phrases'),
 ]
