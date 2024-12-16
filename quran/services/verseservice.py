@@ -1,6 +1,7 @@
 import requests
 
-from quran.models import Chapter, Verse, Translation
+from quran.models import Chapter, Verse, VerseTranslation, Word, WordTranslation, WordTransliteration
+
 
 class VerseService:
     BASE_URL = "https://api.quran.com/api/v4/verses/by_chapter/"
@@ -19,7 +20,9 @@ class VerseService:
             params = {
                 "translations": 131,
                 "fields": "text_uthmani,image_url",
-                "page": current_page
+                "page": current_page,
+                "words": "true",
+                "word_fields": "text_uthmani,verse_key"
             }
             headers = {
                 'Accept': 'application/json'
@@ -61,10 +64,45 @@ class VerseService:
             )
             translations = verse_data.get("translations", {})
             for translation in translations:
-                Translation.objects.update_or_create(
+                VerseTranslation.objects.update_or_create(
                     id=translation["id"],
                     verse=verse,
                     resource_id=translation["resource_id"],
                     text=translation["text"],
                 )
+            words = verse_data.get("words", {})
+            for word_data in words:
+               word, created = Word.objects.update_or_create(
+                    verse=verse,
+                    id=word_data["id"],
+                    audio_url=word_data["audio_url"],
+                    char_type_name=word_data["char_type_name"],
+                    line_number=word_data["line_number"],
+                    page_number=word_data["page_number"],
+                    position=word_data["position"],
+                    text_uthmani=word_data["text_uthmani"],
+                    text=word_data["text"],
+                    verse_key=word_data["verse_key"],
+                )
+
+               word_translation_data = word_data.get("translation", {})
+               if word_translation_data:
+                   WordTranslation.objects.update_or_create(
+                       word=word,
+                       defaults={
+                           "language_name": word_translation_data.get("language_name", "english"),
+                           "text": word_translation_data["text"],
+                       }
+                   )
+               word_transliteration_data = word_data.get("transliteration", {})
+               if word_transliteration_data:
+                   WordTransliteration.objects.update_or_create(
+                       word=word,
+                       defaults={
+                           "language_name": word_transliteration_data.get("language_name", "english"),
+                           "text": word_transliteration_data["text"],
+                       }
+                   )
+
+
 

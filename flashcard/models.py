@@ -28,4 +28,4 @@ class Flashcard(models.Model):
     image = models.ImageField(upload_to="images", null=True)
     created_dt = models.DateTimeField(auto_now=True)
     user_answer = models.TextField(null=True)
-    correct_anwser_given = models.BooleanField(null=True)
+    correct_answer_given = models.BooleanField(null=True)

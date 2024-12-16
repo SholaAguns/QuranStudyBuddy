@@ -1,9 +1,11 @@
-- Quran Flashcard: Chapter name
 - Flashcardset form design
 - If Ids or Juz don't need amount
 - Range validator
 - Flashcard names
-- Marking service
 - Audio files
 - Verse range/selection
 - Custom Flashcards
+- Fix word transliteration
+- Chapters list navbar dropdown
+- Remove duplicates from words in set
+- Smarter answer comparison

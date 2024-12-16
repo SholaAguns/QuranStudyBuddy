@@ -12,6 +12,9 @@ from django.views.generic import ListView, DetailView, UpdateView, DeleteView, T
 from flashcard.forms import FlashcardSetForm, FlashcardSetUpdateForm
 from flashcard.models import FlashcardSet
 from flashcard.services.flashcard_service_factory import FlashcardServiceFactory
+from flashcard.services.marking_service import MarkingService
+from quran.models import Chapter
+
 
 class CreateFlaschcardSet(LoginRequiredMixin, TemplateView):
     template_name = 'flashcards/flashcardset_form.html'
@@ -28,6 +31,11 @@ class FlashcardSetList(LoginRequiredMixin, ListView):
 class FlashcardSetDetail(LoginRequiredMixin, DetailView):
     model = FlashcardSet
     template_name = 'flashcards/flashcardset_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['chapters']  = Chapter.objects.all()
+        return context
 
 class FlashcardSetUpdate(LoginRequiredMixin, UpdateView):
     login_url = '/login'
@@ -147,27 +155,19 @@ def submit_flashcardset_form(request):
 
 
 def submit_flashcardset_answers(request, pk):
+    marking_service = MarkingService()
     if request.method == 'POST':
         try:
             flashcardset = FlashcardSet.objects.get(pk=pk)
             data = json.loads(request.body)
-            print(data)
 
             for flashcard_id, user_answer in data.items():
                 flashcard = flashcardset.flashcards.get(pk=flashcard_id)
                 flashcard.user_answer = user_answer
-                flashcard.correct_anwser_given = (flashcard.answer.strip().lower() == user_answer.strip().lower())
                 flashcard.save()
-            print("Here 1")
-            total_flashcards = flashcardset.flashcards.count()
-            print("Here 2")
-            correct_answers = flashcardset.flashcards.filter(correct_anwser_given=True).count()
-            print(correct_answers)
-            flashcardset.score = round((correct_answers / total_flashcards) * 100, 2)
-            print("Here 3")
-            print(flashcardset.score)
-            flashcardset.save()
+                print("Answer: " + flashcard.user_answer)
 
+            marking_service.calculate_score(flashcardset)
             return JsonResponse({'success': True})
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)

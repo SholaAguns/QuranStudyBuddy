@@ -48,6 +48,21 @@ class Verse(models.Model):
         english_resource_id =131
         return self.translations.filter(resource_id=english_resource_id).first().text
 
+class Word(models.Model):
+    id = models.IntegerField(primary_key=True)
+    audio_url = models.TextField(null=True)
+    text_uthmani = models.TextField()
+    text = models.TextField()
+    page_number = models.IntegerField()
+    line_number = models.IntegerField()
+    position = models.IntegerField()
+    verse_key = models.CharField(max_length=30)
+    char_type_name = models.CharField(max_length=30)
+    verse = models.ForeignKey(Verse, related_name='words', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.verse_key} : {self.text_uthmani}'
+
 class TranslatedName(models.Model):
     language_name  = models.TextField(default="english", max_length=100)
     name = models.TextField(max_length=100)
@@ -56,10 +71,20 @@ class TranslatedName(models.Model):
     def __str__(self):
         return self.name
 
-class Translation(models.Model):
+class VerseTranslation(models.Model):
     id = models.IntegerField(primary_key=True)
     resource_id = models.IntegerField()
     text = models.TextField()
     verse = models.ForeignKey(Verse, related_name="translations", on_delete=models.CASCADE)
+
+class WordTranslation(models.Model):
+    language_name = models.CharField(max_length=100)
+    text = models.TextField()
+    word = models.OneToOneField(Word, related_name="translation", on_delete=models.CASCADE)
+
+class WordTransliteration(models.Model):
+    language_name = models.CharField(max_length=100)
+    text = models.TextField()
+    word = models.OneToOneField(Word, related_name="transliteration", on_delete=models.CASCADE)
 
 

@@ -3,9 +3,22 @@
 {% load django_bootstrap5 %}
 
 {% block content %}
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
+<style>
+  #form_submit_btn{
+    margin-left: 50%;
+  }
+  .verse_text{
+  font-family: "Noto Naskh Arabic", serif;
+font-optical-sizing: auto;
+font-weight: 500;
+font-style: normal;
+font-size: 30px;
+  }
+.form-select-sm{
+    width: 250px;
+    }
+</style>
 <div class="container budget_heading">
     <a href="{% url 'flashcards:update_flashcardset' pk=flashcardset.id %}">
         <h2>{{ flashcardset.title }}</h2>
@@ -23,14 +36,16 @@
           {% for flashcard in flashcardset.flashcards.all %}
               <div class="card my-3">
                   <div class="card-body">
-                      <p class="text-start">{{ flashcard.question }}</p>
-                      {% if flashcard.correct_anwser_given %}
+                    <p class="{% if  flashcardset.type != "Phrase" %}verse_text{% endif %}">{{ flashcard.question }}</p>
+                      {% if flashcard.correct_answer_given %}
                           <span class="correct_answer">
-                              <p class="text-start">Answer: {{ flashcard.user_answer }} <span class="green-tick">✔️</span></p>
+                              <p class="text-start">Your Answer: {{ flashcard.user_answer | safe }} <span class="green-tick">✔️</span></p>
+                              <p class="text-start">Correct Answer: {{ flashcard.answer | safe }}</p>
                           </span>
                       {% else %}
                           <span class="incorrect_answer">
-                              <p class="text-start">Correct Answer: {{ flashcard.answer }} <span class="red-cross">❌</span></p>
+                              <p class="text-start">Your Answer: {{ flashcard.user_answer | safe }} <span class="red-cross">❌</span></p>
+                              <p class="text-start">Correct Answer: {{ flashcard.answer | safe }}</p>
                           </span>
                       {% endif %}
                   </div>
@@ -40,19 +55,28 @@
   {% else %}
     <form id="flashcards_questions_form">
       {% csrf_token %}
-      <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="false" align="center">
-        <div class="carousel-inner">
+      <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="false">
+        <div class="carousel-inner" align="center">
           {% for flashcard in flashcardset.flashcards.all %}
-            <div class="carousel-item {% if forloop.first %}active{% endif %} data-id="{{ flashcard.id }}"">
-              <h5>{{ flashcard.question }}</h5>
-              {% if flashcard.image %}
-                  <div class="image-container">
-                      <img src="{{ flashcard.image.url }}" alt="Question Image" class="flashcard-image" style="max-height: 200px; filter: blur(8px);">
-                      <br>
-                      <input type="checkbox" class="show-image-checkbox"> Show Image
-                  </div><br><br>
-              {% endif %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}" data-id="{{ flashcard.id }}">
+                <h6 class="{% if  flashcardset.type != "Phrase" %}verse_text{% endif %}">{{ flashcard.question }}</h6>
+                  {% if flashcard.image %}
+                      <div class="image-container">
+                          <img src="{{ flashcard.image.url }}" alt="Question Image" class="flashcard-image" style="max-height: 200px; filter: blur(8px);">
+                          <br>
+                          <input type="checkbox" class="show-image-checkbox"> Show Image
+                      </div><br><br>
+                  {% endif %}
+                {% if flashcardset.type == "Verse" %}
+                    <select name="user_answer_{{ flashcard.id }}" class="form-select form-select-sm" aria-label=".form-select-sm example">
+                      <option selected>Choose a chapter</option>
+                        {% for chapter in chapters %}
+                            <option value="{{ chapter.name_simple }}">{{ chapter.id }} - {{ chapter.name_simple }}</option>
+                        {% endfor %}
+                    </select>
+                {% else %}
               <input type="text" name="user_answer_{{ flashcard.id }}" placeholder="Your Answer" size="50">
+                {% endif %}
             </div>
           {% endfor %}
         </div>
@@ -76,15 +100,11 @@
           <span class="carousel-control-next-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Next</span>
         </button>
-      </div>
-
-
-        <form id="flashcards_questions_form" align="center">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-primary mt-4">Submit</button>
-        </form>
+        </div>
+        <button type="submit" class="btn btn-primary mt-4" id="form_submit_btn">Submit</button>
     {% endif %}
     </form>
+
 </div>
 
 <div class="container" align="center">
@@ -115,7 +135,7 @@
       });
     });
 
-    document.querySelectorAll("input[name^='user_answer_']").forEach(input => {
+    document.querySelectorAll("input[name^='user_answer_'],select[name^='user_answer_']").forEach(input => {
       input.addEventListener("keydown", function(event) {
         if (event.key === "Enter") {
           event.preventDefault();
@@ -139,9 +159,16 @@
        });
 
         // Check for unanswered flashcards and highlight the indicators
-        document.querySelectorAll("input[name^='user_answer_']").forEach((input, index) => {
+        document.querySelectorAll("input[name^='user_answer_'],select[name^='user_answer_']").forEach((input, index) => {
             const flashcardId = input.name.split("_")[2];
-            answers[flashcardId] = input.value.trim();
+            let value = input.value.trim();
+
+            // For select elements, ensure a valid option is selected
+            if (input.tagName === "SELECT" && value === "Choose a chapter") {
+                value = "";  // Treat default option as an unanswered state
+            }
+
+            answers[flashcardId] = value;
 
             if (!answers[flashcardId]) {
                 unanswered = true;
