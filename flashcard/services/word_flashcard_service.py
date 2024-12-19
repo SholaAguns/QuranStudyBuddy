@@ -25,7 +25,30 @@ class WordFlashcardService(IFlashcardService):
     number_exclusion_filter = ~Q(text_uthmani__regex=r'^\d+$') & ~Q(translation__text__regex=r'^\(\d+\)$')
 
     def get_request_types(self):
-        return ["default", "byIds", "byJuz", "byRange"]
+        request_types = [
+            {
+                'label': 'All words',
+                'value': 'default'
+
+            },
+            {
+                'label': 'Selected words',
+                'value': 'byIds'
+
+            },
+            {
+                'label': 'By juz',
+                'value': 'byJuz'
+
+            },
+            {
+                'label': 'By range',
+                'value': 'byRange'
+
+            }
+        ]
+        return request_types
+
 
     def get_id_options(self, user):
         all_chapters = Chapter.objects.all()

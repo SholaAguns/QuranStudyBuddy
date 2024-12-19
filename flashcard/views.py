@@ -64,10 +64,8 @@ def get_service_types(request):
     #return JsonResponse({'service_types': ['Phrase', 'Verse']})
 
 def get_request_types(request, service_type):
-    print("inside views " +  service_type)
     try:
         service = FlashcardServiceFactory.get_service(service_type + "FlashcardService")
-        print("service is " + service.service_type)
         return JsonResponse({'request_types': service.get_request_types()})
     except ValueError:
         return JsonResponse({'error': 'Invalid service type'}, status=400)

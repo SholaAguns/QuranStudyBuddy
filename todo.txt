@@ -1,11 +1,11 @@
-- Flashcardset form design
-- If Ids or Juz don't need amount
-- Range validator
-- Flashcard names
-- Audio files
+- By Verses
+- Flashcard default name trim
+- Chapters list navbar dropdown
+- Remove duplicates from words in set
+- Flashcards list folders: completed/new
+- User stats
 - Verse range/selection
 - Custom Flashcards
 - Fix word transliteration
-- Chapters list navbar dropdown
-- Remove duplicates from words in set
 - Smarter answer comparison
+- Audio files

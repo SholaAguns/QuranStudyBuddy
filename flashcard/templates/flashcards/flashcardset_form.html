@@ -19,53 +19,60 @@
             margin-top: 5px;
         }
         .id-dropdown, .juz-dropdown {
-            display: flex;
-            align-items: center;
+
             margin-top: 5px;
+            margin-left: 5%;
         }
-        .id-dropdown select, .juz-dropdown select {
-            margin-right: 10px;
-        }
+
     </style>
     <div class="container" align="center">
-        <h1>Flashcard Form</h1>
+        <h1>Create flashcard set</h1>
             <form id="flashcardForm">
                           {% csrf_token %}
-            <select id="serviceType" name="service_type">
-                <option value="">Select a service type</option>
-            </select>
-
-            <select id="requestType" name="request_type">
-                <option value="">Select a request type</option>
-            </select>
-
-            <input type="number" name="amount" placeholder="Amount" required>
-
-            <div id="idListContainer" style="display: none;">
-                <div id="idListFields"></div>
-                <button type="button" id="addIdField">Add ID</button>
+            <div class="mb-3">
+              <label for="requestType" class="form-label">Number of flashcards:</label>
+              <input class="form-control-sm" type="number" name="amount" placeholder="Amount" required>
+            </div>
+            <div class="mb-3">
+              <label for="serviceType" class="form-label">Type:</label>
+              <select class="form-select-sm" id="serviceType" name="service_type">
+                  <option value="">Select a type</option>
+              </select>
+            </div>
+            <div class="mb-3" id="requestTypeContainer" style="display: none;">
+              <label for="requestType" class="form-label">Selection criteria:</label>
+              <select class="form-select-sm" id="requestType" name="request_type">
+                  <option value="">Select criteria</option>
+              </select>
+            </div>
+            <div class="mb-3" id="idListContainer"  style="display: none;">
+                <div align="center" id="idListFields"></div>
+                <button type="button" id="addIdField">Add</button>
             </div>
 
-            <div id="juzListContainer" style="display: none;">
+            <div class="mb-3" id="juzListContainer" align="center" style="display: none;">
                 <div id="juzListFields"></div>
                 <button type="button" id="addJuzField">Add Juz</button>
             </div>
 
-            <div id="rangeContainer" style="display: none;">
-                <select id="rangeStart" name="range_start">
+            <div class="mb-3" id="rangeContainer" style="display: none;">
+              <label for="rangeStart" class="form-label">Choose start of range:</label>
+                <select class="form-select-sm" id="rangeStart" name="range_start">
                     <option value="">Select range start</option>
                 </select>
-                <select id="rangeEnd" name="range_end">
+                <label for="rangeEnd" class="form-label">Choose end of range:</label>
+                <select class="form-select-sm" id="rangeEnd" name="range_end">
                     <option value="">Select range end</option>
                 </select>
             </div>
 
-            <div id="categoryContainer" style="display: none;">
-                <select id="category" name="category">
+            <div class="mb-3" id="categoryContainer" style="display: none;">
+              <label for="category" class="form-label">Choose category:</label>
+                <select class="form-select-sm" id="category" name="category">
                     <option value="">Select a category</option>
                 </select>
             </div>
-            <button type="submit">Submit</button>
+            <button class="btn btn-primary" type="submit">Submit</button>
         </form>
 
     </div>
@@ -86,14 +93,23 @@
     $('#serviceType').change(function () {
         const serviceType = $(this).val();
         const requestTypeSelect = $('#requestType');
-        requestTypeSelect.empty().append(new Option('Select a request type', ''));
+        requestTypeSelect.empty();
+
+         const addButton = $('#addIdField');
+
+         if (serviceType) {
+           addButton.text(`Add ${serviceType}`);
+         } else {
+             addButton.text('Add');
+         }
 
         if (serviceType) {
             $.get(`/flashcards/get_request_types/${serviceType}/`, function (data) {
                 data.request_types.forEach(requestType => {
-                    requestTypeSelect.append(new Option(requestType, requestType));
+                    requestTypeSelect.append(new Option(requestType.label, requestType.value));
                 });
             });
+            $('#requestTypeContainer').toggle(serviceType !== '');
         }
     });
 
@@ -134,7 +150,7 @@
     $('#addIdField').click(function () {
         const idDropdown = `
             <div class="id-dropdown">
-                <select class="id-select"></select>
+                <select class="id-select form-select-sm"></select>
                 <button type="button" class="removeIdField">Remove</button>
             </div>
         `;
@@ -146,7 +162,7 @@
     $('#addJuzField').click(function () {
         const juzDropdown = `
             <div class="juz-dropdown">
-                <select class="juz-select"></select>
+                <select class="juz-select form-select-sm"></select>
                 <button type="button" class="removeJuzField">Remove</button>
             </div>
         `;
@@ -165,6 +181,16 @@
     // Form submission
     $('#flashcardForm').submit(function (e) {
         e.preventDefault();
+
+        const rangeStart = parseInt($('#rangeStart').val(), 10);
+        const rangeEnd = parseInt($('#rangeEnd').val(), 10);
+
+        if ($('#rangeContainer').is(':visible')) {
+        if (isNaN(rangeStart) || isNaN(rangeEnd) || rangeEnd <= rangeStart) {
+            alert('Error: The end of the range must be greater than the start.');
+            return;
+          }
+        }
 
         // Collect dynamic ID List
         const idList = [];

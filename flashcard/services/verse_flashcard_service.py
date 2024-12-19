@@ -22,7 +22,29 @@ class VerseFlashcardService(IFlashcardService):
     service_type = "Verse"
 
     def get_request_types(self):
-        return ["default", "byIds", "byJuz", "byRange"]
+        request_types = [
+            {
+                'label': 'All verses',
+                'value': 'default'
+
+            },
+            {
+                'label': 'Selected verses',
+                'value': 'byIds'
+
+            },
+            {
+                'label': 'By juz',
+                'value': 'byJuz'
+
+            },
+            {
+                'label': 'By range',
+                'value': 'byRange'
+
+            }
+        ]
+        return request_types
 
     def get_juz_options(self, user):
         return [{'label': f'Juz {i}', 'value': i} for i in range(1, 31)]

@@ -58,7 +58,25 @@ class PhraseFlashcardService(IFlashcardService):
 
 
     def get_request_types(self):
-        return ["default", "byIds", "byCategory"]
+        request_types = [
+            {
+                'label': 'All Phrases',
+                'value': 'default'
+
+            },
+            {
+                'label': 'Selected Phrases',
+                'value': 'byIds'
+
+            },
+            {
+                'label': 'Select by category',
+                'value': 'byCategory'
+
+            }
+        ]
+        return request_types
+
 
     def get_flashcards(self, flashcardset, amount):
         all_phrase_ids = list(Phrase.objects.filter(user=flashcardset.user).values_list('id', flat=True))
