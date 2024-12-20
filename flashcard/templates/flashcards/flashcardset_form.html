@@ -23,6 +23,18 @@
             margin-top: 5px;
             margin-left: 5%;
         }
+        .horizontal-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+      }
+      .center-container {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+ }
 
     </style>
     <div class="container" align="center">
@@ -50,12 +62,12 @@
                 <button type="button" id="addIdField">Add</button>
             </div>
 
-            <div class="mb-3" id="juzListContainer" align="center" style="display: none;">
+            <div class="mb-3" id="juzListContainer" style="display: none;">
                 <div id="juzListFields"></div>
                 <button type="button" id="addJuzField">Add Juz</button>
             </div>
 
-            <div class="mb-3" id="rangeContainer" style="display: none;">
+            <div class="mb-3 center-container" id="rangeContainer" style="display: none;">
               <label for="rangeStart" class="form-label">Choose start of range:</label>
                 <select class="form-select-sm" id="rangeStart" name="range_start">
                     <option value="">Select range start</option>
@@ -64,6 +76,30 @@
                 <select class="form-select-sm" id="rangeEnd" name="range_end">
                     <option value="">Select range end</option>
                 </select>
+            </div>
+
+            <div class="mb-3" id="verseRangeContainer" align="center" style="display: none;">
+              <div class="horizontal-group">
+                <label for="verseChapterRangeStart" class="form-label">Start Chapter:</label>
+                  <select class="form-select-sm" id="verseChapterRangeStart" name="verse_chapter_range_start">
+                      <option value="">Select range start</option>
+                  </select>
+
+                    <label for="verseChapterRangeEnd" class="form-label">End Chapter:</label>
+                    <select class="form-select-sm" id="verseChapterRangeEnd" name="verse_chapter_range_end">
+                        <option value="">Select range end</option>
+                    </select>
+                </div>
+                <div class="horizontal-group">
+                  <label for="verseRangeStart" class="form-label">Start Verse:</label>
+                    <select class="form-select-sm" id="verseRangeStart" name="verse_range_start">
+                        <option value="">Select range start</option>
+                    </select>
+                  <label for="verseRangeEnd" class="form-label">End Verse:</label>
+                  <select class="form-select-sm" id="verseRangeEnd" name="verse_range_end">
+                      <option value="">Select range end</option>
+                  </select>
+                </div>
             </div>
 
             <div class="mb-3" id="categoryContainer" style="display: none;">
@@ -122,6 +158,7 @@
         $('#juzListContainer').toggle(requestType === 'byJuz');
         $('#rangeContainer').toggle(requestType === 'byRange');
         $('#categoryContainer').toggle(requestType === 'byCategory');
+        $('#verseRangeContainer').toggle(requestType === 'byVerseRange');
 
         // Load options for category if "byCategory" is selected
         if (requestType === 'byCategory') {
@@ -131,6 +168,26 @@
         if (requestType === 'byRange') {
                 loadOptions('/flashcards/get_range_options/' + $('#serviceType').val(), '#rangeStart');
                 loadOptions('/flashcards/get_range_options/' + $('#serviceType').val(), '#rangeEnd');
+        }
+        if (requestType === 'byVerseRange' ) {
+                loadOptions('/flashcards/get_range_options/' + $('#serviceType').val(), '#verseChapterRangeStart');
+                loadOptions('/flashcards/get_range_options/' + $('#serviceType').val(), '#verseChapterRangeEnd');
+        }
+    });
+
+    $('#verseChapterRangeStart').change(function () {
+        const startChapter = $(this).val();
+
+        if (startChapter) {
+          loadOptions(`/flashcards/get_verses_options/${startChapter}`, '#verseRangeStart');
+        }
+    });
+
+    $('#verseChapterRangeEnd').change(function () {
+        const endChapter = $(this).val();
+
+        if (endChapter) {
+          loadOptions(`/flashcards/get_verses_options/${endChapter}`, '#verseRangeEnd');
         }
     });
 
@@ -184,9 +241,18 @@
 
         const rangeStart = parseInt($('#rangeStart').val(), 10);
         const rangeEnd = parseInt($('#rangeEnd').val(), 10);
+        const verseRangeStart = parseInt($('#verseRangeStart').val(), 10);
+        const verseRangeEnd = parseInt($('#verseRangeEnd').val(), 10);
 
         if ($('#rangeContainer').is(':visible')) {
         if (isNaN(rangeStart) || isNaN(rangeEnd) || rangeEnd <= rangeStart) {
+            alert('Error: The end of the range must be greater than the start.');
+            return;
+          }
+        }
+
+        if ($('#verseRangeContainer').is(':visible')) {
+        if (isNaN(verseRangeStart) || isNaN(verseRangeEnd) || verseRangeEnd <= verseRangeStart) {
             alert('Error: The end of the range must be greater than the start.');
             return;
           }

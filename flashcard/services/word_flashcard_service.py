@@ -32,7 +32,7 @@ class WordFlashcardService(IFlashcardService):
 
             },
             {
-                'label': 'Selected words',
+                'label': 'By chapter',
                 'value': 'byIds'
 
             },
@@ -42,10 +42,15 @@ class WordFlashcardService(IFlashcardService):
 
             },
             {
-                'label': 'By range',
+                'label': 'By chapter range',
                 'value': 'byRange'
 
-            }
+            },
+            {
+                'label': 'By verse range',
+                'value': 'byVerseRange'
+
+            },
         ]
         return request_types
 
@@ -142,6 +147,27 @@ class WordFlashcardService(IFlashcardService):
         flashcardset.amount = amount
         flashcardset.created_dt = date_now
         flashcardset.title = f'{flashcardset.type}_by_range_{date_now}'
+        flashcardset.save()
+        populate_flashcards(amount, word_ids, flashcardset)
+        flashcardset.save()
+
+        return flashcardset
+
+    def get_flashcards_by_verses_range(self, flashcardset, amount, start, end):
+        word_ids = list(
+            Word.objects.filter(
+                verse__id__gte=start,
+                verse__id__lte=end
+            )
+            .filter(self.number_exclusion_filter)
+            .values_list('id', flat=True)
+        )
+
+        date_now = now()
+        flashcardset.type = self.service_type
+        flashcardset.amount = amount
+        flashcardset.created_dt = date_now
+        flashcardset.title = f'{flashcardset.type}_by_verse_range_{date_now}'
         flashcardset.save()
         populate_flashcards(amount, word_ids, flashcardset)
         flashcardset.save()

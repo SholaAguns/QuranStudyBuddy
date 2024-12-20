@@ -13,7 +13,7 @@ from flashcard.forms import FlashcardSetForm, FlashcardSetUpdateForm
 from flashcard.models import FlashcardSet
 from flashcard.services.flashcard_service_factory import FlashcardServiceFactory
 from flashcard.services.marking_service import MarkingService
-from quran.models import Chapter
+from quran.models import Chapter, Verse
 
 
 class CreateFlaschcardSet(LoginRequiredMixin, TemplateView):
@@ -94,6 +94,19 @@ def get_range_options(request, service_type):
     except ValueError:
         return JsonResponse({'error': 'Invalid service type'}, status=400)
 
+def get_verses_options(request, chapter_id):
+    try:
+        verses = Verse.objects.filter(chapter__id=chapter_id)
+        options = []
+        for verse in verses:
+            options.append({
+                'label': verse.verse_key,
+                'value': verse.id
+            })
+        return JsonResponse({'options': options})
+    except ValueError:
+        return JsonResponse({'error': 'Invalid service type'}, status=400)
+
 def get_category_options(request, service_type):
     try:
         service = FlashcardServiceFactory.get_service(service_type + "FlashcardService")
@@ -116,6 +129,8 @@ def submit_flashcardset_form(request):
         category = request.POST.get('category', None)
         range_start = request.POST.get('range_start', '')
         range_end = request.POST.get('range_end', '')
+        verse_range_start = request.POST.get('verse_range_start', '')
+        verse_range_end = request.POST.get('verse_range_end', '')
 
         if request_type == 'byRange':
             range_start = int(range_start) if range_start.isdigit() else None
@@ -123,6 +138,13 @@ def submit_flashcardset_form(request):
         else:
             range_start = None
             range_end = None
+
+        if request_type == 'byVerseRange':
+            verse_range_start = int(verse_range_start) if verse_range_start.isdigit() else None
+            verse_range_end = int(verse_range_end) if verse_range_end.isdigit() else None
+        else:
+            verse_range_start = None
+            verse_range_end = None
 
         try:
             service = FlashcardServiceFactory.get_service(service_type + "FlashcardService")
@@ -132,6 +154,7 @@ def submit_flashcardset_form(request):
             'byIds': lambda: service.get_flashcards_by_ids(new_flashcardset, amount, id_list),
             'byCategory': lambda: service.get_flashcards_by_category(new_flashcardset, amount, category),
             'byRange': lambda: service.get_flashcards_by_range(new_flashcardset, amount, range_start, range_end),
+            'byVerseRange': lambda: service.get_flashcards_by_verses_range(new_flashcardset, amount, verse_range_start, verse_range_end),
             'byJuz': lambda: service.get_flashcards_by_juz(new_flashcardset, amount, juz_list),
             'default': lambda: service.get_flashcards(new_flashcardset, amount),
         }

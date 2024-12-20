@@ -129,3 +129,6 @@ class PhraseFlashcardService(IFlashcardService):
         flashcardset.save()
 
         return flashcardset
+
+    def get_flashcards_by_verses_range(self, flashcardset, amount, start, end):
+        pass

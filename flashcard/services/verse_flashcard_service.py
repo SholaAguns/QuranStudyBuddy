@@ -29,7 +29,7 @@ class VerseFlashcardService(IFlashcardService):
 
             },
             {
-                'label': 'Selected verses',
+                'label': 'By chapter',
                 'value': 'byIds'
 
             },
@@ -39,7 +39,7 @@ class VerseFlashcardService(IFlashcardService):
 
             },
             {
-                'label': 'By range',
+                'label': 'By chapter range',
                 'value': 'byRange'
 
             }
@@ -130,4 +130,7 @@ class VerseFlashcardService(IFlashcardService):
         return flashcardset
 
     def get_flashcards_by_category(self, flashcardset, amount, category):
+        pass
+
+    def get_flashcards_by_verses_range(self, flashcardset, amount, start, end):
         pass
