@@ -28,13 +28,8 @@
     align-items: center;
     gap: 10px;
     margin-bottom: 15px;
+    margin-left: 30%;
       }
-      .center-container {
-     display: flex;
-     flex-direction: column;
-     align-items: center;
-     justify-content: center;
- }
 
     </style>
     <div class="container" align="center">
@@ -78,22 +73,21 @@
                 </select>
             </div>
 
-            <div class="mb-3" id="verseRangeContainer" align="center" style="display: none;">
+            <div class="mb-3" id="verseRangeContainer" style="display: none;">
               <div class="horizontal-group">
-                <label for="verseChapterRangeStart" class="form-label">Start Chapter:</label>
+                <label for="verseChapterRangeStart" class="form-label">Select Chapter:</label>
                   <select class="form-select-sm" id="verseChapterRangeStart" name="verse_chapter_range_start">
                       <option value="">Select range start</option>
                   </select>
-
-                    <label for="verseChapterRangeEnd" class="form-label">End Chapter:</label>
-                    <select class="form-select-sm" id="verseChapterRangeEnd" name="verse_chapter_range_end">
-                        <option value="">Select range end</option>
-                    </select>
-                </div>
-                <div class="horizontal-group">
                   <label for="verseRangeStart" class="form-label">Start Verse:</label>
                     <select class="form-select-sm" id="verseRangeStart" name="verse_range_start">
                         <option value="">Select range start</option>
+                    </select>
+                </div>
+                <div class="horizontal-group">
+                    <label for="verseChapterRangeEnd" class="form-label">Select Chapter:</label>
+                    <select class="form-select-sm" id="verseChapterRangeEnd" name="verse_chapter_range_end">
+                        <option value="">Select range end</option>
                     </select>
                   <label for="verseRangeEnd" class="form-label">End Verse:</label>
                   <select class="form-select-sm" id="verseRangeEnd" name="verse_range_end">

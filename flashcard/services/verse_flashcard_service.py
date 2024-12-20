@@ -26,22 +26,22 @@ class VerseFlashcardService(IFlashcardService):
             {
                 'label': 'All verses',
                 'value': 'default'
-
             },
             {
                 'label': 'By chapter',
                 'value': 'byIds'
-
             },
             {
                 'label': 'By juz',
                 'value': 'byJuz'
-
             },
             {
                 'label': 'By chapter range',
                 'value': 'byRange'
-
+            },
+            {
+                'label': 'By verse range',
+                'value': 'byVerseRange'
             }
         ]
         return request_types
@@ -62,9 +62,6 @@ class VerseFlashcardService(IFlashcardService):
 
     def get_range_options(self, user):
         return self.get_id_options(user)
-
-    def get_category_options(self, user):
-        pass
 
     def get_flashcards(self, flashcardset, amount):
         print("Inside get_flashcards ")
@@ -129,8 +126,26 @@ class VerseFlashcardService(IFlashcardService):
 
         return flashcardset
 
+    def get_flashcards_by_verses_range(self, flashcardset, amount, start, end):
+        verse_ids = list(
+            Verse.objects.filter(id__gte=start, id__lte=end).values_list('id', flat=True)
+        )
+
+        date_now = now()
+        flashcardset.type = self.service_type
+        flashcardset.amount = amount
+        flashcardset.created_dt = date_now
+        flashcardset.title = f'{flashcardset.type}_by_range_{date_now}'
+        flashcardset.save()
+        populate_flashcards(amount, verse_ids, flashcardset)
+        flashcardset.save()
+
+        return flashcardset
+
     def get_flashcards_by_category(self, flashcardset, amount, category):
         pass
 
-    def get_flashcards_by_verses_range(self, flashcardset, amount, start, end):
+
+
+    def get_category_options(self, user):
         pass

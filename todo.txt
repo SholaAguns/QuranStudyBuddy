@@ -1,11 +1,13 @@
-- By Verses
-- Flashcard default name trim
+- Show all images button
 - Chapters list navbar dropdown
-- Remove duplicates from words in set
-- Flashcards list folders: completed/new
 - User stats
+- Flashcards list folders: completed/new
+- Remove comments
+- Audio files
 - Verse range/selection
+- Better randomization
 - Custom Flashcards
 - Fix word transliteration
 - Smarter answer comparison
-- Audio files
+- Fix add button for byIds
+

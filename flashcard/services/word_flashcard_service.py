@@ -1,6 +1,6 @@
 import random
 
-from django.db.models import Q
+from django.db.models import Q, F
 from django.utils.timezone import now
 from quran.models import Word, Chapter, WordTranslation
 from flashcard.models import Flashcard
@@ -18,6 +18,13 @@ def populate_flashcards(amount, ids, flashcardset):
         flashcard.answer = word.translation.text
         flashcard.save()
 
+def remove_duplicate_words(all_words):
+    unique_words = {}
+    for word in all_words:
+        if word['text_uthmani'] not in unique_words:
+            unique_words[word['text_uthmani']] = word['id']
+
+    return list(unique_words.values())
 
 class WordFlashcardService(IFlashcardService):
     service_type = "Word"
@@ -76,10 +83,12 @@ class WordFlashcardService(IFlashcardService):
         return self.get_id_options(user)
 
     def get_flashcards(self, flashcardset, amount):
-        all_word_ids = list(
-            Word.objects.filter(self.number_exclusion_filter)
-            .values_list('id', flat=True)
-        )
+        all_words = (Word.objects.filter(self.number_exclusion_filter)
+        .values(
+            'id', 'text_uthmani', 'translation__text'
+        ))
+
+        unique_word_ids = remove_duplicate_words(all_words)
 
         date_now = now()
         flashcardset.type = self.service_type
@@ -89,7 +98,7 @@ class WordFlashcardService(IFlashcardService):
         print(self.service_type)
         print(flashcardset.type)
         flashcardset.save()
-        populate_flashcards(amount, all_word_ids, flashcardset)
+        populate_flashcards(amount, unique_word_ids, flashcardset)
         flashcardset.save()
         return flashcardset
 
@@ -97,11 +106,13 @@ class WordFlashcardService(IFlashcardService):
         pass
 
     def get_flashcards_by_juz(self, flashcardset, amount, juz_list):
-        word_ids = list(
-            Word.objects.filter(verse__juz_number__in=juz_list)
-            .filter(self.number_exclusion_filter)
-            .values_list('id', flat=True)
-        )
+        all_words = (Word.objects.filter(verse__juz_number__in=juz_list)
+                    .filter(self.number_exclusion_filter)
+                    .values(
+                        'id', 'text_uthmani', 'translation__text'
+                    ))
+
+        unique_word_ids = remove_duplicate_words(all_words)
 
         date_now = now()
         flashcardset.type = self.service_type
@@ -109,17 +120,19 @@ class WordFlashcardService(IFlashcardService):
         flashcardset.created_dt = date_now
         flashcardset.title = f'{flashcardset.type}_by_juz_{date_now}'
         flashcardset.save()
-        populate_flashcards(amount, word_ids, flashcardset)
+        populate_flashcards(amount, unique_word_ids, flashcardset)
         flashcardset.save()
 
         return flashcardset
 
     def get_flashcards_by_ids(self, flashcardset, amount, id_list):
-        word_ids = list(
-            Word.objects.filter(verse__chapter__id__in=id_list)
-            .filter(self.number_exclusion_filter)
-            .values_list('id', flat=True)
-        )
+        all_words = (Word.objects.filter(verse__chapter__id__in=id_list)
+                    .filter(self.number_exclusion_filter)
+                    .values(
+                        'id', 'text_uthmani', 'translation__text'
+                    ))
+
+        unique_word_ids = remove_duplicate_words(all_words)
 
         date_now = now()
         flashcardset.type = self.service_type
@@ -127,7 +140,7 @@ class WordFlashcardService(IFlashcardService):
         flashcardset.created_dt = date_now
         flashcardset.title = f'{flashcardset.type}_by_ids_{date_now}'
         flashcardset.save()
-        populate_flashcards(amount, word_ids, flashcardset)
+        populate_flashcards(amount, unique_word_ids, flashcardset)
         flashcardset.save()
 
         return flashcardset
@@ -142,13 +155,24 @@ class WordFlashcardService(IFlashcardService):
             .values_list('id', flat=True)
         )
 
+        all_words = (Word.objects.filter(
+                        verse__chapter__id__gte=start,
+                        verse__chapter__id__lte=end
+                    )
+                    .filter(self.number_exclusion_filter)
+                    .values(
+                        'id', 'text_uthmani', 'translation__text'
+                    ))
+
+        unique_word_ids = remove_duplicate_words(all_words)
+
         date_now = now()
         flashcardset.type = self.service_type
         flashcardset.amount = amount
         flashcardset.created_dt = date_now
         flashcardset.title = f'{flashcardset.type}_by_range_{date_now}'
         flashcardset.save()
-        populate_flashcards(amount, word_ids, flashcardset)
+        populate_flashcards(amount, unique_word_ids, flashcardset)
         flashcardset.save()
 
         return flashcardset
@@ -162,6 +186,16 @@ class WordFlashcardService(IFlashcardService):
             .filter(self.number_exclusion_filter)
             .values_list('id', flat=True)
         )
+        all_words = (Word.objects.filter(
+                    verse__id__gte=start,
+                    verse__id__lte=end
+                    )
+                    .filter(self.number_exclusion_filter)
+                    .values(
+                        'id', 'text_uthmani', 'translation__text'
+                    ))
+
+        unique_word_ids = remove_duplicate_words(all_words)
 
         date_now = now()
         flashcardset.type = self.service_type
@@ -169,7 +203,7 @@ class WordFlashcardService(IFlashcardService):
         flashcardset.created_dt = date_now
         flashcardset.title = f'{flashcardset.type}_by_verse_range_{date_now}'
         flashcardset.save()
-        populate_flashcards(amount, word_ids, flashcardset)
+        populate_flashcards(amount, unique_word_ids, flashcardset)
         flashcardset.save()
 
         return flashcardset

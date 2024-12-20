@@ -24,7 +24,7 @@
         <div class="card my-3">
             <a href="{% url 'quran:verse_detail' pk=verse.id %}" class="verse_link">
                 <div class="card-body">
-                    <p class="text-start">{{ verse.id }}</p>
+                    <p class="text-start">{{ verse.verse_key }}</p>
                     <p class="text-end verse_text" style="direction: rtl;">{{ verse.text_uthmani }}</p>
                     <p class="text-start">
                         {% if verse.selected_translation %}

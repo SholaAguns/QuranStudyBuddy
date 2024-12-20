@@ -26,7 +26,7 @@ float: right;
           <div class="flashcardset-item">
 
               <h4>
-                <a href="{% url 'flashcards:flashcardset_detail' pk=flashcardset.id %}">{{ flashcardset.title }}</a>
+                <a href="{% url 'flashcards:flashcardset_detail' pk=flashcardset.id %}">{{ flashcardset.title|truncatechars:28  }}</a>
                 <input  type="checkbox" name="selected_flashcardsets" value="{{ flashcardset.id }}" class="flashcardset-checkbox">
               </h4>
               <hr>

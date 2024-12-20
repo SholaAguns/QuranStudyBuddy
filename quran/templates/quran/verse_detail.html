@@ -16,7 +16,7 @@
     <a href="{% url 'quran:chapter_detail' pk=verse.chapter.id %}"><h2 id="chapter-name">{{ verse.verse_key }} {{ verse.chapter.name_simple }}</h2></a>
     <div class="card my-3">
             <div class="card-body">
-                <p class="text-start">{{ verse.id }}</p>
+                <p class="text-start">{{ verse.verse_key }}</p>
                 <p class="text-end verse_text" style="direction: rtl;">{{ verse.text_uthmani }}</p>
                 <p class="text-start">
                     {% if verse.selected_translation %}
