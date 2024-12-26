@@ -1,5 +1,7 @@
-- Show all images button
-- Chapters list navbar dropdown
+- Save Form options
+- Comma separated answers
+- Pagination
+- Search and filtering
 - User stats
 - Flashcards list folders: completed/new
 - Remove comments
@@ -10,4 +12,5 @@
 - Fix word transliteration
 - Smarter answer comparison
 - Fix add button for byIds
+- Fix static
 

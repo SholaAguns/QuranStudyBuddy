@@ -55,6 +55,7 @@ font-size: 30px;
   {% else %}
     <form id="flashcards_questions_form">
       {% csrf_token %}
+      <input type="checkbox" id="show-all-images-checkbox"> Show All Images
       <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="false">
         <div class="carousel-inner" align="center">
           {% for flashcard in flashcardset.flashcards.all %}
@@ -120,6 +121,26 @@ font-size: 30px;
   document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("flashcards_questions_form");
     const carousel = new bootstrap.Carousel('#carouselExampleDark');
+    const showAllImagesButton = document.getElementById("show-all-images-checkbox");
+
+    showAllImagesButton.addEventListener("change", function () {
+      document.querySelectorAll('.show-image-checkbox').forEach(checkbox => {
+        if (this.checked) {
+          checkbox.checked = true; // Check all checkboxes
+          const image = checkbox.closest('.image-container').querySelector('.flashcard-image');
+          if (image) {
+            image.style.filter = "none"; // Remove blur from all images
+          }
+        } else {
+          checkbox.checked = false; // Check all checkboxes
+          const image = checkbox.closest('.image-container').querySelector('.flashcard-image');
+          if (image) {
+            image.style.filter = "blur(8px)"; // Remove blur from all images
+          }
+        }
+
+      });
+    });
 
     // Add event listener to all checkboxes to toggle image visibility
     document.querySelectorAll('.show-image-checkbox').forEach((checkbox, index) => {

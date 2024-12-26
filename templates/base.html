@@ -31,6 +31,12 @@
 
  </head>
 <body class="base_body">
+<style>
+  #chapterFields {
+    max-height: 300px; /* Set a fixed height for the dropdown */
+    overflow-y: auto; /* Enable vertical scrolling */
+  }
+</style>
 
   <header class="header_section">
   <div class="container-fluid">
@@ -60,6 +66,14 @@
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="{% url 'arabic:add_phrase' %}">Create Phrase</a></li>
                 <li><a class="dropdown-item" href="{% url 'flashcards:add_flashcardset' %}">Create Flashcard set</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="chapterNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Chapters
+              </a>
+              <ul class="dropdown-menu" id="chapterFields" aria-labelledby="chapterNavbarDropdown">
+                <!-- Dropdown items will be populated here -->
               </ul>
             </li>
             <li class="nav-item">
@@ -99,3 +113,23 @@
   {% endblock %}
 
 </section>
+<script>
+  $(document).ready(function () {
+    $.get('/flashcards/get_id_options/verse', function (data) {
+      const dropdownMenu = $('#chapterFields'); // Reference to the dropdown menu
+
+      // Clear any existing content
+      dropdownMenu.empty();
+
+      // Add default option or other placeholder if needed
+      dropdownMenu.append('<li><a class="dropdown-item" href="/quran/">All Chapters</a></li>');
+
+      // Populate dropdown with options
+      data.options.forEach(option => {
+        dropdownMenu.append(
+          `<li><a class="dropdown-item" href="/quran/chapter/${option.value}">${option.label}</a></li>`
+        );
+      });
+    });
+  });
+</script>
