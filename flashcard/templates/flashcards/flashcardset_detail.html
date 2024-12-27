@@ -40,12 +40,12 @@ font-size: 30px;
                       {% if flashcard.correct_answer_given %}
                           <span class="correct_answer">
                               <p class="text-start">Your Answer: {{ flashcard.user_answer | safe }} <span class="green-tick">✔️</span></p>
-                              <p class="text-start">Correct Answer: {{ flashcard.answer | safe }}</p>
+                              <p class="text-start">Acceptable Answers: {{ flashcard.answer | safe }}</p>
                           </span>
                       {% else %}
                           <span class="incorrect_answer">
                               <p class="text-start">Your Answer: {{ flashcard.user_answer | safe }} <span class="red-cross">❌</span></p>
-                              <p class="text-start">Correct Answer: {{ flashcard.answer | safe }}</p>
+                              <p class="text-start">Acceptable Answers: {{ flashcard.answer | safe }}</p>
                           </span>
                       {% endif %}
                   </div>

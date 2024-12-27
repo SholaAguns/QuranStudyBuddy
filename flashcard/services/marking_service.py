@@ -14,7 +14,6 @@ class MarkingService:
         return text.strip().lower()
 
     def is_loose_match(self, user_answer, correct_answer, threshold=80):
-        print("In looose")
         user_answer = self.normalize_text(user_answer)
         print(user_answer)
         correct_answer = self.normalize_text(correct_answer)
@@ -23,24 +22,27 @@ class MarkingService:
             return True
         return False
 
+    def any_loose_match(self, user_answers, correct_answers, threshold=80):
+        for anwser in user_answers:
+            user_answer = self.normalize_text(anwser)
+            for correct_answer in correct_answers:
+                correct_answer = self.normalize_text(correct_answer)
+                if fuzz.partial_ratio(user_answer, correct_answer) >= threshold:
+                    return True
+        return False
+
     def calculate_score(self, flashcardset):
-        print("In service")
         flashcards = flashcardset.flashcards.all()
 
         for flashcard in flashcards:
-            print("In service" + flashcard.user_answer)
-            print("Correct answer: " + flashcard.answer)
-            flashcard.correct_answer_given = self.is_loose_match(flashcard.user_answer, flashcard.answer)
-            print("Correct: " + str(flashcard.correct_answer_given))
+            user_answers = flashcard.user_answer.split(",")
+            acceptable_answers = flashcard.answer.split(",")
+            flashcard.correct_answer_given = self.any_loose_match(user_answers, acceptable_answers)
             flashcard.save()
 
-
         correct_answers = flashcardset.flashcards.filter(correct_answer_given=True).count()
-        print("correct ans " + str(correct_answers))
         total_flashcards = flashcardset.flashcards.count()
-        print("total ans " + str(total_flashcards))
         flashcardset.score = round((correct_answers / total_flashcards) * 100, 2)
         flashcardset.save()
-        print("Score: " + str(flashcardset.score))
 
 

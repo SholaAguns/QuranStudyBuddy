@@ -1,11 +1,10 @@
-- Save Form options
-- Comma separated answers
-- Pagination
-- Search and filtering
 - User stats
 - Flashcards list folders: completed/new
-- Remove comments
 - Audio files
+- Search and filtering
+- Save Form options
+- Pagination
+- Remove comments
 - Verse range/selection
 - Better randomization
 - Custom Flashcards

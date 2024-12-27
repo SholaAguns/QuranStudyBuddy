@@ -116,7 +116,7 @@ class PhraseFlashcardService(IFlashcardService):
 
     def get_flashcards_by_category(self, flashcardset, amount, category):
         phrase_ids = list(
-            Phrase.objects.filter(category=category, user=flashcardset.user).values_list('id', flat=True)
+            Phrase.objects.filter(category__iexact=category, user=flashcardset.user).values_list('id', flat=True)
         )
 
         date_now = now()
