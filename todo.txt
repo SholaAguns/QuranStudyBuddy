@@ -1,3 +1,4 @@
+- Arabic keyboard
 - User stats
 - Flashcards list folders: completed/new
 - Audio files
@@ -6,10 +7,12 @@
 - Pagination
 - Remove comments
 - Verse range/selection
+- Next verse button
 - Better randomization
 - Custom Flashcards
 - Fix word transliteration
 - Smarter answer comparison
 - Fix add button for byIds
 - Fix static
+- Add optional placeholder to forms
 

@@ -10,7 +10,6 @@
   }
   .verse_text{
   font-family: "Noto Naskh Arabic", serif;
-font-optical-sizing: auto;
 font-weight: 500;
 font-style: normal;
 font-size: 30px;
@@ -27,14 +26,27 @@ font-size: 30px;
 </div><br><br><br>
 <div class="container flashcardset-main">
   {% if flashcardset.score is not None %}
+  <ul class="nav nav-tabs justify-content-center">
+  <li class="nav-item">
+    <a class="nav-link active answers_card_tab"  id="all_answers_card_tab"  href="#" onclick="swapTabs('all_answers_card')">All Answers</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link answers_card_tab" id="correct_answers_card_tab" href="#" onclick="swapTabs('correct_answers_card')">Correct Answers</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link answers_card_tab" id="incorrect_answers_card_tab" href="#" onclick="swapTabs('incorrect_answers_card')">Incorrect Answers</a>
+  </li>
+</ul>
       <div class="report_card">
         <div class="card" style="width: 18rem;">
           <div class="card-footer">
-            Score: {{ flashcardset.score }}%
+            Score: {{correct_answers_count}}/{{total_flashcards_count}} ({{ flashcardset.score }}%)
           </div>
         </div>
-          {% for flashcard in flashcardset.flashcards.all %}
-              <div class="card my-3">
+
+              <div class="answers_card" id="all_answers_card">
+                {% for flashcard in flashcardset.flashcards.all %}
+                <div class="card my-3">
                   <div class="card-body">
                     <p class="{% if  flashcardset.type != "Phrase" %}verse_text{% endif %}">{{ flashcard.question }}</p>
                       {% if flashcard.correct_answer_given %}
@@ -48,19 +60,53 @@ font-size: 30px;
                               <p class="text-start">Acceptable Answers: {{ flashcard.answer | safe }}</p>
                           </span>
                       {% endif %}
+                    </div>
                   </div>
+                  {% endfor %}
               </div>
-          {% endfor %}
+              <div class="answers_card" id="correct_answers_card" style="display: none;">
+                {% for flashcard in flashcardset.flashcards.all %}
+                {% if flashcard.correct_answer_given %}
+                <div class="card my-3">
+                    <div class="card-body">
+                      <p class="{% if  flashcardset.type != "Phrase" %}verse_text{% endif %}">{{ flashcard.question }}</p>
+                            <span class="correct_answer">
+                                <p class="text-start">Your Answer: {{ flashcard.user_answer | safe }} <span class="green-tick">✔️</span></p>
+                                <p class="text-start">Acceptable Answers: {{ flashcard.answer | safe }}</p>
+                            </span>
+
+                      </div>
+                  </div>
+                  {% endif %}
+                  {% endfor %}
+              </div>
+              <div class="answers_card" id="incorrect_answers_card" style="display: none;">
+                {% for flashcard in flashcardset.flashcards.all %}
+                {% if not flashcard.correct_answer_given %}
+                <div class="card my-3">
+                    <div class="card-body">
+                      <p class="{% if  flashcardset.type != "Phrase" %}verse_text{% endif %}">{{ flashcard.question }}</p>
+                        <span class="incorrect_answer">
+                            <p class="text-start">Your Answer: {{ flashcard.user_answer | safe }} <span class="red-cross">❌</span></p>
+                            <p class="text-start">Acceptable Answers: {{ flashcard.answer | safe }}</p>
+                        </span>
+                    </div>
+                  </div>
+                  {% endif %}
+                  {% endfor %}
+              </div>
       </div>
   {% else %}
     <form id="flashcards_questions_form">
       {% csrf_token %}
-      <input type="checkbox" id="show-all-images-checkbox"> Show All Images
+            <span style="{% if  flashcardset.type != "Phrase" %}display: none;{% endif %}">
+                <input type="checkbox" id="show-all-images-checkbox"> Show All Images
+            </span>
       <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="false">
         <div class="carousel-inner" align="center">
           {% for flashcard in flashcardset.flashcards.all %}
             <div class="carousel-item {% if forloop.first %}active{% endif %}" data-id="{{ flashcard.id }}">
-                <h6 class="{% if  flashcardset.type != "Phrase" %}verse_text{% endif %}">{{ flashcard.question }}</h6>
+                <p class="{% if  flashcardset.type != "Phrase" %}verse_text{% endif %}">{{ flashcard.question }}</p>
                   {% if flashcard.image %}
                       <div class="image-container">
                           <img src="{{ flashcard.image.url }}" alt="Question Image" class="flashcard-image" style="max-height: 200px; filter: blur(8px);">
@@ -117,6 +163,26 @@ font-size: 30px;
         <br><br>
     {% endif %}
 </div>
+<script>
+  function swapTabs(current_card_id) {
+         var current_card = document.getElementById(current_card_id);
+         var current_tab_id =current_card_id + '_tab';
+         console.log(current_tab_id);
+         var current_tab = document.getElementById(current_tab_id);
+
+         document.querySelectorAll('.answers_card_tab').forEach(input => {
+           input.classList.remove("active");
+         });
+
+         document.querySelectorAll('.answers_card').forEach(input => {
+           input.style.display = 'none';
+           input.classList.remove("active");
+         });
+
+         current_card.style.display = 'block';
+         current_tab.classList.add("active");
+       }
+</script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("flashcards_questions_form");

@@ -35,6 +35,8 @@ class FlashcardSetDetail(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['chapters']  = Chapter.objects.all()
+        context['correct_answers_count'] = self.object.flashcards.filter(correct_answer_given=True).count()
+        context['total_flashcards_count'] = self.object.flashcards.count()
         return context
 
 class FlashcardSetUpdate(LoginRequiredMixin, UpdateView):
