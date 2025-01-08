@@ -20,5 +20,6 @@ urlpatterns = [
     path('submit_flashcardset_form/', views.submit_flashcardset_form, name='submit_form'),
     path('submit_flashcardset_answers/<int:pk>/', views.submit_flashcardset_answers, name='submit_answers'),
     path('flashcardsets/delete/', views.delete_flashcardsets, name='delete_flashcardsets'),
+    path('flashcardset/correct_answer/<int:pk>/', views.self_correct_answer, name='self_correct_answer'),
 
 ]

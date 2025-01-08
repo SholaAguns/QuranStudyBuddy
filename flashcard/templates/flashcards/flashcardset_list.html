@@ -7,6 +7,9 @@
     .flashcardset-checkbox{
 float: right;
 }
+.flashcardset-tabs{
+  margin-bottom: 2em;
+}
 </style>
 <div class="container budget_heading" >
         <h2>My Flashcards</h2>
@@ -15,30 +18,70 @@ float: right;
         <div id="phrase_controls" class="container" align="center">
         <br><br>
         <a href="{% url 'flashcards:add_flashcardset' %}" role="button" class="btn btn-outline-secondary w-80">Create Flashcards Set</a>
+        <button type="submit" class="btn btn-danger" id="delete-button" disabled>Delete Selected</button>
         </div><br><br>
     {% endif %}
-
+<div class="flashcardset-tabs">
+  <ul class="nav nav-tabs justify-content-center">
+  <li class="nav-item">
+    <a class="nav-link active sets_div_tab"  id="incompleted_sets_div_tab"  href="#" onclick="swapTabs('incompleted_sets_div')">New</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link sets_div_tab" id="completed_sets_div_tab" href="#" onclick="swapTabs('completed_sets_div')">Completed</a>
+  </li>
+</ul>
+</div>
 <div class="container" align="center">
   <form id="delete_flashcardsets_form" method="POST" action="{% url 'flashcards:delete_flashcardsets' %}">
       {% csrf_token %}
-      <div id="flashcardset-list">
+      <div class="flashcardset-list" id="incompleted_sets_div">
           {% for flashcardset in flashcardset_list %}
-          <div class="flashcardset-item">
-
-              <h4>
-                <a href="{% url 'flashcards:flashcardset_detail' pk=flashcardset.id %}">{{ flashcardset.title|truncatechars:28  }}</a>
-                <input  type="checkbox" name="selected_flashcardsets" value="{{ flashcardset.id }}" class="flashcardset-checkbox">
-              </h4>
-              <hr>
-          </div>
+            {% if flashcardset.score is None %}
+              <div class="flashcardset-item">
+                  <h4>
+                    <a href="{% url 'flashcards:flashcardset_detail' pk=flashcardset.id %}">{{ flashcardset.title|truncatechars:28  }}</a>
+                    <input  type="checkbox" name="selected_flashcardsets" value="{{ flashcardset.id }}" class="flashcardset-checkbox">
+                  </h4>
+                  <hr>
+              </div>
+            {% endif %}
+          {% endfor %}
+      </div>
+      <div class="flashcardset-list" id="completed_sets_div" style="display: none;">
+          {% for flashcardset in flashcardset_list %}
+            {% if flashcardset.score is not None %}
+              <div class="flashcardset-item" >
+                  <h4>
+                    <a href="{% url 'flashcards:flashcardset_detail' pk=flashcardset.id %}">{{ flashcardset.title|truncatechars:28  }}</a>
+                    <input  type="checkbox" name="selected_flashcardsets" value="{{ flashcardset.id }}" class="flashcardset-checkbox">
+                  </h4>
+                  <hr>
+              </div>
+            {% endif %}
           {% endfor %}
       </div>
 
-      <!-- Delete Button (Initially disabled) -->
-      <button type="submit" class="btn btn-danger" id="delete-button" disabled>Delete Selected</button>
   </form>
-
 </div>
+<script>
+  function swapTabs(current_div_id) {
+         var current_sets_div = document.getElementById(current_div_id);
+         var current_tab_id = current_div_id + '_tab';
+         var current_tab = document.getElementById(current_tab_id);
+
+         document.querySelectorAll('.sets_div_tab').forEach(input => {
+           input.classList.remove("active");
+         });
+
+         document.querySelectorAll('.flashcardset-list').forEach(input => {
+           input.style.display = 'none';
+           input.classList.remove("active");
+         });
+
+         current_sets_div.style.display = 'block';
+         current_tab.classList.add("active");
+       }
+</script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const checkboxes = document.querySelectorAll('.flashcardset-checkbox');

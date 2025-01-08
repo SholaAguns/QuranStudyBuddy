@@ -23,6 +23,15 @@ font-size: 30px;
         <h2>{{ flashcardset.title }}</h2>
     </a>
     <h3>{{ flashcardset.type }}</h3>
+      <div class="container" align="center">
+              <div id="phrase_controls" class="container" align="center">
+                {% if flashcardset.score is not None %}
+                  <br><br>
+                  <a href="{% url 'flashcards:delete_flashcardset' pk=flashcardset.id %}" role="button" class="btn btn-outline-danger w-80">Delete Flashcard Set</a>
+              </div>
+              <br><br>
+          {% endif %}
+      </div>
     {% if flashcardset.type == "Verse" %}
       <div class="container" align="right">
         <form method="get">
@@ -58,36 +67,43 @@ font-size: 30px;
             Score: {{correct_answers_count}}/{{total_flashcards_count}} ({{ flashcardset.score }}%)
           </div>
         </div>
+        <div class="answers_card" id="all_answers_card">
+          {% for flashcard in flashcardset.flashcards.all %}
+          <div class="card my-3">
+            <div class="card-body">
+              <p class="{% if  flashcardset.type != "Phrase" %}verse_text{% endif %}">
+                {{ flashcard.question }}
+                {%if flashcard.selected_audio %}
+                  <i class="bi bi-volume-up" onclick="document.getElementById('audio-{{ flashcard.id }}').play()"></i>
+                  <audio id="audio-{{ flashcard.id }}" class="flashcard-audio" data-flashcard-id="{{ flashcard.id }}" style="width: 100%;">
+                      <source src="{{ flashcard.selected_audio }}" type="audio/mp3"/>
+                  </audio>
+                {% endif %}
+              </p>
 
-              <div class="answers_card" id="all_answers_card">
-                {% for flashcard in flashcardset.flashcards.all %}
-                <div class="card my-3">
-                  <div class="card-body">
-                    <p class="{% if  flashcardset.type != "Phrase" %}verse_text{% endif %}">
-                      {{ flashcard.question }}
-                      {%if flashcard.selected_audio %}
-                        <i class="bi bi-volume-up" onclick="document.getElementById('audio-{{ flashcard.id }}').play()"></i>
-                        <audio id="audio-{{ flashcard.id }}" class="flashcard-audio" data-flashcard-id="{{ flashcard.id }}" style="width: 100%;">
-                            <source src="{{ flashcard.selected_audio }}" type="audio/mp3"/>
-                        </audio>
-                      {% endif %}
-                    </p>
-
-                      {% if flashcard.correct_answer_given %}
-                          <span class="correct_answer">
-                              <p class="text-start">Your Answer: {{ flashcard.user_answer | safe }} <span class="green-tick">✔️</span></p>
-                              <p class="text-start">Acceptable Answers: {{ flashcard.answer | safe }}</p>
-                          </span>
-                      {% else %}
-                          <span class="incorrect_answer">
-                              <p class="text-start">Your Answer: {{ flashcard.user_answer | safe }} <span class="red-cross">❌</span></p>
-                              <p class="text-start">Acceptable Answers: {{ flashcard.answer | safe }}</p>
-                          </span>
-                      {% endif %}
+                {% if flashcard.correct_answer_given %}
+                    <span class="correct_answer">
+                        <p class="text-start">Your Answer: {{ flashcard.user_answer | safe }} <span class="green-tick">✔️</span></p>
+                        <p class="text-start">Acceptable Answers: {{ flashcard.answer | safe }}</p>
+                    </span>
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" role="switch" onchange="correct_answer( {{flashcard.id}} )" id="{{flashcard.id}}_switch" checked>
+                      <label class="form-check-label" for="flexSwitchCheckChecked">Correct</label>
                     </div>
-                  </div>
-                  {% endfor %}
+                {% else %}
+                    <span class="incorrect_answer">
+                        <p class="text-start">Your Answer: {{ flashcard.user_answer | safe }} <span class="red-cross">❌</span></p>
+                        <p class="text-start">Acceptable Answers: {{ flashcard.answer | safe }}</p>
+                    </span>
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" role="switch" onchange="correct_answer( {{flashcard.id}} )" id="{{flashcard.id}}_switch">
+                      <label class="form-check-label" for="flexSwitchCheckChecked">Incorrect</label>
+                    </div>
+                {% endif %}
               </div>
+            </div>
+            {% endfor %}
+        </div>
               <div class="answers_card" id="correct_answers_card" style="display: none;">
                 {% for flashcard in flashcardset.flashcards.all %}
                 {% if flashcard.correct_answer_given %}
@@ -98,6 +114,10 @@ font-size: 30px;
                                 <p class="text-start">Your Answer: {{ flashcard.user_answer | safe }} <span class="green-tick">✔️</span></p>
                                 <p class="text-start">Acceptable Answers: {{ flashcard.answer | safe }}</p>
                             </span>
+                            <div class="form-check form-switch">
+                              <input class="form-check-input" type="checkbox" role="switch" onchange="correct_answer( {{flashcard.id}} )" id="{{flashcard.id}}_switch" checked>
+                              <label class="form-check-label" for="flexSwitchCheckChecked">Correct</label>
+                            </div>
 
                       </div>
                   </div>
@@ -114,6 +134,10 @@ font-size: 30px;
                             <p class="text-start">Your Answer: {{ flashcard.user_answer | safe }} <span class="red-cross">❌</span></p>
                             <p class="text-start">Acceptable Answers: {{ flashcard.answer | safe }}</p>
                         </span>
+                        <div class="form-check form-switch">
+                          <input class="form-check-input" type="checkbox" role="switch" onchange="correct_answer( {{flashcard.id}} )" id="{{flashcard.id}}_switch">
+                          <label class="form-check-label" for="flexSwitchCheckChecked">Incorrect</label>
+                        </div>
                     </div>
                   </div>
                   {% endif %}
@@ -185,21 +209,31 @@ font-size: 30px;
     </form>
 
 </div>
-
-<div class="container" align="center">
-    {% if user.is_authenticated %}
-        <div id="phrase_controls" class="container" align="center">
-            <br><br>
-            <a href="{% url 'flashcards:delete_flashcardset' pk=flashcardset.id %}" role="button" class="btn btn-outline-danger w-80">Delete Flashcard Set</a>
-        </div>
-        <br><br>
-    {% endif %}
-</div>
+<script>
+  function correct_answer(flashcard_id) {
+      $.ajax({
+        type: 'POST',
+        url: "/flashcards/flashcardset/correct_answer/" + flashcard_id +"/",
+        data: {
+          'csrfmiddlewaretoken': "{{ csrf_token }}"
+        },
+        dataType: "json",
+        success: function(payload) {
+        //console.log("SUCCESS", data)
+        },
+        error: function(payload) {
+        console.error("ERROR: ", data)
+        },
+        complete: function(payload){
+          location.reload();
+        }
+      });
+       }
+</script>
 <script>
   function swapTabs(current_card_id) {
          var current_card = document.getElementById(current_card_id);
          var current_tab_id =current_card_id + '_tab';
-         console.log(current_tab_id);
          var current_tab = document.getElementById(current_tab_id);
 
          document.querySelectorAll('.answers_card_tab').forEach(input => {

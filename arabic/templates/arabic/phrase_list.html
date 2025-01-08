@@ -14,6 +14,7 @@
         <div id="phrase_controls" class="container" align="center">
         <br><br>
         <a href="{% url 'arabic:add_phrase' %}" role="button" class="btn btn-outline-secondary w-80">Create Phrase</a>
+        <button type="submit" class="btn btn-danger" id="delete-button" disabled>Delete Selected</button>
         </div><br><br>
     {% endif %}
 <div class="container" align="center">
@@ -30,7 +31,6 @@
           </div>
           {% endfor %}
       </div>
-      <button type="submit" class="btn btn-danger" id="delete-button" disabled>Delete Selected</button>
   </form>
 
 </div>

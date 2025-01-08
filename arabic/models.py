@@ -17,6 +17,6 @@ class Phrase(models.Model):
         return reverse('arabic:phrase_detail', kwargs={'pk': self.id})
 
     class Meta:
-        ordering = ['-created_dt']
+        ordering = ['text']
         unique_together = ['user', 'text']
 

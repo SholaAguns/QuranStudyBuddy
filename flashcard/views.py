@@ -5,12 +5,12 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, TemplateView
 
 from flashcard.forms import FlashcardSetForm, FlashcardSetUpdateForm
-from flashcard.models import FlashcardSet
+from flashcard.models import FlashcardSet, Flashcard
 from flashcard.services.flashcard_service_factory import FlashcardServiceFactory
 from flashcard.services.marking_service import MarkingService
 from quran.models import Chapter, Verse, AudioEdition
@@ -214,3 +214,18 @@ def delete_flashcardsets(request):
         selected_flashcardsets = request.POST.getlist('selected_flashcardsets')
         FlashcardSet.objects.filter(id__in=selected_flashcardsets).delete()
     return redirect('flashcards:flashcardset_list')
+
+
+@login_required()
+def self_correct_answer(request, pk):
+    is_ajax_request = request.headers.get("x-requested-with") == "XMLHttpRequest"
+
+    if request.method == 'POST' and is_ajax_request:
+        flashcard = get_object_or_404(Flashcard, id=pk)
+        flashcard.correct_answer_given = not flashcard.correct_answer_given
+        flashcard.save()
+        marking_service = MarkingService()
+        marking_service.save_score(flashcard.flashcardset)
+
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False, 'message': 'Invalid request'})

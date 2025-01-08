@@ -40,6 +40,9 @@ class MarkingService:
             flashcard.correct_answer_given = self.any_loose_match(user_answers, acceptable_answers)
             flashcard.save()
 
+        self.save_score(flashcardset)
+
+    def save_score(self, flashcardset):
         correct_answers = flashcardset.flashcards.filter(correct_answer_given=True).count()
         total_flashcards = flashcardset.flashcards.count()
         flashcardset.score = round((correct_answers / total_flashcards) * 100, 2)
