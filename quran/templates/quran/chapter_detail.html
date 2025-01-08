@@ -14,9 +14,49 @@
     text-decoration: none;
     color: black;
 }
+.audio_controls{
+    font-size: 20px;
+}
+#play-button {
+    cursor: pointer;
+}
 </style>
 <div class="container chapter_heading">
-    <h2 id="chapter-name">{{ chapter.name_simple }}</h2>
+    <h2 id="chapter-name">
+      {{ chapter.name_simple }} ({{ translated_name.name }})
+    </h2>
+    <div class="audio_controls">
+        <button id="play-button"><i class="bi bi-play"></i></button>
+        <button id="pause-button"  style="display:none;"><i class="bi bi-pause"></i></button>
+        <button id="reset-button" style="display:none;"><i class="bi bi-stop"></i></button>
+    </div>
+
+
+    <div class="container" align="right">
+      <form method="get">
+          <label for="translation">Select Audio Edition:</label>
+          <select name="audio_edition" id="audio_edition" onchange="this.form.submit()">
+              {% for edition in available_audio_editions %}
+                  <option value="{{ edition.identifier }}"
+                          {% if selected_audio_identifier == edition.identifier %}selected{% endif %}>
+                      {{ edition.english_name }}
+                  </option>
+              {% endfor %}
+          </select>
+      </form><br><br>
+    <form method="get">
+        <label for="translation">Select Translation:</label>
+        <select name="translation" id="translation" onchange="this.form.submit()">
+            {% for translation in available_translations %}
+                <option value="{{ translation.resource_id }}"
+                        {% if selected_resource_id == translation.resource_id %}selected{% endif %}>
+                    Translation (Resource {{ translation.resource_id }})
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+</div>
+
 </div>
 
 <div class="container" align="center">
@@ -25,6 +65,7 @@
             <a href="{% url 'quran:verse_detail' pk=verse.id %}" class="verse_link">
                 <div class="card-body">
                     <p class="text-start">{{ verse.verse_key }}</p>
+                    {% if verse %}
                     <p class="text-end verse_text" style="direction: rtl;">{{ verse.text_uthmani }}</p>
                     <p class="text-start">
                         {% if verse.selected_translation %}
@@ -33,10 +74,96 @@
                             <em>Translation not available</em>
                         {% endif %}
                     </p>
+                      {% if verse.selected_audio %}
+                      <audio controls id="audio-{{ verse.id }}" class="verse-audio" data-verse-id="{{ verse.id }}" style="width: 100%;">
+                          <source src="{{ verse.selected_audio.audio_path }}" type="audio/mp3"/>
+                      </audio>
+                      <span>
+                      {% endif %}
+                    {% endif %}
                 </div>
             </a>
         </div>
     {% endfor %}
 </div>
+{% block extra_js %}
+<script>
+    let currentVerseIndex = 0;
+    let verses = document.querySelectorAll('.card');
+    let audioElements = document.querySelectorAll('.verse-audio');
+    let playButton = document.getElementById('play-button');
+    let pauseButton = document.getElementById('pause-button');
+    let resetButton = document.getElementById('reset-button');
+    let isPlaying = false;
+    let currentAudio = null;
+
+    // Play the audio and scroll to the verse
+    function playNextVerse() {
+        if (currentVerseIndex < verses.length) {
+            let currentVerse = verses[currentVerseIndex];
+            let currentAudioElement = audioElements[currentVerseIndex];
+
+            // Scroll to the verse
+            currentVerse.scrollIntoView({behavior: 'smooth', block: 'center'});
+
+            // Play the audio
+            currentAudioElement.play();
+
+            // Update button states
+            currentAudio = currentAudioElement;
+            isPlaying = true;
+            playButton.style.display = 'none';
+            pauseButton.style.display = 'inline-block';
+            resetButton.style.display = 'inline-block';
+
+            // Listen for when the audio ends
+            currentAudioElement.onended = function() {
+                currentVerseIndex++;
+                if (currentVerseIndex < verses.length) {
+                    playNextVerse(); // Move to next verse
+                } else {
+                    isPlaying = false;
+                    playButton.style.display = 'inline-block';
+                    pauseButton.style.display = 'none';
+                    resetButton.style.display = 'none';
+                }
+            };
+        }
+    }
+
+    // Pause the current audio
+    function pauseAudio() {
+        if (currentAudio) {
+            currentAudio.pause();
+            isPlaying = false;
+            playButton.style.display = 'inline-block';
+            pauseButton.style.display = 'none';
+        }
+    }
+
+    // Stop and reset the audio
+    function resetAudio() {
+        if (currentAudio) {
+            currentAudio.pause();
+            currentAudio.currentTime = 0;
+            isPlaying = false;
+            playButton.style.display = 'inline-block';
+            pauseButton.style.display = 'none';
+            resetButton.style.display = 'none';
+        }
+        currentVerseIndex = 0;
+    }
+
+    // Event listeners for buttons
+    playButton.addEventListener('click', function() {
+        if (!isPlaying) {
+            playNextVerse();
+        }
+    });
+
+    pauseButton.addEventListener('click', pauseAudio);
+    resetButton.addEventListener('click', resetAudio);
+</script>
+{% endblock %}
 
 {% endblock %}

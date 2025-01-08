@@ -40,6 +40,7 @@ class Verse(models.Model):
     image_url = models.TextField(max_length=500)
     chapter = models.ForeignKey(Chapter, related_name='verses', on_delete=models.CASCADE)
     selected_translation = models.TextField(blank=True, null=True)
+    selected_audio = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.verse_key
@@ -86,5 +87,20 @@ class WordTransliteration(models.Model):
     language_name = models.CharField(max_length=100)
     text = models.TextField()
     word = models.OneToOneField(Word, related_name="transliteration", on_delete=models.CASCADE)
+
+class AudioEdition(models.Model):
+    identifier = models.TextField()
+    language = models.TextField()
+    name = models.TextField()
+    english_name = models.TextField()
+    format = models.TextField()
+    type = models.TextField()
+    direction = models.TextField(null=True)
+
+class HostedVerseAudio(models.Model):
+    edition = models.ForeignKey(AudioEdition, on_delete=models.DO_NOTHING)
+    audio_path = models.TextField()
+    audio_secondary_path = models.TextField(null=True, blank=True)
+    verse = models.ForeignKey(Verse, related_name="audio", on_delete=models.DO_NOTHING)
 
 

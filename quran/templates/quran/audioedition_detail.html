@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+<style>
+    .verse_text{
+    font-family: "Noto Naskh Arabic", serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+  font-size: 30px;
+    }
+.verse_link{
+    text-decoration: none;
+    color: black;
+}
+</style>
+<div class="container chapter_heading">
+    <h2 id="chapter-name">{{ chapter.name_simple }} ({{ translated_name.name }})</h2>
+</div>
+
+<div class="container" align="center">
+    {% for verse in verses %}
+        <div class="card my-3">
+            <a href="{% url 'quran:verse_detail' pk=verse.id %}" class="verse_link">
+                <div class="card-body">
+                    <p class="text-start">{{ verse.verse_key }}</p>
+                    <p class="text-end verse_text" style="direction: rtl;">{{ verse.text_uthmani }}</p>
+                    <p class="text-start">
+                        {% if verse.selected_translation %}
+                            {{ verse.selected_translation | safe }}
+                        {% else %}
+                            <em>Translation not available</em>
+                        {% endif %}
+                    </p>
+                </div>
+            </a>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

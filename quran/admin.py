@@ -8,4 +8,5 @@ admin.site.register(models.Verse)
 admin.site.register(models.WordTranslation)
 admin.site.register(models.Word)
 admin.site.register(models.WordTransliteration)
-
+admin.site.register(models.AudioEdition)
+admin.site.register(models.HostedVerseAudio)

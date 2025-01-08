@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% load static %}
+{% block content %}
+<div class="container budget_heading" >
+        <h2>Chapters</h2>
+</div>
+<div class="container" align="center">
+
+    <table class="table table-striped">
+      <thead class="table-dark">
+        <tr>
+            <th class="text-center">Identifier</th>
+            <th class="text-center">Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for edition in object_list %}
+              <tr>
+                <td>{{ edition.identifier }}</td>
+                <td>{{ edition.englishName }}</td>
+              </tr>
+	    {% endfor %}
+    </tbody>
+    </table>
+</div>
+{% endblock %}

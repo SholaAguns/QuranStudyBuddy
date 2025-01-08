@@ -12,7 +12,7 @@
     }
 
 </style>
-<div class="jumbotron chapter_heading">
+<div class="jumbotron chapter_heading container">
     <a href="{% url 'quran:chapter_detail' pk=verse.chapter.id %}"><h2 id="chapter-name">{{ verse.verse_key }} {{ verse.chapter.name_simple }}</h2></a>
     <div class="card my-3">
             <div class="card-body">
@@ -29,8 +29,10 @@
         </div>
 </div>
 <hr>
-<h3>Words</h3>
-<div class="container" align="center">
+
+<div class="container">
+  <h3>Words</h3>
+  <div  align="center">
     {% for word in words %}
         <div class="card my-3">
             <div class="card-body">
@@ -41,6 +43,7 @@
             </div>
         </div>
     {% endfor %}
+  </div>
 </div>
 
 {% endblock %}

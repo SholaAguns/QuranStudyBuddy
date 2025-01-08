@@ -83,6 +83,9 @@
               <li class="nav-item">
               <a class="nav-link" href="{% url 'quran:admin' %}">Admin</a>
               </li>
+              <li class="nav-item">
+              <a class="nav-link" href="{% url 'quran:audio_edition_list' %}">Audio Editions</a>
+              </li>
             {% endif %}
             <li class="nav-item">
               <form action="{% url 'accounts:logout' %}" method="post">

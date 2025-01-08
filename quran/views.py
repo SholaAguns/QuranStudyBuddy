@@ -4,7 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.views.generic import DetailView, ListView, TemplateView
 
-from quran.models import Chapter, Verse, VerseTranslation, Word
+from quran.models import Chapter, Verse, VerseTranslation, Word, TranslatedName, AudioEdition, HostedVerseAudio
+from quran.services.audioservice import AudioService
 from quran.services.chapterservice import ChapterService
 from quran.services.verseservice import VerseService
 
@@ -20,15 +21,28 @@ class ChapterDetail(DetailView):
         verses = chapter.verses.prefetch_related("translations").all()
 
         requested_resource_id = self.request.GET.get("translation", 131)
+        requested_audio_identifier = self.request.GET.get("audio_edition", "ar.abdulbasitmurattal")
+
 
         for verse in verses:
-            verse.selected_translation = (
-                verse.translations.filter(resource_id=requested_resource_id).first().text
-            )
+            try:
+                verse.selected_translation = (
+                    verse.translations.filter(resource_id=requested_resource_id).first().text
+                )
+            except:
+                print(f"No verse translation {requested_resource_id} found for {verse.verse_key}")
+            try:
+                verse_audio = HostedVerseAudio.objects.get(edition__identifier=requested_audio_identifier, verse=verse)
+                verse.selected_audio = verse_audio
+            except:
+                print(f"No audio edition {requested_audio_identifier} found for {verse.verse_key}")
 
+        context["available_audio_editions"] = AudioEdition.objects.all()
         available_translations = VerseTranslation.objects.values("resource_id").distinct()
+        context["translated_name"] = TranslatedName.objects.get(chapter=chapter)
         context["available_translations"] = available_translations
         context["selected_resource_id"] = requested_resource_id
+        context["selected_audio_identifier"] = requested_audio_identifier
         context["verses"] = verses
         return context
 
@@ -45,17 +59,35 @@ class VerseDetail(DetailView):
         context["words"] = Word.objects.filter(verse=verse)
         return context
 
+class AudioEditionDetail(DetailView):
+    model = AudioEdition
+
 class ChapterList(ListView):
     model = Chapter
 
-#@login_required()
+class AudioEditionList(ListView):
+    model = AudioEdition
+
+@login_required()
 def populate_chapters(request):
     service = ChapterService()
     service.populate_chapters()
     return redirect('quran:chapter_list')
 
-#@login_required()
+@login_required()
 def populate_verses(request):
     service = VerseService()
     service.populate_verses()
+    return redirect('quran:chapter_list')
+
+@login_required()
+def populate_audio_editions(request):
+    service = AudioService()
+    service.fetch_all_editions()
+    return redirect('quran:audio_edition_list')
+
+@login_required()
+def populate_hosted_audio(request):
+    service = AudioService()
+    service.populate_hosted_audio_objects()
     return redirect('quran:chapter_list')
