@@ -2,7 +2,7 @@ from django.utils.timezone import now
 import random
 from flashcard.models import Flashcard
 from flashcard.services.iflashcardservice import IFlashcardService
-from quran.models import Chapter, Verse
+from quran.models import Chapter, Verse, HostedVerseAudio
 
 
 def populate_flashcards(amount, ids, flashcardset):
@@ -15,8 +15,17 @@ def populate_flashcards(amount, ids, flashcardset):
         flashcard.flashcardset = flashcardset
         flashcard.question = verse.text_uthmani
         flashcard.answer = verse.chapter.name_simple
-        #flashcard.image.url = verse.image_url
+        populate_audio_filepaths(verse, flashcard)
         flashcard.save()
+
+def populate_audio_filepaths(verse, flashcard):
+    hosted_audio_objects = HostedVerseAudio.objects.filter(verse=verse)
+
+    if flashcard.audio_filepaths is None:
+        flashcard.audio_filepaths = {}
+
+    for hao in hosted_audio_objects:
+        flashcard.audio_filepaths[hao.edition.identifier] = hao.audio_path
 
 class VerseFlashcardService(IFlashcardService):
     service_type = "Verse"

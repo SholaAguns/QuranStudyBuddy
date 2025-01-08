@@ -10,13 +10,62 @@
   font-style: normal;
   font-size: 30px;
     }
+  .bi-volume-up{
+    font-size: 18px;
+  }
+  .position_arrows{
+    font-size: 30px;
+  }
 
 </style>
 <div class="jumbotron chapter_heading container">
     <a href="{% url 'quran:chapter_detail' pk=verse.chapter.id %}"><h2 id="chapter-name">{{ verse.verse_key }} {{ verse.chapter.name_simple }}</h2></a>
+    <div class="container" align="right">
+      <form method="get">
+          <label for="translation">Select Audio Edition:</label>
+          <select name="audio_edition" id="audio_edition" onchange="this.form.submit()">
+              {% for edition in available_audio_editions %}
+                  <option value="{{ edition.identifier }}"
+                          {% if selected_audio_identifier == edition.identifier %}selected{% endif %}>
+                      {{ edition.english_name }}
+                  </option>
+              {% endfor %}
+          </select>
+      </form><br><br>
+    <form method="get">
+        <label for="translation">Select Translation:</label>
+        <select name="translation" id="translation" onchange="this.form.submit()">
+            {% for translation in available_translations %}
+                <option value="{{ translation.resource_id }}"
+                        {% if selected_resource_id == translation.resource_id %}selected{% endif %}>
+                    Translation (Resource {{ translation.resource_id }})
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+</div>
+<div class="row">
+
+  <div class="col-1 d-flex justify-content-center align-items-center position_arrows" id="previous_verse_arrow">
+    {%if previous_verse_id %}
+        <a href="{% url 'quran:verse_detail' pk=previous_verse_id %}">
+            <i class="bi bi-arrow-left position-absolute left-arrow"></i>
+        </a>
+      {% endif %}
+  </div>
+
+  <div class="col-10">
     <div class="card my-3">
             <div class="card-body">
-                <p class="text-start">{{ verse.verse_key }}</p>
+                <p class="text-start">
+                  {{ verse.verse_key }}
+                  {%if verse.selected_audio %}
+                    <i class="bi bi-volume-up" onclick="document.getElementById('audio-{{ verse.id }}').play()"></i>
+                    <audio id="audio-{{ verse.id }}" class="flashcard-audio" data-flashcard-id="{{ verse.id }}" style="width: 100%;">
+                        <source src="{{ verse.selected_audio.audio_path }}" type="audio/mp3"/>
+                    </audio>
+                  {% endif %}
+                </p>
                 <p class="text-end verse_text" style="direction: rtl;">{{ verse.text_uthmani }}</p>
                 <p class="text-start">
                     {% if verse.selected_translation %}
@@ -27,6 +76,17 @@
                 </p>
             </div>
         </div>
+      </div>
+
+            <div class="col-1 d-flex justify-content-center align-items-center position_arrows" id="next_verse_arrow">
+              {%if next_verse_id %}
+                  <a href="{% url 'quran:verse_detail' pk=next_verse_id %}">
+                      <i class="bi bi-arrow-right position-absolute right-arrow"></i>
+                  </a>
+              {% endif %}
+            </div>
+
+  </div>
 </div>
 <hr>
 

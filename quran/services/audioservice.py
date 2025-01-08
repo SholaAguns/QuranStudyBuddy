@@ -27,6 +27,19 @@ class AudioService:
             for edition in AudioEdition.objects.all():
                 self.fetch_and_save_hosted_verse_audio_objects(verse.id, edition.identifier)
 
+    def populate_hosted_audio_objects_manual(self):
+        for verse in Verse.objects.all():
+            for edition in AudioEdition.objects.all():
+                try:
+                    HostedVerseAudio.objects.get(edition__identifier=edition.identifier, verse=verse)
+                except:
+                    hosted_verse_audio, created = HostedVerseAudio.objects.update_or_create(
+                        edition=edition,
+                        verse=verse,
+                        audio_path=f"https://cdn.islamic.network/quran/audio/128/{edition.identifier}/{verse.id}.mp3",
+                        audio_secondary_path=f"https://cdn.islamic.network/quran/audio/64/{edition.identifier}/{verse.id}.mp3"
+                    )
+
     def save_editions(self, editions):
         for edition_data in editions:
             edition, created = AudioEdition.objects.update_or_create(

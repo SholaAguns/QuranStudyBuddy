@@ -53,9 +53,38 @@ class VerseDetail(DetailView):
         context = super().get_context_data(**kwargs)
         verse = self.object
         requested_resource_id = self.request.GET.get("translation", 131)
-        verse.selected_translation = (
-            verse.translations.filter(resource_id=requested_resource_id).first().text
-        )
+        requested_audio_identifier = self.request.GET.get("audio_edition", "ar.abdulbasitmurattal")
+        try:
+            verse.selected_translation = (
+                verse.translations.filter(resource_id=requested_resource_id).first().text
+            )
+        except Exception as e:
+            print('An exception occurred: ', e)
+            print(f"No verse translation {requested_resource_id} found for {verse.verse_key}")
+        try:
+            verse_audio = HostedVerseAudio.objects.get(edition__identifier=requested_audio_identifier, verse=verse)
+            verse.selected_audio = verse_audio
+        except Exception as e:
+            print('An exception occurred: ', e)
+            print(f"No audio edition {requested_audio_identifier} found for {verse.verse_key}")
+
+        try:
+            Verse.objects.get(id=verse.id + 1)
+            context["next_verse_id"] = verse.id + 1
+        except  Exception as e:
+            print('An exception occurred: ', e)
+
+        try:
+            Verse.objects.get(id=verse.id - 1)
+            context["previous_verse_id"] = verse.id - 1
+        except  Exception as e:
+            print('An exception occurred: ', e)
+
+
+        context["available_audio_editions"] = AudioEdition.objects.all()
+        context["available_translations"] = VerseTranslation.objects.values("resource_id").distinct()
+        context["selected_resource_id"] = requested_resource_id
+        context["selected_audio_identifier"] = requested_audio_identifier
         context["words"] = Word.objects.filter(verse=verse)
         return context
 
@@ -89,5 +118,5 @@ def populate_audio_editions(request):
 @login_required()
 def populate_hosted_audio(request):
     service = AudioService()
-    service.populate_hosted_audio_objects()
+    service.populate_hosted_audio_objects_manual()
     return redirect('quran:chapter_list')

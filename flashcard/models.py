@@ -29,3 +29,5 @@ class Flashcard(models.Model):
     created_dt = models.DateTimeField(auto_now=True)
     user_answer = models.TextField(null=True)
     correct_answer_given = models.BooleanField(null=True)
+    selected_audio = models.TextField(blank=True, null=True)
+    audio_filepaths = models.JSONField(null=True, blank=True)

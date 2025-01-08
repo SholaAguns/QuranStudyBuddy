@@ -23,6 +23,21 @@ font-size: 30px;
         <h2>{{ flashcardset.title }}</h2>
     </a>
     <h3>{{ flashcardset.type }}</h3>
+    {% if flashcardset.type == "Verse" %}
+      <div class="container" align="right">
+        <form method="get">
+            <label for="translation">Select Audio Edition:</label>
+            <select name="audio_edition" id="audio_edition" onchange="this.form.submit()">
+                {% for edition in available_audio_editions %}
+                    <option value="{{ edition.identifier }}"
+                            {% if selected_audio_identifier == edition.identifier %}selected{% endif %}>
+                        {{ edition.english_name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </form><br><br>
+      </div>
+    {% endif %}
 </div><br><br><br>
 <div class="container flashcardset-main">
   {% if flashcardset.score is not None %}
@@ -48,7 +63,16 @@ font-size: 30px;
                 {% for flashcard in flashcardset.flashcards.all %}
                 <div class="card my-3">
                   <div class="card-body">
-                    <p class="{% if  flashcardset.type != "Phrase" %}verse_text{% endif %}">{{ flashcard.question }}</p>
+                    <p class="{% if  flashcardset.type != "Phrase" %}verse_text{% endif %}">
+                      {{ flashcard.question }}
+                      {%if flashcard.selected_audio %}
+                        <i class="bi bi-volume-up" onclick="document.getElementById('audio-{{ flashcard.id }}').play()"></i>
+                        <audio id="audio-{{ flashcard.id }}" class="flashcard-audio" data-flashcard-id="{{ flashcard.id }}" style="width: 100%;">
+                            <source src="{{ flashcard.selected_audio }}" type="audio/mp3"/>
+                        </audio>
+                      {% endif %}
+                    </p>
+
                       {% if flashcard.correct_answer_given %}
                           <span class="correct_answer">
                               <p class="text-start">Your Answer: {{ flashcard.user_answer | safe }} <span class="green-tick">✔️</span></p>
@@ -106,7 +130,15 @@ font-size: 30px;
         <div class="carousel-inner" align="center">
           {% for flashcard in flashcardset.flashcards.all %}
             <div class="carousel-item {% if forloop.first %}active{% endif %}" data-id="{{ flashcard.id }}">
-                <p class="{% if  flashcardset.type != "Phrase" %}verse_text{% endif %}">{{ flashcard.question }}</p>
+                <p class="{% if  flashcardset.type != "Phrase" %}verse_text{% endif %}">
+                  {{ flashcard.question }}
+                  {%if flashcard.selected_audio %}
+                    <i class="bi bi-volume-up" onclick="document.getElementById('audio-{{ flashcard.id }}').play()"></i>
+                    <audio id="audio-{{ flashcard.id }}" class="flashcard-audio" data-flashcard-id="{{ flashcard.id }}" style="width: 100%;">
+                        <source src="{{ flashcard.selected_audio }}" type="audio/mp3"/>
+                    </audio>
+                  {% endif %}
+                </p>
                   {% if flashcard.image %}
                       <div class="image-container">
                           <img src="{{ flashcard.image.url }}" alt="Question Image" class="flashcard-image" style="max-height: 200px; filter: blur(8px);">

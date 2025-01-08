@@ -13,7 +13,7 @@ from flashcard.forms import FlashcardSetForm, FlashcardSetUpdateForm
 from flashcard.models import FlashcardSet
 from flashcard.services.flashcard_service_factory import FlashcardServiceFactory
 from flashcard.services.marking_service import MarkingService
-from quran.models import Chapter, Verse
+from quran.models import Chapter, Verse, AudioEdition
 
 
 class CreateFlaschcardSet(LoginRequiredMixin, TemplateView):
@@ -33,10 +33,21 @@ class FlashcardSetDetail(LoginRequiredMixin, DetailView):
     template_name = 'flashcards/flashcardset_detail.html'
 
     def get_context_data(self, **kwargs):
+        requested_audio_identifier = self.request.GET.get("audio_edition", "ar.abdulbasitmurattal")
+        flashcards = self.object.flashcards.all()
+        for flashcard in flashcards:
+            try:
+                flashcard.selected_audio = flashcard.audio_filepaths[requested_audio_identifier]
+                flashcard.save()
+            except:
+                print(f"No audio edition {requested_audio_identifier} found for flashcard {flashcard.id}")
+
         context = super().get_context_data(**kwargs)
         context['chapters']  = Chapter.objects.all()
         context['correct_answers_count'] = self.object.flashcards.filter(correct_answer_given=True).count()
         context['total_flashcards_count'] = self.object.flashcards.count()
+        context["available_audio_editions"] = AudioEdition.objects.all()
+        context["selected_audio_identifier"] = requested_audio_identifier
         return context
 
 class FlashcardSetUpdate(LoginRequiredMixin, UpdateView):
