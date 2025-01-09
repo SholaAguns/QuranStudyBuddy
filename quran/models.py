@@ -103,4 +103,14 @@ class HostedVerseAudio(models.Model):
     audio_secondary_path = models.TextField(null=True, blank=True)
     verse = models.ForeignKey(Verse, related_name="audio", on_delete=models.DO_NOTHING)
 
+class VerseSelection(models.Model):
+    start_verse_id = models.IntegerField()
+    end_verse_id = models.IntegerField()
+    title = models.CharField(max_length=80)
+    user = models.ForeignKey(User, related_name='verse_selection', on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ['start_verse_id']

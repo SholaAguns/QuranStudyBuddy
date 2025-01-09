@@ -15,4 +15,11 @@ urlpatterns = [
     path('audio_editions/', views.AudioEditionList.as_view(), name='audio_edition_list'),
     path('audio_edition/<int:pk>/', views.AudioEditionDetail.as_view(), name='audio_edition_detail'),
     path('admin/', views.QuranAdmin.as_view(), name='admin'),
+    path('chapter/<int:pk>/wordlist', views.ChapterWordList.as_view(), name='chapter_word_list'),
+    path('verse_selection/<int:pk>', views.VerseSelectionDetail.as_view(), name='verse_selection_detail'),
+    path('create_verse_selection', views.create_verse_selection, name='create_verse_selection'),
+    path('verse_selections', views.VerseSelectionList.as_view(), name='verse_selection_list'),
+    path('verse_selections/delete', views.delete_verse_selections, name='delete_verse_selections'),
+    path('verse_selection/form', views.CreateVerseSelection.as_view(), name='verse_selection_form'),
+    path('verse_selection/<int:pk>/word_list', views.VerseSelectionWordList.as_view(), name='verse_selection_word_list')
 ]

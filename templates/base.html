@@ -57,6 +57,7 @@
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="{% url 'arabic:phrase_list' %}">My Phrases</a></li>
                 <li><a class="dropdown-item" href="{% url 'flashcards:flashcardset_list' %}">My Flashcards</a></li>
+                <li><a class="dropdown-item" href="{% url 'quran:verse_selection_list' %}">My Verse Selections</a></li>
               </ul>
             </li>
             <li class="nav-item dropdown">
@@ -66,6 +67,7 @@
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="{% url 'arabic:add_phrase' %}">Create Phrase</a></li>
                 <li><a class="dropdown-item" href="{% url 'flashcards:add_flashcardset' %}">Create Flashcard set</a></li>
+                <li><a href="{% url 'quran:verse_selection_form' %}" class="dropdown-item" >Create Verse Selection</a></li>
               </ul>
             </li>
             <li class="nav-item dropdown">

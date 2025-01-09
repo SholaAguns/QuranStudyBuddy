@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+<style>
+    .selection-checkbox{
+    float: right;
+    }
+</style>
+<div class="container budget_heading" >
+        <h2>My Verse Selections</h2>
+</div>
+    {% if user.is_authenticated %}
+        <div id="phrase_controls" class="container" align="center">
+        <br><br>
+        <a href="{% url 'quran:verse_selection_form' %}" role="button" class="btn btn-outline-secondary w-80">Create Verse Selection</a>
+        <button type="submit" class="btn btn-danger" id="delete-button" disabled>Delete Selected</button>
+        </div><br><br>
+    {% endif %}
+<div class="container" align="center">
+  <form id="delete_verse_selections_form" method="POST" action="{% url 'quran:delete_verse_selections' %}">
+      {% csrf_token %}
+      <div id="selection-list">
+          {% for selection in object_list %}
+          <div class="verse_selection_item">
+              <h4>
+                <a href="{% url 'quran:verse_selection_detail' pk=selection.id %}">{{ selection.title }}</a>
+                <input  type="checkbox" name="selected_verse_selections" value="{{ selection.id }}" class="selection-checkbox">
+              </h4>
+              <hr>
+          </div>
+          {% endfor %}
+      </div>
+  </form>
+
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const checkboxes = document.querySelectorAll('.selection-checkbox');
+        const deleteButton = document.getElementById('delete-button');
+        const form = document.getElementById('delete_verse_selections_form');
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
+                deleteButton.disabled = !anyChecked;
+            });
+        });
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const confirmDeletion = confirm("Are you sure you want to delete the selected verse selections? This action cannot be undone.");
+            if (confirmDeletion) {
+                form.submit();
+            }
+        });
+    });
+</script>
+{% endblock %}

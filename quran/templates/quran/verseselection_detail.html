@@ -21,9 +21,9 @@
     cursor: pointer;
 }
 </style>
-<div class="container chapter_heading">
-    <h2 id="chapter-name">
-      {{ chapter.name_simple }} ({{ translated_name.name }})
+<div class="container verseselection_heading">
+    <h2 id="verseselection-name">
+      {{ verseselection.title }}
     </h2>
     <div class="audio_controls">
         <button id="play-button"><i class="bi bi-play"></i></button>
@@ -34,7 +34,7 @@
 
     <div class="container" align="right">
       <h3>
-        <a href="{% url 'quran:chapter_word_list' pk=chapter.id %}">All words</a>
+        <a href="{% url 'quran:verse_selection_word_list' pk=verseselection.id %}">All words</a>
       </h3>
       <br><br>
       <form method="get">

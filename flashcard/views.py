@@ -177,7 +177,6 @@ def submit_flashcardset_form(request):
 
         try:
             new_flashcardset = dispatch_table[request_type]()
-            print("Back from service")
             #return HttpResponseRedirect(reverse('flashcards:flashcardset_detail', kwargs={'pk': new_flashcardset.id}))
             redirect_url = reverse('flashcards:flashcardset_detail', kwargs={'pk': new_flashcardset.id})
             return JsonResponse({'redirect_url': redirect_url})
