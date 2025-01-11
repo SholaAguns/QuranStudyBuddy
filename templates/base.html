@@ -83,10 +83,13 @@
             </li>
             {% if user.username == 'admin' %}
               <li class="nav-item">
-              <a class="nav-link" href="{% url 'quran:admin' %}">Admin</a>
+              <a class="nav-link" href="{% url 'quran:admin' %}">Quran Admin</a>
               </li>
               <li class="nav-item">
               <a class="nav-link" href="{% url 'quran:audio_edition_list' %}">Audio Editions</a>
+              </li>
+              <li class="nav-item">
+              <a class="nav-link" href="{% url 'test' %}">Testpage</a>
               </li>
             {% endif %}
             <li class="nav-item">

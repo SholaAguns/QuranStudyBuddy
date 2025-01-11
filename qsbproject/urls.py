@@ -23,6 +23,7 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.HomePage.as_view(), name='home'),
+    path('test/', views.AudioFileCreateView.as_view(), name='test'),
     path('accounts/', include('accounts.urls', namespace='accounts')),
     path('quran/', include('quran.urls', namespace='quran')),
     path('arabic/', include('arabic.urls', namespace='arabic')),

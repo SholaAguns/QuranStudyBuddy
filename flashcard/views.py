@@ -207,6 +207,10 @@ def submit_flashcardset_answers(request, pk):
 
     return JsonResponse({'error': 'Invalid request method'}, status=400)
 
+class FlashcardDetail(DetailView):
+    model = Flashcard
+    template_name = 'flashcards/flashcard_detail.html'
+
 @login_required
 def delete_flashcardsets(request):
     if request.method == 'POST':

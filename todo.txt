@@ -2,6 +2,8 @@
 - User stats
 - Check audio validity
 - By tags
+- By VerseSelection
+- Correct Audio
 - Category dropdown or input
 - Plural, masc, fem, present, verb, noun
 - Search and filtering
@@ -16,4 +18,5 @@
 - Fix static
 - Add optional placeholders to forms
 - Logging
+- Videojs or other
 
