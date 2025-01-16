@@ -18,6 +18,11 @@ font-size: 30px;
     width: 250px;
     }
 </style>
+{% if not flashcardset.flashcards.all %}
+<div class="jumbotron" align=center>
+  <h2>No {{flashcardset.type}}s returned</h2>
+</div>
+{% else %}
 <div class="container budget_heading">
     <a href="{% url 'flashcards:update_flashcardset' pk=flashcardset.id %}">
         <h2>{{ flashcardset.title }}</h2>
@@ -209,6 +214,7 @@ font-size: 30px;
     </form>
 
 </div>
+{% endif %}
 <script>
   function correct_answer(flashcard_id) {
       $.ajax({

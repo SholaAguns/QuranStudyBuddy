@@ -28,7 +28,17 @@ def populate_audio_filepaths(verse, flashcard):
         flashcard.audio_filepaths[hao.edition.identifier] = hao.audio_path
 
 class VerseFlashcardService(IFlashcardService):
+
     service_type = "Verse"
+
+    def get_flashcards_by_category(self, flashcardset, amount, category):
+        pass
+
+    def get_category_options(self, user):
+        pass
+
+    def get_flashcards_by_tags(self, flashcardset, amount, tags):
+        pass
 
     def get_request_types(self):
         request_types = [
@@ -150,11 +160,3 @@ class VerseFlashcardService(IFlashcardService):
         flashcardset.save()
 
         return flashcardset
-
-    def get_flashcards_by_category(self, flashcardset, amount, category):
-        pass
-
-
-
-    def get_category_options(self, user):
-        pass

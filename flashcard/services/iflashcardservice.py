@@ -46,3 +46,7 @@ class IFlashcardService(ABC):
     @abstractmethod
     def get_flashcards_by_verses_range(self, flashcardset, amount, start, end):
         pass
+
+    @abstractmethod
+    def get_flashcards_by_tags(self, flashcardset, amount, tags):
+        pass

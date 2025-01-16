@@ -144,6 +144,7 @@ def submit_flashcardset_form(request):
         range_end = request.POST.get('range_end', '')
         verse_range_start = request.POST.get('verse_range_start', '')
         verse_range_end = request.POST.get('verse_range_end', '')
+        tags = request.POST.get('tags','')
 
         if request_type == 'byRange':
             range_start = int(range_start) if range_start.isdigit() else None
@@ -169,6 +170,7 @@ def submit_flashcardset_form(request):
             'byRange': lambda: service.get_flashcards_by_range(new_flashcardset, amount, range_start, range_end),
             'byVerseRange': lambda: service.get_flashcards_by_verses_range(new_flashcardset, amount, verse_range_start, verse_range_end),
             'byJuz': lambda: service.get_flashcards_by_juz(new_flashcardset, amount, juz_list),
+            'byTags': lambda: service.get_flashcards_by_tags(new_flashcardset, amount, tags),
             'default': lambda: service.get_flashcards(new_flashcardset, amount),
         }
 

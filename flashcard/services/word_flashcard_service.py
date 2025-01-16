@@ -31,6 +31,15 @@ class WordFlashcardService(IFlashcardService):
 
     number_exclusion_filter = ~Q(text_uthmani__regex=r'^\d+$') & ~Q(translation__text__regex=r'^\(\d+\)$')
 
+    def get_category_options(self, user):
+        pass
+
+    def get_range_options(self, user):
+        return self.get_id_options(user)
+
+    def get_flashcards_by_tags(self, flashcardset, amount, tags):
+        pass
+
     def get_request_types(self):
         request_types = [
             {
@@ -76,11 +85,6 @@ class WordFlashcardService(IFlashcardService):
     def get_juz_options(self, user):
         return [{'label': f'Juz {i}', 'value': i} for i in range(1, 31)]
 
-    def get_category_options(self, user):
-        pass
-
-    def get_range_options(self, user):
-        return self.get_id_options(user)
 
     def get_flashcards(self, flashcardset, amount):
         all_words = (Word.objects.filter(self.number_exclusion_filter)

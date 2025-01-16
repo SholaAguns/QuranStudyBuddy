@@ -102,6 +102,10 @@
                     <option value="">Select a category</option>
                 </select>
             </div>
+            <div class="mb-3" id="tagsContainer" style="display: none;">
+              <label for="tags" class="form-label">Tags:</label>
+              <input class="form-control-sm" type="text" name="tags" placeholder="Tags">
+            </div>
             <button class="btn btn-primary" type="submit">Submit</button>
         </form>
 
@@ -128,7 +132,21 @@
          const addButton = $('#addIdField');
 
          if (serviceType) {
-           addButton.text(`Add ${serviceType}`);
+           let label = "";
+           switch(serviceType){
+             case "Verse":
+                label = "Add Chapter";
+                break;
+            case "Phrase":
+                label = "Add Phrase";
+                break;
+            case "Word":
+                label = "Add Chapter";
+                break;
+            default:
+                label ="Add"
+           }
+           addButton.text(`${label}`);
          } else {
              addButton.text('Add');
          }
@@ -153,6 +171,7 @@
         $('#rangeContainer').toggle(requestType === 'byRange');
         $('#categoryContainer').toggle(requestType === 'byCategory');
         $('#verseRangeContainer').toggle(requestType === 'byVerseRange');
+        $('#tagsContainer').toggle(requestType === 'byTags');
 
         // Load options for category if "byCategory" is selected
         if (requestType === 'byCategory') {

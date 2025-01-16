@@ -1,6 +1,5 @@
 import random
 
-from django.http import JsonResponse
 from django.utils.timezone import now
 
 from arabic.models import Phrase
@@ -73,6 +72,11 @@ class PhraseFlashcardService(IFlashcardService):
                 'label': 'Select by category',
                 'value': 'byCategory'
 
+            },
+            {
+                'label': 'Select by tags',
+                'value': 'byTags'
+
             }
         ]
         return request_types
@@ -124,6 +128,25 @@ class PhraseFlashcardService(IFlashcardService):
         flashcardset.amount = amount
         flashcardset.created_dt = date_now
         flashcardset.title = f'{flashcardset.type}_by_category_{date_now}'
+        flashcardset.save()
+        populate_flashcards(amount, phrase_ids, flashcardset)
+        flashcardset.save()
+
+        return flashcardset
+
+    def get_flashcards_by_tags(self, flashcardset, amount, tags):
+        tag_list = tags.split(",")
+        phrase_ids = []
+        for tag in tag_list:
+            phrase_ids += list(
+                Phrase.objects.filter(tags__contains=tag, user=flashcardset.user).values_list('id', flat=True)
+            )
+
+        date_now = now()
+        flashcardset.type = self.service_type
+        flashcardset.amount = amount
+        flashcardset.created_dt = date_now
+        flashcardset.title = f'{flashcardset.type}_by_tag_{date_now}'
         flashcardset.save()
         populate_flashcards(amount, phrase_ids, flashcardset)
         flashcardset.save()
