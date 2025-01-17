@@ -1,6 +1,9 @@
+- Fix delete selected
 - Save Form options
 - Search and filtering
 - Pagination
+- Verse selection flashcards
+- Flashcard folders
 - Better randomization
 - Arabic keyboard
 - User stats
@@ -10,7 +13,8 @@
 - Custom Flashcards
 - Fix word transliteration
 - Smarter answer comparison
-- Fix static
+- Move all scripts to static
+- Move all css to static
 - Add optional placeholders to forms
 - Logging
 - Remove comments
