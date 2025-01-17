@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<div align="center" style="padding-top: 100px;">
+	<div class="container budget_heading" style="padding-bottom: 50px;">
+        <h2 >Flashcard detail</h2>
+	</div>
+
+  <audio controls>
+    <source src="{{ object.audio_answer.url }}" type="audio/wav">
+    Your browser does not support the audio element.
+</audio>
+</div>
+{% endblock %}

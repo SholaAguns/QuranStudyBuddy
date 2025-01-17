@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+{% block content %}
+
+    <h2>Record Audio</h2>
+    <audio id="playback" controls style="display: none;"></audio>
+    <button id="record">Record</button>
+    <button id="stop" disabled>Stop</button>
+    <form id="upload-audio-form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <input type="hidden" id="audio_data" name="audio_data">
+        <button type="submit" id="upload" disabled>Submit</button>
+    </form>
+
+    <script>
+        let recordButton = document.getElementById('record');
+        let stopButton = document.getElementById('stop');
+        let uploadButton = document.getElementById('upload');
+        let audioDataInput = document.getElementById('audio_data');
+        let playback = document.getElementById('playback');
+        let chunks = [];
+        let mediaRecorder;
+
+        recordButton.addEventListener('click', async () => {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.start();
+
+            mediaRecorder.ondataavailable = (e) => {
+                chunks.push(e.data);
+            };
+
+            mediaRecorder.onstop = () => {
+                const blob = new Blob(chunks, { type: 'audio/wav' });
+                chunks = [];
+
+                // Set audio playback source
+                const audioURL = URL.createObjectURL(blob);
+                playback.src = audioURL;
+                playback.style.display = 'block';
+
+                // Convert blob to Base64
+                const reader = new FileReader();
+                reader.readAsDataURL(blob);
+                reader.onloadend = () => {
+                    audioDataInput.value = reader.result; // Set Base64 string
+                    uploadButton.disabled = false;
+                };
+            };
+
+        recordButton.disabled = true;
+        stopButton.disabled = false;
+    });
+
+    stopButton.addEventListener('click', () => {
+        mediaRecorder.stop();
+        recordButton.disabled = false;
+        stopButton.disabled = true;
+    });
+</script>
+
+{% endblock %}
