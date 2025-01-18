@@ -1,12 +1,13 @@
 import traceback
 from symtable import Class
 
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.views.generic import DetailView, ListView, TemplateView
+from django.views.generic import DetailView, ListView, TemplateView, DeleteView
 
 from quran.models import Chapter, Verse, VerseTranslation, Word, TranslatedName, AudioEdition, HostedVerseAudio, \
     VerseSelection
@@ -164,6 +165,21 @@ class VerseSelectionDetail(LoginRequiredMixin, DetailView):
 
 class CreateVerseSelection(LoginRequiredMixin, TemplateView):
     template_name = 'quran/verseselection_form.html'
+
+class DeleteVerseSelection(LoginRequiredMixin, DeleteView):
+    model = VerseSelection
+    print("here")
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(user_id=self.request.user.id)
+
+    def get_success_url(self):
+        return reverse('quran:verse_selection_list')
+
+    def delete(self, *args, **kwargs):
+        messages.success(self.request, "Verse Selection Deleted")
+        return super().delete(*args, **kwargs)
 
 @login_required()
 def populate_chapters(request):

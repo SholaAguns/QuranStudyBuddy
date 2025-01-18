@@ -36,6 +36,7 @@
       <h3>
         <a href="{% url 'quran:verse_selection_word_list' pk=verseselection.id %}">All words</a>
       </h3>
+      <a href="{% url 'quran:delete_verse_selection' pk=verseselection.id %}" role="button" class="btn btn-outline-danger  w-80">Delete Verse Selection</a>
       <br><br>
       <form method="get">
           <label for="translation">Select Audio Edition:</label>

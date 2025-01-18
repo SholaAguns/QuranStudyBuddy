@@ -19,6 +19,7 @@ urlpatterns = [
     path('verse_selection/<int:pk>', views.VerseSelectionDetail.as_view(), name='verse_selection_detail'),
     path('create_verse_selection', views.create_verse_selection, name='create_verse_selection'),
     path('verse_selections', views.VerseSelectionList.as_view(), name='verse_selection_list'),
+    path('verse_selection/<int:pk>/delete', views.DeleteVerseSelection.as_view(), name='delete_verse_selection'),
     path('verse_selections/delete', views.delete_verse_selections, name='delete_verse_selections'),
     path('verse_selection/form', views.CreateVerseSelection.as_view(), name='verse_selection_form'),
     path('verse_selection/<int:pk>/word_list', views.VerseSelectionWordList.as_view(), name='verse_selection_word_list')
