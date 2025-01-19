@@ -70,8 +70,9 @@ class VerseSelectionFlashcardService(IFlashcardService):
 
     def get_juz_options(self, user):
         all_juz_numbers= VerseSelection.objects.filter(user=user).values_list('juz_number', flat=True).distinct()
+        unique_juz_numbers = set(all_juz_numbers)
         options = []
-        for juz in all_juz_numbers:
+        for juz in unique_juz_numbers:
             options.append({
                 'label': juz,
                 'value': juz
