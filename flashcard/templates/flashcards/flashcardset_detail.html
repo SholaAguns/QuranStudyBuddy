@@ -150,7 +150,7 @@ font-size: 30px;
               </div>
       </div>
   {% else %}
-    <form id="flashcards_questions_form">
+    <form id="flashcards_questions_form" method="post" enctype="multipart/form-data">
       {% csrf_token %}
             <span style="{% if  flashcardset.type != "Phrase" %}display: none;{% endif %}">
                 <input type="checkbox" id="show-all-images-checkbox"> Show All Images
@@ -176,12 +176,18 @@ font-size: 30px;
                       </div><br><br>
                   {% endif %}
                 {% if flashcardset.type == "Verse" %}
-                    <select name="user_answer_{{ flashcard.id }}" class="form-select form-select-sm" aria-label=".form-select-sm example">
-                      <option selected>Choose a chapter</option>
-                        {% for chapter in chapters %}
-                            <option value="{{ chapter.name_simple }}">{{ chapter.id }} - {{ chapter.name_simple }}</option>
-                        {% endfor %}
-                    </select>
+                    <div class="mb-3">
+                      <select name="user_answer_{{ flashcard.id }}" class="form-select form-select-sm" aria-label=".form-select-sm example">
+                        <option selected>Choose a chapter</option>
+                          {% for chapter in chapters %}
+                              <option value="{{ chapter.name_simple }}">{{ chapter.id }} - {{ chapter.name_simple }}</option>
+                          {% endfor %}
+                      </select><br><br>
+                      <audio id="playback_{{ flashcard.id }}" class="playback_controls" controls style="display: none;"></audio>
+                      <button id="record_{{ flashcard.id }}" class="record_btn">Record</button>
+                      <button id="stop_{{ flashcard.id }}" class="stop_btn" disabled>Stop</button>
+                      <input type="hidden" id="audio_data_{{ flashcard.id }}" class="audio_data" name="audio_data_{{ flashcard.id }}">
+                    </div>
                 {% else %}
               <input type="text" name="user_answer_{{ flashcard.id }}" placeholder="Your Answer" size="50">
                 {% endif %}
@@ -256,6 +262,11 @@ font-size: 30px;
        }
 </script>
 <script>
+
+
+
+</script>
+<script>
   document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("flashcards_questions_form");
     const carousel = new bootstrap.Carousel('#carouselExampleDark');
@@ -305,70 +316,85 @@ font-size: 30px;
         }
       });
     });
+    document.querySelectorAll(".record_btn").forEach((recordButton) => {
+        const stopButton = recordButton.closest("div").querySelector(".stop_btn");
+        const playback = recordButton.closest("div").querySelector(".playback_controls");
+        const audioDataInput = recordButton.closest("div").querySelector(".audio_data");
 
+        let mediaRecorder;
+        let chunks = [];
+
+        recordButton.addEventListener("click", async (event) => {
+            // Start recording
+            event.preventDefault();
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.start();
+
+            mediaRecorder.ondataavailable = (e) => {
+                chunks.push(e.data);
+            };
+
+            mediaRecorder.onstop = () => {
+                const blob = new Blob(chunks, { type: "audio/wav" });
+                chunks = [];
+
+                // Set playback source
+                const audioURL = URL.createObjectURL(blob);
+                playback.src = audioURL;
+                playback.style.display = "block";
+
+                // Convert blob to Base64 and store in the hidden field
+                const reader = new FileReader();
+                reader.readAsDataURL(blob);
+                reader.onloadend = () => {
+                    audioDataInput.value = reader.result; // Set Base64 audio string
+                };
+            };
+
+            recordButton.disabled = true;
+            stopButton.disabled = false;
+        });
+
+        stopButton.addEventListener("click", () => {
+            mediaRecorder.stop();
+            recordButton.disabled = false;
+            stopButton.disabled = true;
+        });
+    });
+
+    // Form submission validation
     form.addEventListener("submit", function (event) {
         event.preventDefault();
 
         const answers = {};
+        const audioAnswers = {};
         let unanswered = false;
-        let unansweredFlashcards = [];
 
-        document.querySelectorAll('.carousel-indicators button').forEach(button => {
-           button.classList.remove("bg-danger");
-       });
-
-        // Check for unanswered flashcards and highlight the indicators
+        // Check if all flashcards have text or audio answers
         document.querySelectorAll("input[name^='user_answer_'],select[name^='user_answer_']").forEach((input, index) => {
             const flashcardId = input.name.split("_")[2];
-            let value = input.value.trim();
-
-            // For select elements, ensure a valid option is selected
-            if (input.tagName === "SELECT" && value === "Choose a chapter") {
-                value = "";  // Treat default option as an unanswered state
-            }
+            const value = input.tagName === "SELECT" && input.value === "Choose a chapter" ? "" : input.value.trim();
 
             answers[flashcardId] = value;
 
-            if (!answers[flashcardId]) {
-                unanswered = true;
-                unansweredFlashcards.push(flashcardId);
-                const indicatorButton = document.querySelector(`[data-bs-slide-to="${index}"]`);
-                if (indicatorButton) {
-                    indicatorButton.classList.add("bg-danger");
+            if (!value) {
+                const audioInput = document.querySelector(`input[name='audio_data_${flashcardId}']`);
+                if (!audioInput || !audioInput.value) {
+                    unanswered = true;
+                    const indicatorButton = document.querySelector(`[data-bs-slide-to="${index}"]`);
+                    if (indicatorButton) {
+                        indicatorButton.classList.add("bg-danger");
+                    }
                 }
             }
         });
 
         if (unanswered) {
-            // Show confirmation alert
-            const confirmSubmission = confirm("Not all flashcards have been answered.\n\nAre you sure you want to submit? ");
-            if (confirmSubmission) {
-                // Submit the form data
-                const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
-
-                fetch(`/flashcards/submit_flashcardset_answers/{{ flashcardset.id }}/`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-CSRFToken": csrfToken,
-                    },
-                    body: JSON.stringify(answers),
-                })
-                    .then(response => {
-                        if (response.ok) {
-                            window.location.reload();
-                        } else {
-                            alert("Failed to submit answers. Please try again.");
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Error submitting answers:", error);
-                        alert("An error occurred. Please try again.");
-                    });
-            }
+            alert("Not all flashcards have been answered. Please complete all flashcards.");
         } else {
-            // If all flashcards have been answered, submit the form immediately
-            const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
+            // Submit form via AJAX
+            const csrfToken = document.querySelector("[name='csrfmiddlewaretoken']").value;
 
             fetch(`/flashcards/submit_flashcardset_answers/{{ flashcardset.id }}/`, {
                 method: "POST",
@@ -376,21 +402,31 @@ font-size: 30px;
                     "Content-Type": "application/json",
                     "X-CSRFToken": csrfToken,
                 },
-                body: JSON.stringify(answers),
+                body: JSON.stringify({
+                    answers: answers,
+                    audio_answers: Object.fromEntries(
+                        Array.from(document.querySelectorAll("input[name^='audio_data_']")).map((input) => [
+                            input.name.split("_")[2],
+                            input.value,
+                        ])
+                    ),
+                }),
             })
-                .then(response => {
+                .then((response) => {
                     if (response.ok) {
                         window.location.reload();
                     } else {
                         alert("Failed to submit answers. Please try again.");
                     }
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.error("Error submitting answers:", error);
                     alert("An error occurred. Please try again.");
                 });
         }
     });
+
+
   });
 </script>
 

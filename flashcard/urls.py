@@ -21,5 +21,6 @@ urlpatterns = [
     path('submit_flashcardset_answers/<int:pk>/', views.submit_flashcardset_answers, name='submit_answers'),
     path('flashcardsets/delete/', views.delete_flashcardsets, name='delete_flashcardsets'),
     path('flashcardset/correct_answer/<int:pk>/', views.self_correct_answer, name='self_correct_answer'),
+    path('flashcard/<int:pk>/', views.FlashcardDetail.as_view(), name='flashcard_detail'),
 
 ]

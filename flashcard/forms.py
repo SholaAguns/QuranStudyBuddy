@@ -1,6 +1,12 @@
 from django import forms
-from .models import FlashcardSet
+from .models import FlashcardSet, Flashcard
 from .services.flashcard_service_factory import FlashcardServiceFactory
+
+
+class FlashcardForm(forms.ModelForm):
+    class Meta:
+        model = Flashcard
+        fields = ['question', 'flashcardset']
 
 class FlashcardSetUpdateForm(forms.ModelForm):
 

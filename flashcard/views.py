@@ -1,9 +1,11 @@
+import base64
 import json
 import traceback
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.files.base import ContentFile
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
@@ -195,12 +197,28 @@ def submit_flashcardset_answers(request, pk):
         try:
             flashcardset = FlashcardSet.objects.get(pk=pk)
             data = json.loads(request.body)
+            user_answers = data.get("answers", {})
+            audio_answers = data.get("audio_answers", {})
 
-            for flashcard_id, user_answer in data.items():
+            # for flashcard_id, user_answer in data.items():
+            #     flashcard = flashcardset.flashcards.get(pk=flashcard_id)
+            #     flashcard.user_answer = user_answer
+            #     flashcard.save()
+            #     print("Answer: " + flashcard.user_answer)
+
+            for flashcard_id, user_answer in user_answers.items():
                 flashcard = flashcardset.flashcards.get(pk=flashcard_id)
                 flashcard.user_answer = user_answer
                 flashcard.save()
-                print("Answer: " + flashcard.user_answer)
+
+            for flashcard_id, audio_data in audio_answers.items():
+                if audio_data:
+                    flashcard = flashcardset.flashcards.get(pk=flashcard_id)
+                    format, audio_str = audio_data.split(';base64,')
+                    ext = format.split('/')[-1]
+                    audio_file = ContentFile(base64.b64decode(audio_str), name=f"flashcard_{flashcard_id}_audio_answer.{ext}")
+                    flashcard.audio_answer = audio_file
+                    flashcard.save()
 
             marking_service.calculate_score(flashcardset)
             return JsonResponse({'success': True})
@@ -208,6 +226,10 @@ def submit_flashcardset_answers(request, pk):
             return JsonResponse({'error': str(e)}, status=400)
 
     return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+class FlashcardDetail(DetailView):
+    model = Flashcard
+    template_name = 'flashcards/flashcard_detail.html'
 
 @login_required
 def delete_flashcardsets(request):
