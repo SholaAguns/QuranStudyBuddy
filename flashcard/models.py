@@ -25,6 +25,7 @@ class Flashcard(models.Model):
     flashcardset = models.ForeignKey(FlashcardSet, related_name='flashcards', on_delete=models.CASCADE)
     question = models.TextField()
     answer = models.TextField()
+    info = models.TextField(null=True, default="")
     audio_answer = models.FileField(upload_to='audio', null=True)
     image = models.ImageField(upload_to="images", null=True)
     created_dt = models.DateTimeField(auto_now=True)

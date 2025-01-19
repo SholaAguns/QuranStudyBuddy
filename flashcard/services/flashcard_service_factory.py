@@ -2,6 +2,7 @@ from flashcard.services.iflashcardservice import IFlashcardService
 from flashcard.services.phrase_flashcard_service import PhraseFlashcardService
 from flashcard.services.verse_flashcard_service import VerseFlashcardService
 from flashcard.services.word_flashcard_service import WordFlashcardService
+from flashcard.services.verseselection_flashcard_service import VerseSelectionFlashcardService
 
 
 class FlashcardServiceFactory:

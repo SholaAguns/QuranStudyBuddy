@@ -212,14 +212,30 @@ def create_verse_selection(request):
         verse_range_start = request.POST.get('verse_range_start', '')
         verse_range_end = request.POST.get('verse_range_end', '')
         title = request.POST.get('title', '')
+        start_verse = None
+        end_verse = None
+
 
         verse_range_start = int(verse_range_start) if verse_range_start.isdigit() else None
         verse_range_end = int(verse_range_end) if verse_range_end.isdigit() else None
 
         try:
+            start_verse = Verse.objects.get(id=verse_range_start)
+        except Verse.DoesNotExist:
+            print("Start verse does not exist")
+
+        try:
+            end_verse = Verse.objects.get(id=verse_range_end)
+        except Verse.DoesNotExist:
+            print("End verse does not exist")
+
+        try:
             verse_selection.title = title
             verse_selection.start_verse_id = verse_range_start
             verse_selection.end_verse_id = verse_range_end
+            verse_selection.start_chapter_id = start_verse.chapter.id
+            verse_selection.end_chapter_id = end_verse.chapter.id
+            verse_selection.juz_number =  start_verse.juz_number
             verse_selection.user = request.user
             verse_selection.save()
         except Exception as e:

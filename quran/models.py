@@ -106,6 +106,9 @@ class HostedVerseAudio(models.Model):
 class VerseSelection(models.Model):
     start_verse_id = models.IntegerField()
     end_verse_id = models.IntegerField()
+    start_chapter_id = models.IntegerField()
+    end_chapter_id = models.IntegerField()
+    juz_number = models.IntegerField()
     title = models.CharField(max_length=80)
     user = models.ForeignKey(User, related_name='verse_selection', on_delete=models.CASCADE)
 

@@ -5,6 +5,12 @@
 {% block content %}
 
 <style>
+  .correct_answer{
+    white-space: pre-line;
+  }
+  .incorrect_answer{
+    white-space: pre-line;
+  }
   #form_submit_btn{
     margin-left: 50%;
   }
@@ -13,6 +19,7 @@
 font-weight: 500;
 font-style: normal;
 font-size: 30px;
+white-space: pre-line;
   }
 .form-select-sm{
     width: 250px;
@@ -85,11 +92,20 @@ font-size: 30px;
                   </audio>
                 {% endif %}
               </p>
+              {%if flashcard.audio_answer %}
+              <p> Your audio recording:
+                <audio controls id="audio-answer-{{ flashcard.id }}" class="flashcard-audio-answer" data-flashcard-id="{{ flashcard.id }}" style="width: 100%;">
+                    <source src="{{ flashcard.audio_answer.url }}" type="audio/mp3"/>
+                </audio>
+              </p>
+              {% endif %}
 
                 {% if flashcard.correct_answer_given %}
                     <span class="correct_answer">
                         <p class="text-start">Your Answer: {{ flashcard.user_answer | safe }} <span class="green-tick">✔️</span></p>
                         <p class="text-start">Acceptable Answers: {{ flashcard.answer | safe }}</p>
+                        <p>Info:</p>
+                        <p class="{% if  flashcardset.type != "Phrase" %}text-end verse_text{% endif %}">{{ flashcard.info | safe }}</p>
                     </span>
                     <div class="form-check form-switch">
                       <input class="form-check-input" type="checkbox" role="switch" onchange="correct_answer( {{flashcard.id}} )" id="{{flashcard.id}}_switch" checked>
@@ -99,6 +115,8 @@ font-size: 30px;
                     <span class="incorrect_answer">
                         <p class="text-start">Your Answer: {{ flashcard.user_answer | safe }} <span class="red-cross">❌</span></p>
                         <p class="text-start">Acceptable Answers: {{ flashcard.answer | safe }}</p>
+                        <p>Info:</p>
+                        <p class="{% if  flashcardset.type != "Phrase" %}text-end verse_text{% endif %}">{{ flashcard.info | safe }}</p>
                     </span>
                     <div class="form-check form-switch">
                       <input class="form-check-input" type="checkbox" role="switch" onchange="correct_answer( {{flashcard.id}} )" id="{{flashcard.id}}_switch">
@@ -118,6 +136,8 @@ font-size: 30px;
                             <span class="correct_answer">
                                 <p class="text-start">Your Answer: {{ flashcard.user_answer | safe }} <span class="green-tick">✔️</span></p>
                                 <p class="text-start">Acceptable Answers: {{ flashcard.answer | safe }}</p>
+                                <p>Info:</p>
+                                <p class="{% if  flashcardset.type != "Phrase" %}text-end verse_text{% endif %}">{{ flashcard.info | safe }}</p>
                             </span>
                             <div class="form-check form-switch">
                               <input class="form-check-input" type="checkbox" role="switch" onchange="correct_answer( {{flashcard.id}} )" id="{{flashcard.id}}_switch" checked>
@@ -138,6 +158,8 @@ font-size: 30px;
                         <span class="incorrect_answer">
                             <p class="text-start">Your Answer: {{ flashcard.user_answer | safe }} <span class="red-cross">❌</span></p>
                             <p class="text-start">Acceptable Answers: {{ flashcard.answer | safe }}</p>
+                            <p>Info:</p>
+                            <p class="{% if  flashcardset.type != "Phrase" %}text-end verse_text{% endif %}">{{ flashcard.info | safe }}</p>
                         </span>
                         <div class="form-check form-switch">
                           <input class="form-check-input" type="checkbox" role="switch" onchange="correct_answer( {{flashcard.id}} )" id="{{flashcard.id}}_switch">
@@ -175,17 +197,17 @@ font-size: 30px;
                           <input type="checkbox" class="show-image-checkbox"> Show Image
                       </div><br><br>
                   {% endif %}
-                {% if flashcardset.type == "Verse" %}
+                {% if "Verse" in flashcardset.type %}
                     <div class="mb-3">
                       <select name="user_answer_{{ flashcard.id }}" class="form-select form-select-sm" aria-label=".form-select-sm example">
-                        <option selected>Choose a chapter</option>
+                        <option selected>Choose start chapter</option>
                           {% for chapter in chapters %}
                               <option value="{{ chapter.name_simple }}">{{ chapter.id }} - {{ chapter.name_simple }}</option>
                           {% endfor %}
                       </select><br><br>
                       <audio id="playback_{{ flashcard.id }}" class="playback_controls" controls style="display: none;"></audio>
-                      <button id="record_{{ flashcard.id }}" class="record_btn">Record</button>
-                      <button id="stop_{{ flashcard.id }}" class="stop_btn" disabled>Stop</button>
+                      <button id="record_{{ flashcard.id }}" class="record_btn"><i class="bi bi-mic-fill"></i></button>
+                      <button id="stop_{{ flashcard.id }}" class="stop_btn" disabled><i class="bi bi-stop-circle-fill"></i></button>
                       <input type="hidden" id="audio_data_{{ flashcard.id }}" class="audio_data" name="audio_data_{{ flashcard.id }}">
                     </div>
                 {% else %}

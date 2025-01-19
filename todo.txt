@@ -2,7 +2,6 @@
 - Save Form options
 - Search and filtering
 - Pagination
-- Verse selection flashcards
 - Flashcard folders
 - Better randomization
 - Arabic keyboard
@@ -20,4 +19,5 @@
 - Remove comments
 - Fix Show all images button
 - Fix byTags partial match
+- Verse selection audio
 
