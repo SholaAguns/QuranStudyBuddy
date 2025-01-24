@@ -13,8 +13,9 @@
     <ul class="list-group list-group-flush">
       <li class="list-group-item"><a href="{% url 'quran:chapter_list' %}">Chapters</a></li>
       {% if user.is_authenticated %}
-      <li class="list-group-item"><a href="{% url 'arabic:phrase_list' %}">Phrases</a></li>
-      <li class="list-group-item"><a href="{% url 'flashcards:flashcardset_list' %}">Flashcards</a></li>
+      <li class="list-group-item"><a href="{% url 'arabic:phrase_list' %}">My Phrases</a></li>
+      <li class="list-group-item"><a href="{% url 'quran:verse_selection_list' %}">My Verse Selections</a></li>
+      <li class="list-group-item"><a href="{% url 'flashcards:flashcardset_list' %}">My Flashcards</a></li>
       <li class="list-group-item"><a href="{% url 'accounts:confirm_delete_user' %}">Close account</a></li>
       {% endif %}
     </ul>

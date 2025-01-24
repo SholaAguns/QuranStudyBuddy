@@ -75,7 +75,7 @@ $('#verse_selection_form').submit(function (e) {
     const verseRangeStart = parseInt($('#verseRangeStart').val(), 10);
     const verseRangeEnd = parseInt($('#verseRangeEnd').val(), 10);
 
-    if (isNaN(verseRangeStart) || isNaN(verseRangeEnd) || verseRangeEnd <= verseRangeStart) {
+    if (isNaN(verseRangeStart) || isNaN(verseRangeEnd) || verseRangeEnd < verseRangeStart) {
         alert('Error: The end of the range must be greater than the start.');
         return;
       }

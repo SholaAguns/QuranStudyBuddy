@@ -35,7 +35,7 @@ white-space: pre-line;
         <h2>{{ flashcardset.title }}</h2>
     </a>
     <h3>{{ flashcardset.type }}</h3>
-      <div class="container" align="center">
+      <div class="container">
               <div id="phrase_controls" class="container" align="center">
                 {% if flashcardset.score is not None %}
                   <br><br>
@@ -104,8 +104,10 @@ white-space: pre-line;
                     <span class="correct_answer">
                         <p class="text-start">Your Answer: {{ flashcard.user_answer | safe }} <span class="green-tick">✔️</span></p>
                         <p class="text-start">Acceptable Answers: {{ flashcard.answer | safe }}</p>
+                        {% if  flashcardset.info %}
                         <p>Info:</p>
                         <p class="{% if  flashcardset.type != "Phrase" %}text-end verse_text{% endif %}">{{ flashcard.info | safe }}</p>
+                        {% endif %}
                     </span>
                     <div class="form-check form-switch">
                       <input class="form-check-input" type="checkbox" role="switch" onchange="correct_answer( {{flashcard.id}} )" id="{{flashcard.id}}_switch" checked>
@@ -115,8 +117,10 @@ white-space: pre-line;
                     <span class="incorrect_answer">
                         <p class="text-start">Your Answer: {{ flashcard.user_answer | safe }} <span class="red-cross">❌</span></p>
                         <p class="text-start">Acceptable Answers: {{ flashcard.answer | safe }}</p>
+                        {% if  flashcardset.info %}
                         <p>Info:</p>
                         <p class="{% if  flashcardset.type != "Phrase" %}text-end verse_text{% endif %}">{{ flashcard.info | safe }}</p>
+                        {% endif %}
                     </span>
                     <div class="form-check form-switch">
                       <input class="form-check-input" type="checkbox" role="switch" onchange="correct_answer( {{flashcard.id}} )" id="{{flashcard.id}}_switch">
@@ -136,8 +140,10 @@ white-space: pre-line;
                             <span class="correct_answer">
                                 <p class="text-start">Your Answer: {{ flashcard.user_answer | safe }} <span class="green-tick">✔️</span></p>
                                 <p class="text-start">Acceptable Answers: {{ flashcard.answer | safe }}</p>
+                                {% if  flashcardset.info %}
                                 <p>Info:</p>
                                 <p class="{% if  flashcardset.type != "Phrase" %}text-end verse_text{% endif %}">{{ flashcard.info | safe }}</p>
+                                {% endif %}
                             </span>
                             <div class="form-check form-switch">
                               <input class="form-check-input" type="checkbox" role="switch" onchange="correct_answer( {{flashcard.id}} )" id="{{flashcard.id}}_switch" checked>
@@ -158,8 +164,10 @@ white-space: pre-line;
                         <span class="incorrect_answer">
                             <p class="text-start">Your Answer: {{ flashcard.user_answer | safe }} <span class="red-cross">❌</span></p>
                             <p class="text-start">Acceptable Answers: {{ flashcard.answer | safe }}</p>
+                            {% if  flashcardset.info %}
                             <p>Info:</p>
                             <p class="{% if  flashcardset.type != "Phrase" %}text-end verse_text{% endif %}">{{ flashcard.info | safe }}</p>
+                            {% endif %}
                         </span>
                         <div class="form-check form-switch">
                           <input class="form-check-input" type="checkbox" role="switch" onchange="correct_answer( {{flashcard.id}} )" id="{{flashcard.id}}_switch">
@@ -237,7 +245,9 @@ white-space: pre-line;
           <span class="visually-hidden">Next</span>
         </button>
         </div>
-        <button type="submit" class="btn btn-primary mt-4" id="form_submit_btn">Submit</button>
+        <div align="center">
+            <button type="submit" class="btn btn-primary mt-4" id="form_submit_btn">Submit</button>
+        </div>
     {% endif %}
     </form>
 
