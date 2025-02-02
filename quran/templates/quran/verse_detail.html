@@ -1,23 +1,10 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load django_bootstrap5 %}
 
 {% block content %}
-<style>
-    .verse_text{
-    font-family: "Noto Naskh Arabic", serif;
-  font-optical-sizing: auto;
-  font-weight: 500;
-  font-style: normal;
-  font-size: 30px;
-    }
-  .bi-volume-up{
-    font-size: 18px;
-  }
-  .position_arrows{
-    font-size: 30px;
-  }
 
-</style>
+<link href="{% static 'css/quran/verses_style.css' %}" rel="stylesheet"/>
 <div class="jumbotron chapter_heading container">
     <a href="{% url 'quran:chapter_detail' pk=verse.chapter.id %}"><h2 id="chapter-name">{{ verse.verse_key }} {{ verse.chapter.name_simple }}</h2></a>
     <div class="container" align="right">

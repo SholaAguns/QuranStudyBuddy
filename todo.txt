@@ -1,6 +1,5 @@
 - Update Verse Selection
 - Fix delete selected
-- Fix unanswered warning
 - Save Form options
 - Search and filtering
 - favicon

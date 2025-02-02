@@ -1,23 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load django_bootstrap5 %}
 
 {% block content %}
-<style>
-    .verse_text{
-    font-family: "Noto Naskh Arabic", serif;
-  font-optical-sizing: auto;
-  font-weight: 500;
-  font-style: normal;
-  font-size: 30px;
-    }
-  .bi-volume-up{
-    font-size: 18px;
-  }
-  .position_arrows{
-    font-size: 30px;
-  }
-
-</style>
+<link href="{% static 'css/quran/verseselection.css' %}" rel="stylesheet"/>
 <div class="jumbotron chapter_heading container">
   <a href="{% url 'quran:verse_selection_detail' pk=verseselection.id %}"><h2 id="verseselection_title">
     <h2 id="chapter-name">
@@ -45,5 +31,4 @@
     {% endfor %}
   </div>
 </div>
-
 {% endblock %}

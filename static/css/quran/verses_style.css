@@ -1,0 +1,23 @@
+.verse_text{
+font-family: "Noto Naskh Arabic", serif;
+font-optical-sizing: auto;
+font-weight: 500;
+font-style: normal;
+font-size: 30px;
+}
+.bi-volume-up{
+font-size: 18px;
+}
+.position_arrows{
+font-size: 30px;
+}
+.verse_link{
+    text-decoration: none;
+    color: black;
+}
+.audio_controls{
+    font-size: 20px;
+}
+#play-button {
+    cursor: pointer;
+}

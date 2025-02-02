@@ -100,24 +100,28 @@
 
         const answers = {};
         const audioAnswers = {};
+        let unansweredFlashcards = [];
         let unanswered = false;
+
+        document.querySelectorAll('.carousel-indicators button').forEach(button => {
+           button.classList.remove("bg-danger");
+       });
 
         // Check if all flashcards have text or audio answers
         document.querySelectorAll("input[name^='user_answer_'],select[name^='user_answer_']").forEach((input, index) => {
             const flashcardId = input.name.split("_")[2];
             const value = input.tagName === "SELECT" && input.value === "Choose a chapter" ? "" : input.value.trim();
+            const audioInput = document.querySelector(`input[name='audio_data_${flashcardId}']`);
 
             answers[flashcardId] = value;
 
-            if (!value) {
-                const audioInput = document.querySelector(`input[name='audio_data_${flashcardId}']`);
-                if (!audioInput || !audioInput.value) {
+            if (!value || !audioInput || !audioInput.value) {
                     unanswered = true;
+                    unansweredFlashcards.push(flashcardId);
                     const indicatorButton = document.querySelector(`[data-bs-slide-to="${index}"]`);
                     if (indicatorButton) {
                         indicatorButton.classList.add("bg-danger");
                     }
-                }
             }
         });
 

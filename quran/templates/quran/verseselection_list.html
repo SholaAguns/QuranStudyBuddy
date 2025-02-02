@@ -1,12 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load django_bootstrap5 %}
 
 {% block content %}
-<style>
-    .selection-checkbox{
-    float: right;
-    }
-</style>
+<link href="{% static 'css/quran/verseselection.css' %}" rel="stylesheet"/>
 <div class="container budget_heading" >
         <h2>My Verse Selections</h2>
 </div>
