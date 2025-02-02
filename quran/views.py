@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.views.generic import DetailView, ListView, TemplateView, DeleteView
+from django.views.generic import DetailView, ListView, TemplateView, DeleteView, UpdateView
 
 from quran.models import Chapter, Verse, VerseTranslation, Word, TranslatedName, AudioEdition, HostedVerseAudio, \
     VerseSelection
@@ -255,3 +255,4 @@ def delete_verse_selections(request):
         selected_verse_selections= request.POST.getlist('selected_verse_selections')
         VerseSelection.objects.filter(id__in=selected_verse_selections).delete()
     return redirect('quran:verse_selection_list')
+

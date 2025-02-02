@@ -1,0 +1,25 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+.form-group {
+  margin-bottom: 15px;
+}
+label {
+  display: block;
+  font-weight: bold;
+}
+input, select, button {
+  margin-top: 5px;
+}
+.id-dropdown, .juz-dropdown {
+  margin-top: 5px;
+  margin-left: 5%;
+}
+.horizontal-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  margin-left: 30%;
+}

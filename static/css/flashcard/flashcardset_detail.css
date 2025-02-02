@@ -1,0 +1,19 @@
+.correct_answer{
+  white-space: pre-line;
+}
+.incorrect_answer{
+  white-space: pre-line;
+}
+#form_submit_btn{
+  margin-left: 50%;
+}
+.verse_text{
+font-family: "Noto Naskh Arabic", serif;
+font-weight: 500;
+font-style: normal;
+font-size: 25px;
+white-space: pre-line;
+}
+.form-select-sm{
+  width: 250px;
+}

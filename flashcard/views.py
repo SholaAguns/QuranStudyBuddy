@@ -223,6 +223,7 @@ def submit_flashcardset_answers(request, pk):
             marking_service.calculate_score(flashcardset)
             return JsonResponse({'success': True})
         except Exception as e:
+            print(f"Error: {str(e)}")
             return JsonResponse({'error': str(e)}, status=400)
 
     return JsonResponse({'error': 'Invalid request method'}, status=400)

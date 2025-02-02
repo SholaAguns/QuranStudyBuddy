@@ -1,3 +1,5 @@
+import secrets
+
 from django.utils.timezone import now
 import random
 from flashcard.models import Flashcard
@@ -6,9 +8,19 @@ from quran.models import Chapter, Verse, HostedVerseAudio, VerseSelection
 
 
 def populate_flashcards(amount, ids, flashcardset):
-    selected_ids = random.sample(ids, min(amount, len(ids)))
+    print(ids)
+    #random.shuffle(ids)
+    #print(ids)
+    #random.shuffle(ids)
+    #print(ids)
+    #selected_ids = random.sample(ids, min(amount, len(ids)))
+    ids_copy = ids[:]
+    secrets.SystemRandom().shuffle(ids_copy)
+    selected_ids = ids_copy[:min(amount, len(ids))]
+    print(selected_ids)
 
     selected_verses_selections = VerseSelection.objects.filter(id__in=selected_ids)
+
 
     for selection in selected_verses_selections:
         flashcard = Flashcard()
@@ -17,7 +29,7 @@ def populate_flashcards(amount, ids, flashcardset):
         flashcard.question = f"{verses[0].text_uthmani}\n.\n.\n.\n{verses[len(verses)-1].text_uthmani}"
         flashcard.answer = verses[0].chapter.name_simple
         for verse in verses:
-            flashcard.info += f"{verse.text_uthmani}\n"
+            flashcard.info += f"{verse.get_english_translation()} - {verse.text_uthmani}\n"
         #populate_audio_filepaths(verse, flashcard)
         flashcard.save()
 

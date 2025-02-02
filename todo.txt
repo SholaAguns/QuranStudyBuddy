@@ -1,6 +1,9 @@
+- Update Verse Selection
 - Fix delete selected
+- Fix unanswered warning
 - Save Form options
 - Search and filtering
+- favicon
 - Pagination
 - Flashcard folders
 - Better randomization
@@ -20,4 +23,3 @@
 - Fix Show all images button
 - Fix byTags partial match
 - Verse selection audio
-
