@@ -1,9 +1,8 @@
 - Update Verse Selection
-- Fix delete selected
 - Save Form options
 - Search and filtering
-- favicon
 - Pagination
+- favicon
 - Flashcard folders
 - Better randomization
 - Arabic keyboard
