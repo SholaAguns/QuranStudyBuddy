@@ -1,7 +1,5 @@
 - Update Verse Selection
 - Save Form options
-- Search and filtering
-- Pagination
 - favicon
 - Flashcard folders
 - Better randomization

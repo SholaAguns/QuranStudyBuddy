@@ -1,0 +1,9 @@
+{% for phrase in page_obj %}
+<div class="phrase-item">
+    <h4>
+        <a href="{% url 'arabic:phrase_detail' pk=phrase.id %}">{{ phrase.text }}</a>
+        <input type="checkbox" name="selected_phrases" value="{{ phrase.id }}" class="checkbox">
+    </h4>
+    <hr>
+</div>
+{% endfor %}

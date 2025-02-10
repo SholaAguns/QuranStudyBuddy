@@ -6,6 +6,7 @@ from .models import Phrase
 from .forms import PhraseForm
 from django.views.generic import CreateView, DetailView, ListView, DeleteView, UpdateView, TemplateView
 from django.urls import reverse
+from django.core.paginator import Paginator
 
 class ArabicHome(TemplateView):
     template_name = 'arabic/arabic_home.html'
@@ -31,10 +32,18 @@ class PhraseDetail(LoginRequiredMixin, DetailView):
 
 class PhraseList(LoginRequiredMixin, ListView):
     model = Phrase
+    paginate_by = 20
+
+    def get_queryset(self):
+        queryset = Phrase.objects.filter(user=self.request.user)  # Filter by user
+        search_query = self.request.GET.get('q')  # Get the search query from the URL
+        if search_query:
+            # Filter phrases that contain the search query (case-insensitive)
+            queryset = queryset.filter(text__icontains=search_query)
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['phrase_list'] = Phrase.objects.filter(user=self.request.user)
         return context
 
 class PhraseUpdate(LoginRequiredMixin, UpdateView):

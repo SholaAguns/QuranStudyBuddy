@@ -11,24 +11,22 @@
         <div id="phrase_controls" class="container" align="center">
         <br><br>
         <a href="{% url 'arabic:add_phrase' %}" role="button" class="btn btn-outline-secondary w-80">Create Phrase</a>
+         <button type="button" class="btn btn-info" id="select_all_button">Select All</button>
         <button type="submit" class="btn btn-danger" id="delete_selected_button" disabled>Delete Selected</button>
         </div><br><br>
     {% endif %}
 <div class="container" align="center">
+  <input type="text" id="searchBox" placeholder="Search..." class="form-control mb-4" style="max-width: 300px;" oninput="filterPhrases()">
   <form id="delete_selected_form" method="POST" action="{% url 'arabic:delete_phrases' %}">
       {% csrf_token %}
       <div id="phrase-list">
-          {% for phrase in phrase_list %}
-          <div class="phrase-item">
-              <h4>
-                <a href="{% url 'arabic:phrase_detail' pk=phrase.id %}">{{ phrase.text }}</a>
-                <input  type="checkbox" name="selected_phrases" value="{{ phrase.id }}" class="checkbox">
-              </h4>
-              <hr>
-          </div>
-          {% endfor %}
+        {% include 'arabic/snippets/phrase_list_results.html' %}
+      </div>
+      <div id="pagination" class="pagination">
+        {% include 'arabic/snippets/phrase_list_pagination.html' %}
       </div>
   </form>
 </div>
 <script src="{% static 'js/delete_selected.js' %}"></script>
+<script src="{% static 'js/arabic/filter_phrase_list.js' %}"></script>
 {% endblock %}
