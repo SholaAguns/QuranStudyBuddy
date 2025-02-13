@@ -1,28 +1,56 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-  <div class="jumbotron selection_panel" align="center" id="getstarted_panel">
-
-  <div class="container" align="center">
-    <div class="card" style="width: 18rem;">
-    <img class="media-object mw150" src="{% static 'images/no-image-image.jpg' %}" alt="" style="max-height:271px">
-    <div class="card-body">
-      <div class="card-header">
-       Welcome {{user.username}}
-      </div>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item"><a href="{% url 'quran:chapter_list' %}">Chapters</a></li>
-      {% if user.is_authenticated %}
-      <li class="list-group-item"><a href="{% url 'arabic:phrase_list' %}">My Phrases</a></li>
-      <li class="list-group-item"><a href="{% url 'quran:verse_selection_list' %}">My Verse Selections</a></li>
-      <li class="list-group-item"><a href="{% url 'flashcards:flashcardset_list' %}">My Flashcards</a></li>
-      <li class="list-group-item"><a href="{% url 'accounts:confirm_delete_user' %}">Close account</a></li>
-      {% endif %}
-    </ul>
-
-    </div>
+<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"/>
+<link href="{% static 'css/style.css' %}" rel="stylesheet"/>
+  <div class="jumbotron selection_panel roboto-mono-font-5" align="center" id="welcome_panel">
+    <h1 class="roboto-mono-font-5">Welcome {{user.username}}</h1>
   </div>
-  </div>
+  <div class="container-xxl py-5">
+            <div class="container">
+                <div class="row g-4">
+                    <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
+                        <a class="cat-item d-block bg-light text-center rounded p-3" href="{% url 'quran:chapter_list' %}">
+                            <div class="rounded p-4">
+                                <div class="icon mb-3">
+                                    <img class="img-fluid" src="{% static 'images/jawad-jawahir-quran.jpg' %}" alt="Icon" width="200" height="200">
+                                </div>
+                                <h6>Chapters</h6>
+                            </div>
+                        </a>
+                    </div>
+                      <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
+                          <a class="cat-item d-block bg-light text-center rounded p-3" href="{% url 'flashcards:flashcardset_list' %}">
+                              <div class="rounded p-4">
+                                  <div class="icon mb-3">
+                                      <img class="img-fluid" src="{% static 'images/kate-macate-cards.jpg' %}" alt="Icon" width="200" height="200">
+                                  </div>
+                                  <h6>My Flashcards</h6>
+                              </div>
+                          </a>
+                      </div>
+                  <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
+                      <a class="cat-item d-block bg-light text-center rounded p-3" href="{% url 'quran:verse_selection_list' %}">
+                          <div class="rounded p-4">
+                              <div class="icon mb-3">
+                                  <img class="img-fluid" src="{% static 'images/md-shairaf-quran verse.jpg' %}" alt="Icon" width="200" height="200">
+                              </div>
+                              <h6>My Verse Selections</h6>
+                          </div>
+                      </a>
+                  </div>
+              <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
+                  <a class="cat-item d-block bg-light text-center rounded p-3" href="{% url 'arabic:phrase_list' %}">
+                      <div class="rounded p-4">
+                          <div class="icon mb-3">
+                              <img class="img-fluid" src="{% static 'images/fabio-santaniello-letterwall.jpg' %}" alt="Icon" width="200" height="200">
+                          </div>
+                          <h6>My Phrases</h6>
+                      </div>
+                  </a>
+              </div>
+            </div>
+        </div>
   </div>
 
 
