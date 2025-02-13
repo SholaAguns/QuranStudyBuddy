@@ -1,26 +1,29 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load django_bootstrap5 %}
 
 {% block content %}
-<div class="container budget_heading">
-        <h2>{{ phrase.text}} </h2>
-        <h5>{{phrase.category }}</h5>
-        <h3>{{phrase.translation }}</h3>
+<link href="{% static 'css/phrase/phrase_style.css' %}" rel="stylesheet"/>
 
-    {% if phrase.image %}
-    <div>
-            <span><img src="{{phrase.image.url}}" alt="connect" style="max-height:1000px"></span>
-    </div>
-{% endif %}
+<div class="container">
+
+
+<div class="card mb-3 phrase_card" >
+  {% if phrase.image %}
+  <img src="{{phrase.image.url}}" class="card-img-top" alt="...">
+  {% endif %}
+  <div class="card-body">
+    <h5 class="card-title phrase_text">{{ phrase.text}}</h5>
+    <p class="card-text phrase_translation">{{phrase.translation }}</p>
+    <p class="card-text"><small class="text-muted">{{phrase.category }}</small></p>
+  </div>
 </div>
 
-<div class="container" align="center">
-    {% if user.is_authenticated %}
-        <div id="phrase_controls" class="container" align="center">
-        <br><br>
-        <a href="{% url 'arabic:update_phrase' pk=phrase.id %}" role="button" class="btn btn-outline-secondary  w-80">Edit phrase</a>
-        <a href="{% url 'arabic:delete_phrase' pk=phrase.id %}" role="button" class="btn btn-outline-danger  w-80">Delete phrase</a>
-        </div><br><br>
-    {% endif %}
+{% if user.is_authenticated %}
+  <div class="phrase_controls">
+    <a href="{% url 'arabic:update_phrase' pk=phrase.id %}" role="button" class="btn btn-outline-secondary  w-80">Edit phrase</a>
+    <a href="{% url 'arabic:delete_phrase' pk=phrase.id %}" role="button" class="btn btn-outline-danger  w-80">Delete phrase</a>
+  </div>
+{% endif %}
 </div>
 {% endblock %}

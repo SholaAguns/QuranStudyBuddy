@@ -1,16 +1,28 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<div align="center" style="padding-top: 100px;">
-	<div class="container budget_heading" style="padding-bottom: 50px;">
-        <h2 >{{phrase.text}}</h2>
-	</div>
-	<h3>Are you sure you want to delete this phrase?</h3>
+<link href="{% static 'css/phrase/phrase_style.css' %}" rel="stylesheet"/>
 
-	<form method="POST">
-		{% csrf_token %}
-		<input type="submit" value="Confirm Delete" class="btn btn-outline-danger">
-		<a href="{% url 'arabic:phrase_list' %}" class="btn btn-outline-dark">Cancel</a>
-	</form>
+<div class="container">
+	<div class="card mb-3 phrase_card" >
+	  {% if phrase.image %}
+	  <img src="{{phrase.image.url}}" class="card-img-top" alt="...">
+	  {% endif %}
+	  <div class="card-body">
+	    <h5 class="card-title phrase_text">{{ phrase.text}}</h5>
+	    <p class="card-text phrase_translation">{{phrase.translation }}</p>
+	    <p class="card-text"><small class="text-muted">{{phrase.category }}</small></p>
+	  </div>
+	</div>
+	<div class="phrase_controls">
+		<h3>Are you sure you want to delete this phrase?</h3>
+	</div>
+	<div class="phrase_controls">
+		<form method="POST">
+			{% csrf_token %}
+			<input type="submit" value="Confirm Delete" class="btn btn-outline-danger">
+			<a href="{% url 'arabic:phrase_list' %}" class="btn btn-outline-dark">Cancel</a>
+		</form>
+	</div>
 </div>
 {% endblock %}

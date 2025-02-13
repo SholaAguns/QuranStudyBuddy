@@ -5,6 +5,7 @@
 - Better randomization
 - Arabic keyboard
 - User stats
+- Phrase next button
 - Check audio validity
 - Category dropdown or input
 - Plural, masc, fem, present, verb, noun

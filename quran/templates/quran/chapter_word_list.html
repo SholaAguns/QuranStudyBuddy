@@ -5,7 +5,7 @@
 {% block content %}
 <link href="{% static 'css/quran/verses_style.css' %}" rel="stylesheet"/>
 <div class="jumbotron chapter_heading container">
-  <a href="{% url 'quran:chapter_detail' pk=chapter.id %}"><h2 id="chapter-name">
+  <a href="{% url 'quran:chapter_detail' pk=chapter.id %}">
     <h2 id="chapter-name">
       {{ chapter.name_simple }} ({{ translated_name.name }})
     </h2>

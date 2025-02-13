@@ -1,6 +1,19 @@
+.base_body {
+  margin: 0;
+  background-color: #E2EFE3;
+}
+.nav-item .nav-link{
+  color: #68B76C;
+}
 .navbar{
   border-bottom: 0.5px solid black;
   font-family: "Roboto Mono", serif;
+}
+.nav-item.dropdown .dropdown-menu{
+  background-color: #A4D1A6;
+}
+.default_spacer{
+    margin-bottom:10px !important;
 }
 #input{
   width: 500px;
@@ -15,6 +28,13 @@
   font-optical-sizing: auto;
   font-weight: 2;
   font-style: normal;
+}
+.page_title{
+  text-align: center;
+  font-family: "Roboto Mono", serif;
+  font-optical-sizing: auto;
+  font-weight: 5;
+  font-style: bold;
 }
 
 .roboto-mono-font-5 {

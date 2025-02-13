@@ -1,9 +1,16 @@
 {% for phrase in page_obj %}
-<div class="phrase-item">
-    <h4>
-        <a href="{% url 'arabic:phrase_detail' pk=phrase.id %}">{{ phrase.text }}</a>
-        <input type="checkbox" name="selected_phrases" value="{{ phrase.id }}" class="checkbox">
-    </h4>
-    <hr>
-</div>
+
+  <div class="card my-3 phrase_item">
+      <a href="{% url 'arabic:phrase_detail' pk=phrase.id %}" class="default_spacer">
+          <div class="card-body">
+            <div class="text-end">
+              <input type="checkbox" name="selected_phrases" value="{{ phrase.id }}" class="checkbox">
+            </div>
+              <h3 class="card-title phrase_text">
+                {{ phrase.text }}
+              </h3>
+                <p class="card-text text-start phrase_translation" >{{phrase.translation }}</p>
+          </div>
+      </a>
+  </div>
 {% endfor %}

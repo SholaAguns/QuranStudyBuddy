@@ -1,0 +1,67 @@
+.phrase-checkbox{
+  float: right;
+}
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination a {
+    margin: 0 5px;
+    text-decoration: none;
+    color: #007bff;
+}
+
+.pagination .current {
+    font-weight: bold;
+    margin: 0 5px;
+}
+
+a{
+  text-decoration: none;
+  color: #010203;
+}
+
+.phrase_item {
+  background-color: #A4D1A6;
+    height: 7rem;
+   width: 35rem;
+}
+
+.phrase_controls {
+  display: flex;
+  justify-content: center; /* Centers content horizontally */
+  gap: 1rem; /* Adds spacing between buttons */
+  margin-top: 2rem; /* Optional: adds space above */
+}
+
+
+.phrase_text{
+  text-align: center;
+  font-family: "Darumadrop One", serif;
+  font-weight: 400;
+  font-style: normal;
+  color: white;
+  text-shadow:
+    -2px -2px 0 black,
+     2px -2px 0 black,
+    -2px  2px 0 black,
+     2px  2px 0 black;
+}
+
+.phrase_translation{
+  font-style: italic;
+}
+
+.phrase_card{
+  align-self: center;
+  margin: auto;
+  margin-top: 5em;
+  border: black solid 2px;
+  width: 30rem;
+}
+
+.phrase_card .card-body{
+  background-color: #A4D1A6;
+  border-top: black solid 2px;
+}

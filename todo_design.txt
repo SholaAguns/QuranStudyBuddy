@@ -1,0 +1,18 @@
+-Signup page
+-Login page
+-Logout page
+-Landing
+-Chapters List
+-Chapter Detail
+-Verse Detail
+-Flashcardset Form
+-VerseSelection Form
+-Flashcardset List
+-VerseSelection List
+-Flashcardset Detail
+-VerseSelection Detail
+-Flashcardset Confirm Delete
+-VerseSelection Confirm Delete
+
+
+
