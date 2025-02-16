@@ -3,7 +3,7 @@
 {% load django_bootstrap5 %}
 
 {% block content %}
-<link href="{% static 'css/phrase/phrase_style.css' %}" rel="stylesheet"/>
+<link href="{% static 'css/phrase_style.css' %}" rel="stylesheet"/>
 
 <div class="container">
 
@@ -20,7 +20,7 @@
 </div>
 
 {% if user.is_authenticated %}
-  <div class="phrase_controls">
+  <div class="controls">
     <a href="{% url 'arabic:update_phrase' pk=phrase.id %}" role="button" class="btn btn-outline-secondary  w-80">Edit phrase</a>
     <a href="{% url 'arabic:delete_phrase' pk=phrase.id %}" role="button" class="btn btn-outline-danger  w-80">Delete phrase</a>
   </div>

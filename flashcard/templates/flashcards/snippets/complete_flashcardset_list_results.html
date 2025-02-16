@@ -1,0 +1,23 @@
+{% for flashcardset in flashcardset_list %}
+  {% if flashcardset.score is not None %}
+    <div class="card my-3 flashcardset_item">
+        <a href="{% url 'flashcards:flashcardset_detail' pk=flashcardset.id %}">
+            <div class="card-body">
+              <div class="text-end">
+                <input type="checkbox" name="selected_flashcardsets" value="{{ phrase.id }}" class="checkbox">
+              </div>
+                <h3 class="card-title flashcardset_text">
+                  {{ flashcardset.title|truncatechars:28  }}
+                </h3>
+                <div class="card-text text-start flashcardset_card_info">
+                  <p>{{flashcardset.type }}</p>
+                  <p>{{flashcardset.created_dt }}</p>
+                </div>
+                <div class="score_wrapper text-start">
+                  <p class="flashcardset_score">Score: {{flashcardset.score }}%</p>
+                </div>
+            </div>
+        </a>
+    </div>
+  {% endif %}
+{% endfor %}

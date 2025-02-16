@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="container" >
-    <h2>Phrase form</h2><br><br>
+    <h2>Edit name</h2><br><br>
          <form class="budget-form" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {% bootstrap_form form %}
@@ -13,4 +13,3 @@
         </form>
 </div>
 {% endblock %}
-

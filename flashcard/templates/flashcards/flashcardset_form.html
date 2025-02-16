@@ -3,10 +3,14 @@
 {% load django_bootstrap5 %}
 
 {% block content %}
-<link href="{% static 'css/flashcard/flashcardset_form.css' %}" rel="stylesheet"/>
-    <div class="container" align="center">
-        <h1>Create flashcard set</h1>
-            <form id="flashcardForm">
+<link href="{% static 'css/flashcardset_style.css' %}" rel="stylesheet"/>
+<div class="container" id="form_page" >
+    <div class="container page_title" >
+            <h2>Create a deck</h2>
+    </div>
+    <div class="container" id="flashcard_creation_form">
+
+            <form id="flashcard_form">
                           {% csrf_token %}
             <div class="mb-3">
               <label for="requestType" class="form-label">Number of flashcards:</label>
@@ -24,17 +28,17 @@
                   <option value="">Select criteria</option>
               </select>
             </div>
-            <div class="mb-3" id="idListContainer"  style="display: none;">
+            <div class="mb-3 select_container" id="idListContainer"  style="display: none;">
                 <div align="center" id="idListFields"></div>
-                <button type="button" id="addIdField">Add</button>
+                <button type="button" class="add_field_btn" id="addIdField">Add</button>
             </div>
 
-            <div class="mb-3" id="juzListContainer" style="display: none;">
+            <div class="mb-3 select_container" id="juzListContainer" style="display: none;">
                 <div id="juzListFields"></div>
-                <button type="button" id="addJuzField">Add Juz</button>
+                <button type="button" class="add_field_btn" id="addJuzField">Add Juz</button>
             </div>
 
-            <div class="mb-3 center-container" id="rangeContainer" style="display: none;">
+            <div class="mb-3 select_container" id="rangeContainer" style="display: none;">
               <label for="rangeStart" class="form-label">Choose start of range:</label>
                 <select class="form-select-sm" id="rangeStart" name="range_start">
                     <option value="">Select range start</option>
@@ -45,7 +49,7 @@
                 </select>
             </div>
 
-            <div class="mb-3" id="verseRangeContainer" style="display: none;">
+            <div class="mb-3 select_container" id="verseRangeContainer" style="display: none;">
               <div class="horizontal-group">
                 <label for="verseChapterRangeStart" class="form-label">Select Chapter:</label>
                   <select class="form-select-sm" id="verseChapterRangeStart" name="verse_chapter_range_start">
@@ -78,10 +82,11 @@
               <label for="tags" class="form-label">Tags:</label>
               <input class="form-control-sm" type="text" name="tags" placeholder="Tags">
             </div>
-            <button class="btn btn-primary" type="submit">Submit</button>
+            <button class="btn btn-primary" id="form_submit_btn" type="submit">Submit</button>
         </form>
 
     </div>
+</div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="{% static 'js/flashcard/flashcardset_form.js' %}"></script>
 {% endblock %}

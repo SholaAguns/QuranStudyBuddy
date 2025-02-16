@@ -4,22 +4,22 @@
 
 {% block content %}
 
-<link href="{% static 'css/flashcard/flashcardset_detail.css' %}" rel="stylesheet"/>
+<link href="{% static 'css/flashcardset_style.css' %}" rel="stylesheet"/>
 {% if not flashcardset.flashcards.all %}
 <div class="jumbotron" align=center>
   <h2>No {{flashcardset.type}}s returned</h2>
 </div>
 {% else %}
-<div class="container budget_heading">
+<div class="container page_title">
     <a href="{% url 'flashcards:update_flashcardset' pk=flashcardset.id %}">
         <h2>{{ flashcardset.title }}</h2>
     </a>
-    <h3>{{ flashcardset.type }}</h3>
+    <h5>{{ flashcardset.type }}</h5>
       <div class="container">
-              <div id="phrase_controls" class="container" align="center">
+              <div id="controls" class="container" align="center">
                 {% if flashcardset.score is not None %}
                   <br><br>
-                  <a href="{% url 'flashcards:delete_flashcardset' pk=flashcardset.id %}" role="button" class="btn btn-outline-danger w-80">Delete Flashcard Set</a>
+                  <a href="{% url 'flashcards:delete_flashcardset' pk=flashcardset.id %}" role="button" class="btn btn-outline-danger w-80">Delete Flashcard Deck</a>
               </div>
               <br><br>
           {% endif %}

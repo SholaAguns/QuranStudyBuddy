@@ -1,0 +1,160 @@
+.checkbox{
+  float: right;
+}
+.flashcardset-tabs{
+  margin-bottom: 2em;
+}
+.flashcardset_text{
+  text-align: center;
+  font-family: "Roboto Mono", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  color: white;
+  -webkit-text-fill-color: white; /* Will override color (regardless of order) */
+ -webkit-text-stroke: 0.25px #68B76C;
+}
+
+.card-text {
+  display: flex;
+  justify-content: space-between; /* Pushes items to opposite sides */
+  align-items: center; /* Aligns them vertically in the center */
+  margin-top: 1rem;
+  font: bold;
+  font-family: "Roboto Mono", serif;
+}
+
+.flashcardset_item{
+  background-color: #A4D1A6;
+    height: auto;
+   width: 35rem;
+   margin: auto;
+}
+
+a{
+  text-decoration: none;
+  color: #010203;
+}
+
+.flashcardset_card_info {
+  display: flex;
+  justify-content: space-between; /* Pushes type left, date right */
+  align-items: center;
+}
+
+/* This ensures the score div stays left-aligned */
+.score_wrapper {
+  display: flex;
+  justify-content: flex-start; /* Aligns the score box to the left */
+}
+
+.flashcardset_score {
+  background-color: #f0f0f0; /* Light gray background */
+  border: 2px solid black; /* Solid black border */
+  padding: 5px 10px; /* Adds space inside the box */
+  border-radius: 5px; /* Slightly rounded corners */
+  font-weight: bold;
+  font-family: "Roboto Mono", serif;
+  color: black;
+  text-align: left; /* Align text inside the box */
+  width: fit-content;
+  margin-top: 5px; /* Adds space below type */
+}
+
+.correct_answer{
+  white-space: pre-line;
+}
+.incorrect_answer{
+  white-space: pre-line;
+}
+#form_submit_btn{
+  display: flex;
+  margin-left: 50%;
+  margin-bottom: 1rem;
+  background-color: #68B76C;
+  border: solid 0.5px black
+
+}
+.verse_text{
+font-family: "Noto Naskh Arabic", serif;
+font-weight: 500;
+font-style: normal;
+font-size: 2rem;
+white-space: pre-line;
+color: black;
+}
+.form-select-sm{
+  width: auto;
+  border: solid 0.5px black;
+  margin-bottom: auto;
+
+}
+.carousel-inner{
+  border: solid 1px black;
+  background-color: white;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+}
+
+.playback_controls{
+  margin-bottom: 1rem;
+}
+
+.record_btn, .stop_btn{
+  border-radius: 15px;
+}
+
+.flashcard_image{
+  max-height: 200px;
+  filter: blur(8px);
+}
+
+#form_page{
+  margin-top: 2rem;
+  background-color: #A4D1A6;
+  border: black solid 1px;
+}
+
+#flashcard_creation_form{
+  display: flex;
+  justify-content: center;
+}
+.form-group {
+  margin-bottom: 15px;
+}
+label {
+  display: block;
+  font-weight: bold;
+}
+input, select, button {
+  margin-top: 5px;
+}
+.id-dropdown, .juz-dropdown {
+  margin-top: 5px;
+  margin-left: 5%;
+}
+.horizontal-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  margin-left: 30%;
+}
+
+.add_field_btn{
+  border-radius: 5px;
+  background-color: lightgreen;
+  color: white;
+}
+
+.remove_field_btn{
+  border-radius: 5px;
+  background-color: red;
+  color: white;
+}
+
+.select_container{
+  display: flex;
+  justify-content: flex-start;
+}

@@ -1,15 +1,17 @@
 - Update Verse Selection
 - Save Form options
 - favicon
-- Flashcard folders
-- Better randomization
-- Arabic keyboard
+- fix by tags
+- flashcard verse details
 - User stats
 - Phrase next button
+- Deck name
 - Check audio validity
 - Category dropdown or input
 - Plural, masc, fem, present, verb, noun
 - Custom Flashcards
+- Better randomization
+- Arabic keyboard
 - Fix word transliteration
 - Smarter answer comparison
 - Move all scripts to static
@@ -20,3 +22,4 @@
 - Fix Show all images button
 - Fix byTags partial match
 - Verse selection audio
+- Flashcard folders

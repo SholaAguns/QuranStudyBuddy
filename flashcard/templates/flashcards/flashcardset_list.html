@@ -3,16 +3,23 @@
 {% load django_bootstrap5 %}
 
 {% block content %}
-<link href="{% static 'css/flashcard/flashcardset_detail.css' %}" rel="stylesheet"/>
-<div class="container budget_heading" >
+<link href="{% static 'css/flashcardset_style.css' %}" rel="stylesheet"/>
+<div class="container page_title" >
         <h2>My Flashcards</h2>
 </div>
     {% if user.is_authenticated %}
-        <div id="phrase_controls" class="container" align="center">
-        <br><br>
-        <a href="{% url 'flashcards:add_flashcardset' %}" role="button" class="btn btn-outline-secondary w-80">Create Flashcards Set</a>
-        <button type="submit" class="btn btn-danger" id="delete_selected_button" disabled>Delete Selected</button>
-        </div><br><br>
+    <div class="dropdown options_controls" align="right">
+      <button class="btn btn-outline-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="bi bi-list"></i>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <li><a class="dropdown-item" id="select_all_button" href="#">Select All</a></li>
+        <li><a class="dropdown-item" id="delete_selected_button" href="#" disabled>Delete</a></li>
+      </ul>
+    </div>
+    <div class="controls container">
+      <a href="{% url 'flashcards:add_flashcardset' %}" role="button" class="btn btn-outline-secondary w-80">+ Create Flashcard Deck</a>
+    </div>
     {% endif %}
 <div class="flashcardset-tabs">
   <ul class="nav nav-tabs justify-content-center">
@@ -28,32 +35,11 @@
   <form id="delete_selected_form" method="POST" action="{% url 'flashcards:delete_flashcardsets' %}">
       {% csrf_token %}
       <div class="swap_div" id="incompleted_sets_div">
-          {% for flashcardset in flashcardset_list %}
-            {% if flashcardset.score is None %}
-              <div class="flashcardset-item">
-                  <h4>
-                    <a href="{% url 'flashcards:flashcardset_detail' pk=flashcardset.id %}">{{ flashcardset.title|truncatechars:28  }}</a>
-                    <input  type="checkbox" name="selected_flashcardsets" value="{{ flashcardset.id }}" class="checkbox">
-                  </h4>
-                  <hr>
-              </div>
-            {% endif %}
-          {% endfor %}
+          {% include 'flashcards/snippets/new_flashcardset_list_results.html' %}
       </div>
       <div class="swap_div" id="completed_sets_div" style="display: none;">
-          {% for flashcardset in flashcardset_list %}
-            {% if flashcardset.score is not None %}
-              <div class="flashcardset-item" >
-                  <h4>
-                    <a href="{% url 'flashcards:flashcardset_detail' pk=flashcardset.id %}">{{ flashcardset.title|truncatechars:28  }}</a>
-                    <input  type="checkbox" name="selected_flashcardsets" value="{{ flashcardset.id }}" class="checkbox">
-                  </h4>
-                  <hr>
-              </div>
-            {% endif %}
-          {% endfor %}
+          {% include 'flashcards/snippets/complete_flashcardset_list_results.html' %}
       </div>
-
   </form>
 </div>
 <script src="{% static 'js/delete_selected.js' %}"></script>

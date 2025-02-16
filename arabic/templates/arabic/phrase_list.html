@@ -3,24 +3,23 @@
 {% load django_bootstrap5 %}
 
 {% block content %}
-<link href="{% static 'css/phrase/phrase_style.css' %}" rel="stylesheet"/>
+<link href="{% static 'css/phrase_style.css' %}" rel="stylesheet"/>
 <div class="container page_title" >
         <h2>My Phrases</h2>
 </div>
     {% if user.is_authenticated %}
-        <div id="phrase_controls" class="container" align="center">
-        <br><br>
-        <div class="dropdown" align="right">
-          <button class="btn btn-outline-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-list"></i>
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <li><a class="dropdown-item" id="select_all_button" href="#">Select All</a></li>
-            <li><a class="dropdown-item" id="delete_selected_button" href="#" disabled>Delete</a></li>
-          </ul>
-        </div>
-        <a href="{% url 'arabic:add_phrase' %}" role="button" class="btn btn-outline-secondary w-80">+ Create Phrase</a>
-        </div><br><br>
+    <div class="dropdown options_controls" align="right">
+      <button class="btn btn-outline-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="bi bi-list"></i>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <li><a class="dropdown-item" id="select_all_button" href="#">Select All</a></li>
+        <li><a class="dropdown-item" id="delete_selected_button" href="#" disabled>Delete</a></li>
+      </ul>
+    </div>
+    <div class="controls container">
+      <a href="{% url 'arabic:add_phrase' %}" role="button" class="btn btn-outline-secondary w-80">+ Create Phrase</a>
+    </div>
     {% endif %}
 <div class="container" align="center">
   <input type="text" id="searchBox" placeholder="Search..." class="form-control mb-4" style="max-width: 300px;" oninput="filterPhrases()">

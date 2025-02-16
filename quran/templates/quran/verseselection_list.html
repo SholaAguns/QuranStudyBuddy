@@ -8,7 +8,7 @@
         <h2>My Verse Selections</h2>
 </div>
     {% if user.is_authenticated %}
-        <div id="phrase_controls" class="container" align="center">
+        <div id="controls" class="container" align="center">
         <br><br>
         <a href="{% url 'quran:verse_selection_form' %}" role="button" class="btn btn-outline-secondary w-80">Create Verse Selection</a>
         <button type="submit" class="btn btn-danger" id="delete_selected_button" disabled>Delete Selected</button>

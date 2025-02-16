@@ -4,7 +4,7 @@
             <input type="checkbox" id="show-all-images-checkbox"> Show All Images
         </span>
   <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="false">
-    <div class="carousel-inner" align="center">
+    <div class="carousel-inner">
       {% for flashcard in flashcardset.flashcards.all %}
         <div class="carousel-item {% if forloop.first %}active{% endif %}" data-id="{{ flashcard.id }}">
             <p class="{% if  flashcardset.type != "Phrase" %}verse_text{% endif %}">
@@ -18,13 +18,13 @@
             </p>
               {% if flashcard.image %}
                   <div class="image-container">
-                      <img src="{{ flashcard.image.url }}" alt="Question Image" class="flashcard-image" style="max-height: 200px; filter: blur(8px);">
+                      <img src="{{ flashcard.image.url }}" alt="Question Image" class="flashcard_image">
                       <br>
                       <input type="checkbox" class="show-image-checkbox"> Show Image
                   </div><br><br>
               {% endif %}
             {% if "Verse" in flashcardset.type %}
-                <div class="mb-3">
+                <div class="mb-3 user_input" align="center">
                   <select name="user_answer_{{ flashcard.id }}" class="form-select form-select-sm" aria-label=".form-select-sm example">
                     <option selected>Choose start chapter</option>
                       {% for chapter in chapters %}
@@ -63,7 +63,7 @@
       <span class="visually-hidden">Next</span>
     </button>
     </div>
-    <div align="center">
+    <div>
         <button type="submit" class="btn btn-primary mt-4" id="form_submit_btn">Submit</button>
     </div>
 </form>
