@@ -183,6 +183,7 @@ def submit_flashcardset_form(request):
             new_flashcardset = dispatch_table[request_type]()
             #return HttpResponseRedirect(reverse('flashcards:flashcardset_detail', kwargs={'pk': new_flashcardset.id}))
             redirect_url = reverse('flashcards:flashcardset_detail', kwargs={'pk': new_flashcardset.id})
+            print(f"URL: {redirect_url}")
             return JsonResponse({'redirect_url': redirect_url})
         except Exception as e:
             traceback.print_exc()

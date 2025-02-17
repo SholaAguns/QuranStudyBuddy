@@ -17,10 +17,10 @@
               {% endif %}
             </p>
               {% if flashcard.image %}
-                  <div class="image-container">
+                  <div class="image_container">
                       <img src="{{ flashcard.image.url }}" alt="Question Image" class="flashcard_image">
                       <br>
-                      <input type="checkbox" class="show-image-checkbox"> Show Image
+                      <input type="checkbox" class="show_image_checkbox"> Show Image
                   </div><br><br>
               {% endif %}
             {% if "Verse" in flashcardset.type %}
@@ -37,7 +37,7 @@
                   <input type="hidden" id="audio_data_{{ flashcard.id }}" class="audio_data" name="audio_data_{{ flashcard.id }}">
                 </div>
             {% else %}
-          <input type="text" name="user_answer_{{ flashcard.id }}" placeholder="Your Answer" size="50">
+          <input class="text_answer" type="text" name="user_answer_{{ flashcard.id }}" placeholder="Your Answer" size="50">
             {% endif %}
         </div>
       {% endfor %}

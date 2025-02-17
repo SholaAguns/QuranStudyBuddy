@@ -4,16 +4,16 @@
     const showAllImagesButton = document.getElementById("show-all-images-checkbox");
 
     showAllImagesButton.addEventListener("change", function () {
-      document.querySelectorAll('.show-image-checkbox').forEach(checkbox => {
+      document.querySelectorAll('.show_image_checkbox').forEach(checkbox => {
         if (this.checked) {
           checkbox.checked = true; // Check all checkboxes
-          const image = checkbox.closest('.image-container').querySelector('.flashcard-image');
+          const image = checkbox.closest('.image_container').querySelector('.flashcard_image');
           if (image) {
             image.style.filter = "none"; // Remove blur from all images
           }
         } else {
           checkbox.checked = false; // Check all checkboxes
-          const image = checkbox.closest('.image-container').querySelector('.flashcard-image');
+          const image = checkbox.closest('.image_container').querySelector('.flashcard_image');
           if (image) {
             image.style.filter = "blur(8px)"; // Remove blur from all images
           }
@@ -23,9 +23,9 @@
     });
 
     // Add event listener to all checkboxes to toggle image visibility
-    document.querySelectorAll('.show-image-checkbox').forEach((checkbox, index) => {
+    document.querySelectorAll('.show_image_checkbox').forEach((checkbox, index) => {
       checkbox.addEventListener('change', function () {
-        const image = checkbox.closest('.image-container').querySelector('.flashcard-image');
+        const image = checkbox.closest('.image_container').querySelector('.flashcard_image');
 
         // Toggle blur on image based on checkbox state
         if (this.checked) {

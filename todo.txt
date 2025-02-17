@@ -1,10 +1,11 @@
 - Update Verse Selection
 - Save Form options
 - favicon
-- fix by tags
+- fix unanwsered for non-audio
 - flashcard verse details
 - User stats
 - Phrase next button
+- Reset flashcard form on change
 - Deck name
 - Check audio validity
 - Category dropdown or input

@@ -68,12 +68,9 @@ a{
   white-space: pre-line;
 }
 #form_submit_btn{
-  display: flex;
-  margin-left: 50%;
   margin-bottom: 1rem;
   background-color: #68B76C;
   border: solid 0.5px black
-
 }
 .verse_text{
 font-family: "Noto Naskh Arabic", serif;
@@ -114,12 +111,26 @@ color: black;
   margin-top: 2rem;
   background-color: #A4D1A6;
   border: black solid 1px;
+  border-radius: 8px;
 }
 
 #flashcard_creation_form{
   display: flex;
   justify-content: center;
 }
+
+#flashcard_form{
+    width: 50%; /* Adjust this width as needed */
+    min-width: 400px; /* Ensure it's not too small */
+    background-color: #A5C399; /* Light green background like in your UI */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    margin-bottom: 2rem;
+    margin-top: 2rem;
+    text-align: center;
+}
+
 .form-group {
   margin-bottom: 15px;
 }
@@ -134,18 +145,29 @@ input, select, button {
   margin-top: 5px;
   margin-left: 5%;
 }
-.horizontal-group {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 15px;
-  margin-left: 30%;
+.select_container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Ensures child elements stay centered */
+}
+.verseRangeContainer{
+  display: flex; /* Arrange items in a row */
+  align-items: center; /* Align them vertically */
+}
+.horizontal_group {
+  display: flex; /* Arrange items in a row */
+  align-items: center; /* Align them vertically */
+  gap: 10px; /* Add spacing between elements */
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
 }
 
 .add_field_btn{
   border-radius: 5px;
   background-color: lightgreen;
   color: white;
+  height: 2rem;
 }
 
 .remove_field_btn{
@@ -154,7 +176,7 @@ input, select, button {
   color: white;
 }
 
-.select_container{
-  display: flex;
-  justify-content: flex-start;
+
+.text_answer{
+  margin-bottom: 1rem;
 }

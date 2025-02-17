@@ -22,6 +22,9 @@ $('#serviceType').change(function () {
          case "Verse":
             label = "Add Chapter";
             break;
+        case "VerseSelection":
+           label = "Add Verse Selection";
+           break;
         case "Phrase":
             label = "Add Phrase";
             break;
@@ -134,7 +137,7 @@ $(document).on('click', '.removeJuzField', function () {
 });
 
 // Form submission
-$('#flashcardForm').submit(function (e) {
+$('#flashcard_form').submit(function (e) {
     e.preventDefault();
 
     const rangeStart = parseInt($('#rangeStart').val(), 10);
