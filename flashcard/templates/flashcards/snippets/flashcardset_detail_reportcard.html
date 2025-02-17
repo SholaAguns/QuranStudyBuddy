@@ -17,102 +17,12 @@
     </div>
   </div>
   <div class="swap_div" id="all_swap_div">
-    {% for flashcard in flashcardset.flashcards.all %}
-    <div class="card my-3">
-      <div class="card-body">
-        <p class="{% if  flashcardset.type != "Phrase" %}verse_text{% endif %}">
-          {{ flashcard.question }}
-          {%if flashcard.selected_audio %}
-            <i class="bi bi-volume-up" onclick="document.getElementById('audio-{{ flashcard.id }}').play()"></i>
-            <audio id="audio-{{ flashcard.id }}" class="flashcard-audio" data-flashcard-id="{{ flashcard.id }}" style="width: 100%;">
-                <source src="{{ flashcard.selected_audio }}" type="audio/mp3"/>
-            </audio>
-          {% endif %}
-        </p>
-        {%if flashcard.audio_answer %}
-        <p> Your audio recording:
-          <audio controls id="audio-answer-{{ flashcard.id }}" class="flashcard-audio-answer" data-flashcard-id="{{ flashcard.id }}" style="width: 100%;">
-              <source src="{{ flashcard.audio_answer.url }}" type="audio/mp3"/>
-          </audio>
-        </p>
-        {% endif %}
-
-          {% if flashcard.correct_answer_given %}
-              <span class="correct_answer">
-                  <p class="text-start">Your Answer: {{ flashcard.user_answer | safe }} <span class="green-tick">✔️</span></p>
-                  <p class="text-start">Acceptable Answers: {{ flashcard.answer | safe }}</p>
-                  {% if  flashcard.info %}
-                  <p>Info:</p>
-                  <p class="{% if  flashcardset.type != "Phrase" %}text-end verse_text{% endif %}">{{ flashcard.info | safe }}</p>
-                  {% endif %}
-              </span>
-              <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" onchange="correct_answer( {{flashcard.id}} )" id="{{flashcard.id}}_switch" checked>
-                <label class="form-check-label" for="flexSwitchCheckChecked">Correct</label>
-              </div>
-          {% else %}
-              <span class="incorrect_answer">
-                  <p class="text-start">Your Answer: {{ flashcard.user_answer | safe }} <span class="red-cross">❌</span></p>
-                  <p class="text-start">Acceptable Answers: {{ flashcard.answer | safe }}</p>
-                  {% if  flashcard.info %}
-                  <p>Info:</p>
-                  <p class="{% if  flashcardset.type != "Phrase" %}text-end verse_text{% endif %}">{{ flashcard.info | safe }}</p>
-                  {% endif %}
-              </span>
-              <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" onchange="correct_answer( {{flashcard.id}} )" id="{{flashcard.id}}_switch">
-                <label class="form-check-label" for="flexSwitchCheckChecked">Incorrect</label>
-              </div>
-          {% endif %}
-        </div>
-      </div>
-      {% endfor %}
+    {% include 'flashcards/snippets/all_answers_report.html' %}
   </div>
-        <div class="swap_div" id="correct_swap_div" style="display: none;">
-          {% for flashcard in flashcardset.flashcards.all %}
-          {% if flashcard.correct_answer_given %}
-          <div class="card my-3">
-              <div class="card-body">
-                <p class="{% if  flashcardset.type != "Phrase" %}verse_text{% endif %}">{{ flashcard.question }}</p>
-                      <span class="correct_answer">
-                          <p class="text-start">Your Answer: {{ flashcard.user_answer | safe }} <span class="green-tick">✔️</span></p>
-                          <p class="text-start">Acceptable Answers: {{ flashcard.answer | safe }}</p>
-                          {% if  flashcard.info %}
-                          <p>Info:</p>
-                          <p class="{% if  flashcardset.type != "Phrase" %}text-end verse_text info_text{% endif %}">{{ flashcard.info | safe }}</p>
-                          {% endif %}
-                      </span>
-                      <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" role="switch" onchange="correct_answer( {{flashcard.id}} )" id="{{flashcard.id}}_switch" checked>
-                        <label class="form-check-label" for="flexSwitchCheckChecked">Correct</label>
-                      </div>
-
-                </div>
-            </div>
-            {% endif %}
-            {% endfor %}
-        </div>
-        <div class="swap_div" id="incorrect_swap_div" style="display: none;">
-          {% for flashcard in flashcardset.flashcards.all %}
-          {% if not flashcard.correct_answer_given %}
-          <div class="card my-3">
-              <div class="card-body">
-                <p class="{% if  flashcardset.type != "Phrase" %}verse_text{% endif %}">{{ flashcard.question }}</p>
-                  <span class="incorrect_answer">
-                      <p class="text-start">Your Answer: {{ flashcard.user_answer | safe }} <span class="red-cross">❌</span></p>
-                      <p class="text-start">Acceptable Answers: {{ flashcard.answer | safe }}</p>
-                      {% if  flashcard.info %}
-                      <p>Info:</p>
-                      <p class="{% if  flashcardset.type != "Phrase" %}text-end verse_text{% endif %}">{{ flashcard.info | safe }}</p>
-                      {% endif %}
-                  </span>
-                  <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" onchange="correct_answer( {{flashcard.id}} )" id="{{flashcard.id}}_switch">
-                    <label class="form-check-label" for="flexSwitchCheckChecked">Incorrect</label>
-                  </div>
-              </div>
-            </div>
-            {% endif %}
-            {% endfor %}
-        </div>
+  <div class="swap_div" id="correct_swap_div" style="display: none;">
+    {% include 'flashcards/snippets/correct_answers_report.html' %}
+  </div>
+  <div class="swap_div" id="incorrect_swap_div" style="display: none;">
+    {% include 'flashcards/snippets/incorrect_answers_report.html' %}
+  </div>
 </div>

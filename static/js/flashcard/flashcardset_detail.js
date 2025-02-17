@@ -97,7 +97,7 @@
     // Form submission validation
     form.addEventListener("submit", function (event) {
         event.preventDefault();
-
+        const flashcardsetId = document.getElementById("flashcardset").getAttribute("data-id");
         const answers = {};
         const audioAnswers = {};
         let unansweredFlashcards = [];
@@ -131,7 +131,7 @@
             if (confirmSubmission) {
               const csrfToken = document.querySelector("[name='csrfmiddlewaretoken']").value;
 
-              fetch(`/flashcards/submit_flashcardset_answers/{{ flashcardset.id }}/`, {
+              fetch(`/flashcards/submit_flashcardset_answers/${flashcardsetId}/`, {
                   method: "POST",
                   headers: {
                       "Content-Type": "application/json",
@@ -163,7 +163,7 @@
             // Submit form via AJAX
             const csrfToken = document.querySelector("[name='csrfmiddlewaretoken']").value;
 
-            fetch(`/flashcards/submit_flashcardset_answers/{{ flashcardset.id }}/`, {
+            fetch(`/flashcards/submit_flashcardset_answers/${flashcardsetId}/`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

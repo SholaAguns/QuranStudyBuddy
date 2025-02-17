@@ -1,0 +1,54 @@
+{% for flashcard in flashcardset.flashcards.all %}
+<div class="card my-3">
+  <div class="card-body">
+    <div class="flashcard_question_report">
+      {%if flashcard.selected_audio %}
+      <div class="flashcard_audio">
+        <i class="bi bi-volume-up" onclick="toggleAudio('{{ flashcard.id }}')"></i>
+        <audio id="audio-{{ flashcard.id }}" class="flashcard-audio" data-flashcard-id="{{ flashcard.id }}">
+            <source src="{{ flashcard.selected_audio }}" type="audio/mp3"/>
+        </audio>
+      </div>
+      {% endif %}
+        <p class="{% if  flashcardset.type != "Phrase" %}verse_text{% endif %}">
+          {{ flashcard.question }}
+        </p>
+    </div>
+    {%if flashcard.audio_answer %}
+    <p> Your audio recording:
+      <audio controls id="audio-answer-{{ flashcard.id }}" class="flashcard-audio-answer" data-flashcard-id="{{ flashcard.id }}" style="width: 100%;">
+          <source src="{{ flashcard.audio_answer.url }}" type="audio/mp3"/>
+      </audio>
+    </p>
+    {% endif %}
+
+      {% if flashcard.correct_answer_given %}
+          <span class="correct_answer">
+              <p class="text-start">Your Answer: {{ flashcard.user_answer | safe }} <span class="green-tick">✔️</span></p>
+              <p class="text-start">Acceptable Answers: {{ flashcard.answer | safe }}</p>
+              {% if  flashcard.info %}
+              <p>Info:</p>
+              <p class="{% if  flashcardset.type != "Phrase" %}text-end verse_text{% endif %}">{{ flashcard.info | safe }}</p>
+              {% endif %}
+          </span>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" onchange="correct_answer( {{flashcard.id}} )" id="{{flashcard.id}}_switch" checked>
+            <label class="form-check-label" for="flexSwitchCheckChecked">Correct</label>
+          </div>
+      {% else %}
+          <span class="incorrect_answer">
+              <p class="text-start">Your Answer: {{ flashcard.user_answer | safe }} <span class="red-cross">❌</span></p>
+              <p class="text-start">Acceptable Answers: {{ flashcard.answer | safe }}</p>
+              {% if  flashcard.info %}
+              <p>Info:</p>
+              <p class="{% if  flashcardset.type != "Phrase" %}text-end verse_text{% endif %}">{{ flashcard.info | safe }}</p>
+              {% endif %}
+          </span>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" onchange="correct_answer( {{flashcard.id}} )" id="{{flashcard.id}}_switch">
+            <label class="form-check-label" for="flexSwitchCheckChecked">Incorrect</label>
+          </div>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}

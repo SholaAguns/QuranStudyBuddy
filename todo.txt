@@ -5,6 +5,7 @@
 - flashcard verse details
 - User stats
 - Phrase next button
+- Rename phrase
 - Reset flashcard form on change
 - Deck name
 - Check audio validity

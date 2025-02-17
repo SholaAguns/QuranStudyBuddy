@@ -4,7 +4,7 @@
         <a href="{% url 'flashcards:flashcardset_detail' pk=flashcardset.id %}">
             <div class="card-body">
               <div class="text-end">
-                <input type="checkbox" name="selected_flashcardsets" value="{{ phrase.id }}" class="checkbox">
+                <input type="checkbox" name="selected_flashcardsets" value="{{ flashcardset.id }}" class="checkbox">
               </div>
                 <h3 class="card-title flashcardset_text">
                   {{ flashcardset.title|truncatechars:28  }}

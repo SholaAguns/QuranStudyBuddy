@@ -180,3 +180,26 @@ input, select, button {
 .text_answer{
   margin-bottom: 1rem;
 }
+
+.flashcard_question {
+    display: flex;
+    align-items: center;  /* Aligns items (icon + text) in a single line */
+    gap: 10px;           /* Adds spacing between the icon and the text */
+    justify-content: center;
+    margin-left: 2rem;
+    margin-right: 2rem;
+}
+
+.flashcard_question_report{
+  display: flex;
+  align-items: center;  /* Aligns items (icon + text) in a single line */
+  gap: 10px;           /* Adds spacing between the icon and the text */
+  justify-content: start;
+  margin-left: 2rem;
+  margin-right: 2rem;
+}
+
+.flashcard_audio i {
+    cursor: pointer;  /* Makes the volume icon clickable */
+    font-size: 20px;  /* Adjust the size if needed */
+}

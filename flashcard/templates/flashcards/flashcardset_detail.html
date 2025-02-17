@@ -5,25 +5,27 @@
 {% block content %}
 
 <link href="{% static 'css/flashcardset_style.css' %}" rel="stylesheet"/>
+<div id="flashcardset" data-id="{{ flashcardset.id }}"></div>
 {% if not flashcardset.flashcards.all %}
 <div class="jumbotron" align=center>
   <h2>No {{flashcardset.type}}s returned</h2>
 </div>
 {% else %}
-<div class="container page_title">
-    <a href="{% url 'flashcards:update_flashcardset' pk=flashcardset.id %}">
-        <h2>{{ flashcardset.title }}</h2>
-    </a>
-    <h5>{{ flashcardset.type }}</h5>
-      <div class="container">
-              <div id="controls" class="container" align="center">
-                {% if flashcardset.score is not None %}
-                  <br><br>
-                  <a href="{% url 'flashcards:delete_flashcardset' pk=flashcardset.id %}" role="button" class="btn btn-outline-danger w-80">Delete Flashcard Deck</a>
-              </div>
-              <br><br>
-          {% endif %}
-      </div>
+<div class="container">
+  <a class="page_title" href="{% url 'flashcards:update_flashcardset' pk=flashcardset.id %}">
+      <h2>{{ flashcardset.title }}</h2>
+  </a>
+
+  <div class="dropdown options_controls" align="right">
+    <button class="btn btn-outline-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+      <i class="bi bi-list"></i>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <li><a class="dropdown-item" href="{% url 'flashcards:delete_flashcardset' pk=flashcardset.id %}" id="select_all_button" >Delete</a></li>
+    </ul>
+  </div>
+  <h5>{{ flashcardset.type }}</h5>
+
     {% if flashcardset.type == "Verse" %}
       <div class="container" align="right">
         <form method="get">
@@ -50,5 +52,6 @@
 {% endif %}
 <script src="{% static 'js/swap_tabs.js' %}"></script>
 <script src="{% static 'js/flashcard/correct_answer.js' %}"></script>
+<script src="{% static 'js/flashcard/toggle_audio.js' %}"></script>
 <script src="{% static 'js/flashcard/flashcardset_detail.js' %}"></script>
 {% endblock %}

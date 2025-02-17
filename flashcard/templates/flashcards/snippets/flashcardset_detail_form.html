@@ -7,15 +7,19 @@
     <div class="carousel-inner">
       {% for flashcard in flashcardset.flashcards.all %}
         <div class="carousel-item {% if forloop.first %}active{% endif %}" data-id="{{ flashcard.id }}">
-            <p class="{% if  flashcardset.type != "Phrase" %}verse_text{% endif %}">
-              {{ flashcard.question }}
-              {%if flashcard.selected_audio %}
-                <i class="bi bi-volume-up" onclick="document.getElementById('audio-{{ flashcard.id }}').play()"></i>
-                <audio id="audio-{{ flashcard.id }}" class="flashcard-audio" data-flashcard-id="{{ flashcard.id }}" style="width: 100%;">
-                    <source src="{{ flashcard.selected_audio }}" type="audio/mp3"/>
-                </audio>
-              {% endif %}
-            </p>
+          <div class="flashcard_question">
+            {%if flashcard.selected_audio %}
+            <div class="flashcard_audio">
+              <i class="bi bi-volume-up" onclick="toggleAudio('{{ flashcard.id }}')"></i>
+              <audio id="audio-{{ flashcard.id }}" class="flashcard-audio" data-flashcard-id="{{ flashcard.id }}">
+                  <source src="{{ flashcard.selected_audio }}" type="audio/mp3"/>
+              </audio>
+            </div>
+            {% endif %}
+              <p class="{% if  flashcardset.type != "Phrase" %}verse_text{% endif %}">
+                {{ flashcard.question }}
+              </p>
+          </div>
               {% if flashcard.image %}
                   <div class="image_container">
                       <img src="{{ flashcard.image.url }}" alt="Question Image" class="flashcard_image">
