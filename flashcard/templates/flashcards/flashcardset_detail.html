@@ -5,31 +5,42 @@
 {% block content %}
 
 <link href="{% static 'css/flashcardset_style.css' %}" rel="stylesheet"/>
-<div id="flashcardset" data-id="{{ flashcardset.id }}"></div>
-{% if not flashcardset.flashcards.all %}
-<div class="jumbotron" align=center>
-  <h2>No {{flashcardset.type}}s returned</h2>
-</div>
-{% else %}
-<div class="container">
-  <a class="page_title" href="{% url 'flashcards:update_flashcardset' pk=flashcardset.id %}">
-      <h2>{{ flashcardset.title }}</h2>
-  </a>
-
-  <div class="dropdown options_controls" align="right">
-    <button class="btn btn-outline-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-      <i class="bi bi-list"></i>
-    </button>
-    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-      <li><a class="dropdown-item" href="{% url 'flashcards:delete_flashcardset' pk=flashcardset.id %}" id="select_all_button" >Delete</a></li>
-    </ul>
+<div class="container" id="flashcardset_detail_page">
+  <div id="flashcardset" data-id="{{ flashcardset.id }}"></div>
+  {% if not flashcardset.flashcards.all %}
+  <div class="jumbotron">
+    <h2>No {{flashcardset.type}}s returned</h2>
   </div>
-  <h5>{{ flashcardset.type }}</h5>
+  {% else %}
+    <div class="container page_title"
+
+    <div class="container text-center mt-4 d-flex justify-content-between">
+      <div class="flex-grow-1 align-items-center">
+        <a href="{% url 'flashcards:update_flashcardset' pk=flashcardset.id %}">
+          <h2>{{ flashcardset.title }}</h2>
+        </a>
+      </div>
+
+      <div class="dropdown" align="right">
+          <button class="btn btn-outline-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-list"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton2">
+              <li><a class="dropdown-item" href="{% url 'flashcards:delete_flashcardset' pk=flashcardset.id %}">Delete</a></li>
+          </ul>
+      </div>
+
+      <div class="flex-grow-1 align-items-center">
+          <h5 class="text-muted">{{ flashcardset.type }}</h5>
+      </div>
+    </div>
+
+
 
     {% if flashcardset.type == "Verse" %}
       <div class="container" align="right">
         <form method="get">
-            <label for="translation">Select Audio Edition:</label>
+            <label for="translation">Select Reciter:</label>
             <select name="audio_edition" id="audio_edition" onchange="this.form.submit()">
                 {% for edition in available_audio_editions %}
                     <option value="{{ edition.identifier }}"
@@ -38,11 +49,11 @@
                     </option>
                 {% endfor %}
             </select>
-        </form><br><br>
+        </form>
       </div>
     {% endif %}
-</div><br><br><br>
-<div class="container flashcardset-main">
+</div>
+<div class="container flashcardset_main">
   {% if flashcardset.score is not None %}
       {% include 'flashcards/snippets/flashcardset_detail_reportcard.html' %}
   {% else %}

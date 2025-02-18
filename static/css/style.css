@@ -53,8 +53,9 @@
 }
 
 .options_controls{
-  align: right;
-  margin-right: 2rem;
+  position: absolute;
+    right: 15px;
+    top: 20px;
 }
 
 .swap_tab{
@@ -71,6 +72,9 @@ font-size: 30px;
 #chapterFields {
   max-height: 300px; /* Set a fixed height for the dropdown */
   overflow-y: auto; /* Enable vertical scrolling */
+}
+.center{
+  margin-left: 50%;
 }
 .response_links{
   font-size: 20px;

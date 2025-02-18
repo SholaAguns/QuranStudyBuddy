@@ -1,6 +1,6 @@
-<form id="flashcards_questions_form" method="post" enctype="multipart/form-data">
+<form id="flashcards_questions_form" method="post" align="center" enctype="multipart/form-data">
   {% csrf_token %}
-        <span style="{% if  flashcardset.type != "Phrase" %}display: none;{% endif %}">
+        <span class="center" style="{% if  flashcardset.type != "Phrase" %}display: none;{% endif %}">
             <input type="checkbox" id="show-all-images-checkbox"> Show All Images
         </span>
   <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="false">
@@ -30,7 +30,7 @@
             {% if "Verse" in flashcardset.type %}
                 <div class="mb-3 user_input" align="center">
                   <select name="user_answer_{{ flashcard.id }}" class="form-select form-select-sm" aria-label=".form-select-sm example">
-                    <option selected>Choose start chapter</option>
+                    <option selected>Choose a chapter</option>
                       {% for chapter in chapters %}
                           <option value="{{ chapter.name_simple }}">{{ chapter.id }} - {{ chapter.name_simple }}</option>
                       {% endfor %}

@@ -9,7 +9,7 @@
 -VerseSelection Form
 
 -VerseSelection List
--Flashcardset Detail
+
 -VerseSelection Detail
 
 -VerseSelection Confirm Delete
