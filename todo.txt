@@ -1,6 +1,9 @@
 - Update Verse Selection
 - Save Form options
 - favicon
+- VS List pagination and search
+- search by tag and category
+- Fitering by tag and category and name etc
 - fix unanwsered for non-audio
 - flashcard verse details
 - User stats

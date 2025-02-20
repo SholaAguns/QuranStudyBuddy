@@ -3,7 +3,7 @@
 {% load django_bootstrap5 %}
 
 {% block content %}
-<link href="{% static 'css/quran/verseselection.css' %}" rel="stylesheet"/>
+<link href="{% static 'css/quran_style.css' %}" rel="stylesheet"/>
 <div class="jumbotron chapter_heading container">
   <a href="{% url 'quran:verse_selection_detail' pk=verseselection.id %}"><h2 id="verseselection_title">
     <h2 id="chapter-name">

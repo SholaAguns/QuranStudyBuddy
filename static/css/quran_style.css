@@ -1,3 +1,7 @@
+.quran_page{
+  margin-top: 1rem;
+}
+
 .bi-volume-up{
 font-size: 18px;
 }
@@ -8,7 +12,7 @@ font-size: 30px;
     text-decoration: none;
     color: black;
 }
-.audio_controls{
+.quran_audio_controls{
     font-size: 20px;
 }
 #play-button {
@@ -22,5 +26,85 @@ font-size: 30px;
 }
 
 .selection-checkbox{
+  float: right;
+}
+
+
+.quran_words{
+
+}
+
+#chapter_list_table{
+
+}
+
+#chapter_list_page{
+
+}
+
+#chapter_detail_page{
+
+}
+
+.quran_translation_controls{
+  margin-bottom: 2rem;
+}
+
+#chapter_words_link{
+
+}
+
+.reciter_form{
+  margin-top: 1rem;
+}
+
+.translation_form{
+  margin-top: 1rem;
+}
+
+#chapter_verses{
+
+}
+
+.verse_card_wrapper{
+
+}
+
+#verse_selection_form_page{
+
+}
+
+#verse_selection_form{
+
+}
+
+#play-button {
+  border-radius: 8;
+  opacity: 80%
+}
+
+#pause-button{
+
+}
+
+#vs_list{
+}
+
+.verse_selection_item{
+  width: auto;
+  background-color: #A4D1A6;
+  text-align: center;
+  color: white;
+  text-decoration: none;
+  height: 7rem;
+  width: 35rem;
+}
+
+a{
+  text-decoration: none;
+  color: #010203;
+}
+.vs_list_checkbox{
+
   float: right;
 }

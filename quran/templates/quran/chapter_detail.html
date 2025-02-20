@@ -3,25 +3,25 @@
 {% load static %}
 
 {% block content %}
-<link href="{% static 'css/quran/verses_style.css' %}" rel="stylesheet"/>
-<div class="container chapter_heading">
-    <h2 id="chapter-name">
+<link href="{% static 'css/quran_style.css' %}" rel="stylesheet"/>
+<div class="container quran_page">
+    <h2 class="page_title">
       {{ chapter.name_simple }} ({{ translated_name.name }})
     </h2>
-    <div class="audio_controls">
+
+    <div class="quran_audio_controls">
         <button id="play-button"><i class="bi bi-play"></i></button>
         <button id="pause-button"  style="display:none;"><i class="bi bi-pause"></i></button>
         <button id="reset-button" style="display:none;"><i class="bi bi-stop"></i></button>
     </div>
 
 
-    <div class="container" align="right">
-      <h3>
+    <div class="container quran_translation_controls" align="right">
+      <h3 id="chapter_words_link">
         <a href="{% url 'quran:chapter_word_list' pk=chapter.id %}">All words</a>
       </h3>
-      <br><br>
-      <form method="get">
-          <label for="translation">Select Audio Edition:</label>
+      <form method="get" class="reciter_form">
+          <label for="translation">Select Reciter:</label>
           <select name="audio_edition" id="audio_edition" onchange="this.form.submit()">
               {% for edition in available_audio_editions %}
                   <option value="{{ edition.identifier }}"
@@ -30,47 +30,46 @@
                   </option>
               {% endfor %}
           </select>
-      </form><br><br>
-    <form method="get">
-        <label for="translation">Select Translation:</label>
-        <select name="translation" id="translation" onchange="this.form.submit()">
-            {% for translation in available_translations %}
-                <option value="{{ translation.resource_id }}"
-                        {% if selected_resource_id == translation.resource_id %}selected{% endif %}>
-                    Translation (Resource {{ translation.resource_id }})
-                </option>
-            {% endfor %}
-        </select>
-    </form>
-</div>
+      </form>
+      <form method="get" class="translation_form">
+          <label for="translation">Select Translation:</label>
+          <select name="translation" id="translation" onchange="this.form.submit()">
+              {% for translation in available_translations %}
+                  <option value="{{ translation.resource_id }}"
+                          {% if selected_resource_id == translation.resource_id %}selected{% endif %}>
+                      Translation (Resource {{ translation.resource_id }})
+                  </option>
+              {% endfor %}
+          </select>
+      </form>
+  </div>
 
-</div>
-
-<div class="container" align="center">
-    {% for verse in verses %}
-        <div class="card my-3">
-            <a href="{% url 'quran:verse_detail' pk=verse.id %}" class="verse_link">
-                <div class="card-body">
-                    <p class="text-start">{{ verse.verse_key }}</p>
-                    {% if verse %}
-                    <p class="text-end verse_text" style="direction: rtl;">{{ verse.text_uthmani }}</p>
-                    <p class="text-start">
-                        {% if verse.selected_translation %}
-                            {{ verse.selected_translation | safe }}
-                        {% else %}
-                            <em>Translation not available</em>
+  <div class="container" id="chapter_verses">
+      {% for verse in verses %}
+          <div class="card my-3">
+              <a href="{% url 'quran:verse_detail' pk=verse.id %}" class="verse_link">
+                  <div class="card-body">
+                      <p class="text-start">{{ verse.verse_key }}</p>
+                      {% if verse %}
+                      <p class="text-end verse_text" style="direction: rtl;">{{ verse.text_uthmani }}</p>
+                      <p class="text-start">
+                          {% if verse.selected_translation %}
+                              {{ verse.selected_translation | safe }}
+                          {% else %}
+                              <em>Translation not available</em>
+                          {% endif %}
+                      </p>
+                        {% if verse.selected_audio %}
+                        <audio controls id="audio-{{ verse.id }}" class="verse-audio" data-verse-id="{{ verse.id }}" style="width: 100%;">
+                            <source src="{{ verse.selected_audio.audio_path }}" type="audio/mp3"/>
+                        </audio>
                         {% endif %}
-                    </p>
-                      {% if verse.selected_audio %}
-                      <audio controls id="audio-{{ verse.id }}" class="verse-audio" data-verse-id="{{ verse.id }}" style="width: 100%;">
-                          <source src="{{ verse.selected_audio.audio_path }}" type="audio/mp3"/>
-                      </audio>
                       {% endif %}
-                    {% endif %}
-                </div>
-            </a>
-        </div>
-    {% endfor %}
+                  </div>
+              </a>
+          </div>
+      {% endfor %}
+  </div>
 </div>
 {% block extra_js %}
 {% endblock %}

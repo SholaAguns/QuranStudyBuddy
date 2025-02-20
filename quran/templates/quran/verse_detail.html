@@ -4,11 +4,14 @@
 
 {% block content %}
 
-<link href="{% static 'css/quran/verses_style.css' %}" rel="stylesheet"/>
-<div class="jumbotron chapter_heading container">
-    <a href="{% url 'quran:chapter_detail' pk=verse.chapter.id %}"><h2 id="chapter-name">{{ verse.verse_key }} {{ verse.chapter.name_simple }}</h2></a>
-    <div class="container" align="right">
-      <form method="get">
+<link href="{% static 'css/quran_style.css' %}" rel="stylesheet"/>
+<div class="jumbotron container quran_page">
+    <a href="{% url 'quran:chapter_detail' pk=verse.chapter.id %}">
+      <h2 class="page_title" id="chapter-name">{{ verse.verse_key }} {{ verse.chapter.name_simple }}</h2>
+    </a>
+
+    <div class="container quran_translation_controls" align="right">
+      <form method="get" class="reciter_form">
           <label for="translation">Select Audio Edition:</label>
           <select name="audio_edition" id="audio_edition" onchange="this.form.submit()">
               {% for edition in available_audio_editions %}
@@ -18,8 +21,8 @@
                   </option>
               {% endfor %}
           </select>
-      </form><br><br>
-    <form method="get">
+      </form>
+    <form method="get" class="translation_form">
         <label for="translation">Select Translation:</label>
         <select name="translation" id="translation" onchange="this.form.submit()">
             {% for translation in available_translations %}
@@ -31,10 +34,11 @@
         </select>
     </form>
 </div>
-<div class="row">
+
+<div class="row verse_card_wrapper">
 
   <div class="col-1 d-flex justify-content-center align-items-center position_arrows" id="previous_verse_arrow">
-    {%if previous_verse_id %}
+      {%if previous_verse_id %}
         <a href="{% url 'quran:verse_detail' pk=previous_verse_id %}">
             <i class="bi bi-arrow-left position-absolute left-arrow"></i>
         </a>
@@ -62,22 +66,22 @@
                     {% endif %}
                 </p>
             </div>
-        </div>
       </div>
+    </div>
 
-            <div class="col-1 d-flex justify-content-center align-items-center position_arrows" id="next_verse_arrow">
-              {%if next_verse_id %}
-                  <a href="{% url 'quran:verse_detail' pk=next_verse_id %}">
-                      <i class="bi bi-arrow-right position-absolute right-arrow"></i>
-                  </a>
-              {% endif %}
-            </div>
+    <div class="col-1 d-flex justify-content-center align-items-center position_arrows" id="next_verse_arrow">
+      {%if next_verse_id %}
+          <a href="{% url 'quran:verse_detail' pk=next_verse_id %}">
+              <i class="bi bi-arrow-right position-absolute right-arrow"></i>
+          </a>
+      {% endif %}
+    </div>
 
   </div>
 </div>
 <hr>
 
-<div class="container">
+<div class="container quran_words">
   <h3>Words</h3>
   <div  align="center">
     {% for word in words %}

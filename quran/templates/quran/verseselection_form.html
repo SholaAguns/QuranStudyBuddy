@@ -3,8 +3,10 @@
 {% load django_bootstrap5 %}
 
 {% block content %}
-<div class="container" >
-    <h2>Verse Selection form</h2><br><br>
+<link href="{% static 'css/quran_style.css' %}" rel="stylesheet"/>
+<div class="container verse_selection_form_page" >
+    <h2 class="page_title">Verse Selection form</h2>
+
          <form id="verse_selection_form" method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="mb-3">

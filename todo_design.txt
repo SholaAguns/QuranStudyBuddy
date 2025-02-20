@@ -5,13 +5,9 @@
 -Chapters List
 -Chapter Detail
 -Verse Detail
-
 -VerseSelection Form
-
 -VerseSelection List
-
 -VerseSelection Detail
-
 -VerseSelection Confirm Delete
 
 
