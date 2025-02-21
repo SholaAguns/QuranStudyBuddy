@@ -18,7 +18,8 @@
             <i class="bi bi-list"></i>
         </button>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton2">
-          <li><a class="dropdown-item" href="{% url 'quran:verse_selection_word_list' pk=verseselection.id %}">View All Words</a></li>
+            <li><a class="dropdown-item" href="{% url 'quran:update_verse_selection' pk=verseselection.id %}">Edit</a></li>
+            <li><a class="dropdown-item" href="{% url 'quran:verse_selection_word_list' pk=verseselection.id %}">View All Words</a></li>
             <li><a class="dropdown-item" href="{% url 'quran:delete_verse_selection' pk=verseselection.id %}">Delete</a></li>
         </ul>
     </div>

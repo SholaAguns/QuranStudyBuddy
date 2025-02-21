@@ -1,18 +1,18 @@
-- Update Verse Selection
-- Save Form options
-- favicon
-- VS List pagination and search
 - search by tag and category
+- VS List pagination and search
 - Fitering by tag and category and name etc
-- fix unanwsered for non-audio
 - flashcard verse details
-- User stats
 - Phrase next button
 - Rename phrase
 - Reset flashcard form on change
 - Deck name
-- Check audio validity
+- Save Form options
 - Category dropdown or input
+- favicon
+- User stats
+
+- fix unanwsered for non-audio
+- Check audio validity
 - Plural, masc, fem, present, verb, noun
 - Custom Flashcards
 - Better randomization
@@ -22,9 +22,13 @@
 - Move all scripts to static
 - Move all css to static
 - Add optional placeholders to forms
-- Logging
 - Remove comments
 - Fix Show all images button
 - Fix byTags partial match
 - Verse selection audio
 - Flashcard folders
+
+- Separate env files
+- Logging
+- Database
+- Prod deployment

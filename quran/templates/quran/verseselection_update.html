@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+<link href="{% static 'css/quran_style.css' %}" rel="stylesheet"/>
+<div class="container verse_selection_form_page" >
+    <h2 class="page_title">Verse Selection form</h2>
+
+         <form id="verse_selection_update_form" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="title" class="form-label">Title:</label>
+              <input class="form-control" type="text" name="title" placeholder="Title" required
+                     value="{{ verse_selection.title }}">
+            </div>
+            <div class="horizontal-group">
+              <label for="verseChapterRangeStart" class="form-label">Select Chapter:</label>
+                <select class="form-select" id="verseChapterRangeStart" name="verse_chapter_range_start">
+                    <option value="">Select range start</option>
+                </select>
+                <label for="verseRangeStart" class="form-label">Start Verse:</label>
+                  <select class="form-select" id="verseRangeStart" name="verse_range_start" required>
+                      <option value="">Select range start</option>
+                  </select>
+              </div>
+              <div class="horizontal-group">
+                  <label for="verseChapterRangeEnd" class="form-label">Select Chapter:</label>
+                  <select class="form-select" id="verseChapterRangeEnd" name="verse_chapter_range_end">
+                      <option value="">Select range end</option>
+                  </select>
+                <label for="verseRangeEnd" class="form-label">End Verse:</label>
+                <select class="form-select" id="verseRangeEnd" name="verse_range_end" required>
+                    <option value="">Select range end</option>
+                </select>
+              </div>
+            <br>
+            <button class="btn btn-outline-primary" type="submit">Submit</button>
+            <a onclick="javascript:history.back();" class="btn btn-outline-secondary">Cancel</a>
+        </form>
+</div>
+<script>
+    $(document).ready(function () {
+    // Load Chapter Options
+    loadExistingOptions('/flashcards/get_range_options/verse', '#verseChapterRangeStart', {{ verse_selection.start_chapter_id }});
+    loadExistingOptions('/flashcards/get_range_options/verse', '#verseChapterRangeEnd', {{ verse_selection.end_chapter_id }});
+    loadExistingOptions(`/flashcards/get_verses_options/{{ verse_selection.start_chapter_id }}`, '#verseRangeStart', {{ verse_selection.start_verse_id }});
+    loadExistingOptions(`/flashcards/get_verses_options/{{ verse_selection.end_chapter_id }}`, '#verseRangeEnd', {{ verse_selection.end_verse_id }});
+
+    // Load Verse Options
+    $('#verseChapterRangeStart').change(function () {
+    const startChapter = $(this).val();
+
+    if (startChapter) {
+      loadOptions(`/flashcards/get_verses_options/${startChapter}`, '#verseRangeStart');
+    }
+});
+
+$('#verseChapterRangeEnd').change(function () {
+    const endChapter = $(this).val();
+
+    if (endChapter) {
+      loadOptions(`/flashcards/get_verses_options/${endChapter}`, '#verseRangeEnd');
+    }
+});
+
+    function loadOptions(url, selector) {
+    $.get(url, function (data) {
+        const select = $(selector);
+        select.empty();
+        select.append(new Option('Select an option', ''));
+        data.options.forEach(option => {
+            select.append(new Option(option.label, option.value));
+        });
+    });
+}
+
+    function loadExistingOptions(url, selector, selectedValue) {
+        $.get(url, function (data) {
+            const select = $(selector);
+            select.empty();
+            select.append(new Option('Select an option', ''));
+            data.options.forEach(option => {
+                let newOption = new Option(option.label, option.value);
+                if (option.value == selectedValue) {
+                    newOption.selected = true;
+                }
+                select.append(newOption);
+            });
+        });
+    }
+});
+
+    // Form submission
+$('#verse_selection_update_form').submit(function (e) {
+    e.preventDefault();
+
+    const verseRangeStart = parseInt($('#verseRangeStart').val(), 10);
+    const verseRangeEnd = parseInt($('#verseRangeEnd').val(), 10);
+
+    if (isNaN(verseRangeStart) || isNaN(verseRangeEnd) || verseRangeEnd < verseRangeStart) {
+        alert('Error: The end of the range must be greater than the start.');
+        return;
+      }
+      const formData = $(this).serializeArray();
+
+    $.post('/quran/create_verse_selection', formData, function (response) {
+        if (response.redirect_url) {
+            window.location.href = response.redirect_url;
+        } else {
+            alert('Verse Selection created successfully!');
+        }
+    }).fail(function (xhr) {
+        alert('Form submission failed: ' + xhr.responseText);
+    });
+});
+</script>
+{% endblock %}
