@@ -74,6 +74,13 @@ font-size: 30px;
   max-height: 300px; /* Set a fixed height for the dropdown */
   overflow-y: auto; /* Enable vertical scrolling */
 }
+.create_btn{
+  margin-bottom: 1rem;
+  color: white !important;
+  background-color: #057d27 !important;
+  border: solid 0.5px black;
+  opacity: 90%;
+}
 .center{
   margin-left: 50%;
 }
