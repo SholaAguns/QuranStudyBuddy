@@ -21,7 +21,7 @@
       <a href="{% url 'arabic:add_phrase' %}" role="button" class="btn btn-outline-secondary w-80 create_btn"><i class="bi bi-plus"></i> Create Phrase</a>
     </div>
     {% endif %}
-<div class="container" align="center">
+<div class="container d-flex flex-column align-items-center">
   <input type="text" id="searchBox" placeholder="Search..." class="form-control mb-4" style="max-width: 300px;" oninput="filterPhrases()">
   <form id="delete_selected_form" method="POST" action="{% url 'arabic:delete_phrases' %}">
       {% csrf_token %}

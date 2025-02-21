@@ -129,6 +129,19 @@ class VerseSelectionWordList(TemplateView):
 
 class VerseSelectionList(LoginRequiredMixin, ListView):
     model = VerseSelection
+    paginate_by = 20
+
+    def get_queryset(self):
+        queryset = VerseSelection.objects.filter(user=self.request.user)
+        search_query = self.request.GET.get('q')
+        if search_query:
+            queryset = queryset.filter(title__icontains=search_query)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
 
 class VerseSelectionDetail(LoginRequiredMixin, DetailView):
     model = VerseSelection
@@ -243,7 +256,8 @@ def update_verse_selection(request, pk):
         except Exception as e:
             traceback.print_exc()
             return JsonResponse({'error': str(e)}, status=500)
-        return redirect('quran:verse_selection_detail', pk=verse_selection.id)
+        redirect_url = reverse('quran:verse_selection_detail', kwargs={'pk': verse_selection.id})
+        return JsonResponse({'redirect_url': redirect_url})
 
 
 

@@ -21,23 +21,34 @@
       <a href="{% url 'quran:verse_selection_form' %}" role="button" class="btn btn-outline-secondary w-80 create_btn"> <i class="bi bi-plus"></i>Create Verse Selection</a>
     </div>
     {% endif %}
-  <div class="container d-flex flex-column align-items-center" id="vs_list">
-    {% for selection in object_list %}
-    <div class="card my-3 verse_selection_item">
-        <a href="{% url 'quran:verse_selection_detail' pk=selection.id %}">
-            <div class="card-body">
-              <div class="text-end">
-                <input type="checkbox" name="selected_phrases" value="{{ selection.id }}" class="checkbox vs_list_checkbox">
-              </div>
-                <h3 class="card-title phrase_text">
-                  {{ selection.title}}
-                </h3>
-                  <p class="card-text text-start phrase_translation" >{{selection.title }}</p>
+    <div class="container d-flex flex-column align-items-center">
+        <input type="text" id="searchBox" placeholder="Search..." class="form-control mb-4" style="max-width: 300px;" oninput="filterVerseSelections()">
+
+        <form id="delete_selected_form" method="POST" action="{% url 'quran:delete_verse_selections' %}">
+            {% csrf_token %}
+        <div id="vs_list">
+        {% for selection in object_list %}
+            <div class="card my-3 verse_selection_item">
+                <a href="{% url 'quran:verse_selection_detail' pk=selection.id %}">
+                    <div class="card-body">
+                      <div class="text-end">
+                        <input type="checkbox" name="selected_verse_selections" value="{{ selection.id }}" class="checkbox vs_list_checkbox">
+                      </div>
+                        <h3 class="card-title phrase_text">
+                          {{ selection.title}}
+                        </h3>
+                          <p class="card-text text-start phrase_translation" >{{selection.title }}</p>
+                    </div>
+                </a>
             </div>
-        </a>
+            {% endfor %}
+            </div>
+        </form>
     </div>
-    {% endfor %}
-  </div>
+    <div id="pagination" class="pagination">
+        {% include 'quran/snippets/verseselection_list_pagination.html' %}
+    </div>
 </div>
 <script src="{% static 'js/delete_selected.js' %}"></script>
+<script src="{% static 'js/quran/filter_vs_list.js' %}"></script>
 {% endblock %}

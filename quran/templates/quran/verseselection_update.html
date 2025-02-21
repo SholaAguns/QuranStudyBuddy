@@ -104,11 +104,11 @@ $('#verse_selection_update_form').submit(function (e) {
       }
       const formData = $(this).serializeArray();
 
-    $.post('/quran/create_verse_selection', formData, function (response) {
+    $.post('/quran/verse_selection/{{ verse_selection.id }}/update', formData, function (response) {
         if (response.redirect_url) {
             window.location.href = response.redirect_url;
         } else {
-            alert('Verse Selection created successfully!');
+            alert('Verse Selection successfully updated!');
         }
     }).fail(function (xhr) {
         alert('Form submission failed: ' + xhr.responseText);

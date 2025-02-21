@@ -2,6 +2,8 @@
 -Login page
 -Logout page
 -Landing
+-Verse Selection font
+-Hide and resize delete checkbox
 
 
 

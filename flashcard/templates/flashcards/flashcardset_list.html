@@ -4,9 +4,8 @@
 
 {% block content %}
 <link href="{% static 'css/flashcardset_style.css' %}" rel="stylesheet"/>
-<div class="container page_title" >
-        <h2>My Flashcards</h2>
-</div>
+<div class="container" id="flashcard_list_page">
+    <h2 class="page_title">My Flashcards</h2>
     {% if user.is_authenticated %}
     <div class="dropdown options_controls" align="right">
       <button class="btn btn-outline-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
@@ -21,26 +20,27 @@
       <a href="{% url 'flashcards:add_flashcardset' %}" role="button" class="btn btn-outline-secondary w-80 create_btn"><i class="bi bi-plus"></i> Create Flashcard Deck</a>
     </div>
     {% endif %}
-<div class="flashcardset-tabs">
-  <ul class="nav nav-tabs justify-content-center">
-  <li class="nav-item">
-    <a class="nav-link active swap_tab"  id="incompleted_swap_tab"  href="#" onclick="swapTabs('incompleted_sets_div')">New</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link swap_tab" id="completed_swap_tab" href="#" onclick="swapTabs('completed_sets_div')">Completed</a>
-  </li>
-</ul>
-</div>
-<div class="container" align="center">
-  <form id="delete_selected_form" method="POST" action="{% url 'flashcards:delete_flashcardsets' %}">
-      {% csrf_token %}
-      <div class="swap_div" id="incompleted_sets_div">
-          {% include 'flashcards/snippets/new_flashcardset_list_results.html' %}
-      </div>
-      <div class="swap_div" id="completed_sets_div" style="display: none;">
-          {% include 'flashcards/snippets/complete_flashcardset_list_results.html' %}
-      </div>
-  </form>
+    <div class="flashcardset-tabs">
+      <ul class="nav nav-tabs justify-content-center">
+      <li class="nav-item">
+        <a class="nav-link active swap_tab"  id="incompleted_swap_tab"  href="#" onclick="swapTabs('incompleted_sets_div')">New</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link swap_tab" id="completed_swap_tab" href="#" onclick="swapTabs('completed_sets_div')">Completed</a>
+      </li>
+    </ul>
+    </div>
+    <div class="container" align="center">
+      <form id="delete_selected_form" method="POST" action="{% url 'flashcards:delete_flashcardsets' %}">
+          {% csrf_token %}
+          <div class="swap_div" id="incompleted_sets_div">
+              {% include 'flashcards/snippets/new_flashcardset_list_results.html' %}
+          </div>
+          <div class="swap_div" id="completed_sets_div" style="display: none;">
+              {% include 'flashcards/snippets/complete_flashcardset_list_results.html' %}
+          </div>
+      </form>
+    </div>
 </div>
 <script src="{% static 'js/delete_selected.js' %}"></script>
 <script src="{% static 'js/swap_tabs.js' %}"></script>

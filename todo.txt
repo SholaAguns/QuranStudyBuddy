@@ -1,15 +1,14 @@
-- search by tag and category
-- VS List pagination and search
+- search by tag and category (show tags)
 - Fitering by tag and category and name etc
 - flashcard verse details
 - Phrase next button
 - Rename phrase
 - Reset flashcard form on change
-- Deck name
-- Save Form options
-- Category dropdown or input
 - favicon
 - User stats
+- Deck name
+- Category dropdown or input
+- Save Form options
 
 - fix unanwsered for non-audio
 - Check audio validity
