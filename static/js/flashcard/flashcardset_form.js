@@ -10,6 +10,17 @@ $.get('/flashcards/get_service_types/', function (data) {
 
 // Fetch request types when service type changes
 $('#serviceType').change(function () {
+
+
+    document.querySelectorAll('.added_option').forEach(function(el) {
+        el.remove();
+    });
+
+
+    document.querySelectorAll('.select_container').forEach(function(el) {
+        el.style.display = 'none';
+    });
+
     const serviceType = $(this).val();
     const requestTypeSelect = $('#requestType');
     requestTypeSelect.empty();
@@ -107,7 +118,7 @@ function loadOptions(url, selector) {
 // Dynamic ID List
 $('#addIdField').click(function () {
     const idDropdown = `
-        <div class="id-dropdown">
+        <div class="added_option id-dropdown">
             <select class="id-select form-select-sm"></select>
             <button type="button" class="remove_field_btn removeIdField">Remove</button>
         </div>
@@ -119,7 +130,7 @@ $('#addIdField').click(function () {
 // Dynamic Juz List
 $('#addJuzField').click(function () {
     const juzDropdown = `
-        <div class="juz-dropdown">
+        <div class="added_option juz-dropdown">
             <select class="juz-select form-select-sm"></select>
             <button type="button" class="remove_field_btn removeJuzField">Remove</button>
         </div>

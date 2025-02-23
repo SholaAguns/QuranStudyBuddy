@@ -95,6 +95,10 @@ font-size: 30px;
     font-size: 20px;
     color: black;
 }
+.position_arrows{
+  size: 5rem;
+}
+
 .budget_heading{
     text-align: center;
 }

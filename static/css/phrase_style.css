@@ -17,9 +17,12 @@
     margin: 0 5px;
 }
 
+.position_arrows{
+  font-size: 3rem;
+}
+
 a{
   text-decoration: none;
-  color: #010203;
 }
 
 .phrase_item {

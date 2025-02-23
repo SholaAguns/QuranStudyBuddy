@@ -6,24 +6,41 @@
 <link href="{% static 'css/phrase_style.css' %}" rel="stylesheet"/>
 
 <div class="container">
+  <div class="row verse_card_wrapper">
 
+    <div class="col-1 d-flex justify-content-center align-items-center" >
+      {%if previous_phrase_id %}
+        <a href="{% url 'arabic:phrase_detail' pk=previous_phrase_id %}" id="previous_phrase_arrow" class="position_arrows">
+            <
+        </a>
+      {% endif %}
+    </div>
+    <div class="col-10">
+      <div class="card mb-3 phrase_card" >
+        {% if phrase.image %}
+        <img src="{{phrase.image.url}}" class="card-img-top" alt="...">
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title phrase_text">{{ phrase.text}}</h5>
+          <p class="card-text phrase_translation">{{phrase.translation }}</p>
+          <p class="card-text"><small class="text-muted">{{phrase.category }}</small></p>
+        </div>
+      </div>
+    </div>
+        <div class="col-1 d-flex justify-content-center align-items-center">
+      {%if next_phrase_id %}
+          <a href="{% url 'arabic:phrase_detail' pk=next_phrase_id %}" class="position_arrows" id="next_phrase_arrow">
+              >
+          </a>
+      {% endif %}
+    </div>
 
-<div class="card mb-3 phrase_card" >
-  {% if phrase.image %}
-  <img src="{{phrase.image.url}}" class="card-img-top" alt="...">
-  {% endif %}
-  <div class="card-body">
-    <h5 class="card-title phrase_text">{{ phrase.text}}</h5>
-    <p class="card-text phrase_translation">{{phrase.translation }}</p>
-    <p class="card-text"><small class="text-muted">{{phrase.category }}</small></p>
+    {% if user.is_authenticated %}
+      <div class="controls">
+        <a href="{% url 'arabic:update_phrase' pk=phrase.id %}" role="button" class="btn btn-outline-secondary  w-80">Edit phrase</a>
+        <a href="{% url 'arabic:delete_phrase' pk=phrase.id %}" role="button" class="btn btn-outline-danger  w-80">Delete phrase</a>
+      </div>
+    {% endif %}
   </div>
-</div>
-
-{% if user.is_authenticated %}
-  <div class="controls">
-    <a href="{% url 'arabic:update_phrase' pk=phrase.id %}" role="button" class="btn btn-outline-secondary  w-80">Edit phrase</a>
-    <a href="{% url 'arabic:delete_phrase' pk=phrase.id %}" role="button" class="btn btn-outline-danger  w-80">Delete phrase</a>
-  </div>
-{% endif %}
 </div>
 {% endblock %}

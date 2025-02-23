@@ -1,9 +1,7 @@
 - search by tag and category (show tags)
 - Fitering by tag and category and name etc
 - flashcard verse details
-- Phrase next button
 - Rename phrase
-- Reset flashcard form on change
 - favicon
 - User stats
 - Deck name

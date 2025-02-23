@@ -30,6 +30,24 @@ class CreatePhrase(LoginRequiredMixin, CreateView):
 class PhraseDetail(LoginRequiredMixin, DetailView):
     model = Phrase
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        phrase = self.object
+        all_users_phrases = list(Phrase.objects.filter(user=phrase.user).order_by('text'))
+        phrase_index = all_users_phrases.index(phrase)
+
+        try:
+            context["next_phrase_id"] = all_users_phrases[phrase_index +1].id
+        except  Exception as e:
+            print('An exception occurred: ', e)
+
+        try:
+            context["previous_phrase_id"] = all_users_phrases[phrase_index - 1].id
+        except  Exception as e:
+            print('An exception occurred: ', e)
+
+        return context
+
 class PhraseList(LoginRequiredMixin, ListView):
     model = Phrase
     paginate_by = 20
