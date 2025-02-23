@@ -49,6 +49,9 @@ class Verse(models.Model):
         english_resource_id =131
         return self.translations.filter(resource_id=english_resource_id).first().text
 
+    def get_translation(self, translation_id):
+        return self.translations.filter(resource_id=translation_id).first().text or "Translation not found"
+
 class Word(models.Model):
     id = models.IntegerField(primary_key=True)
     audio_url = models.TextField(null=True)
@@ -117,3 +120,22 @@ class VerseSelection(models.Model):
 
     class Meta:
         ordering = ['start_verse_id']
+
+    def get_verses(self):
+        verses = {}
+
+        for verse_id in range(self.start_verse_id, self.end_verse_id):
+            verse = Verse.objects.get(id=verse_id)
+            verses[verse_id] = verse.text_uthmani
+
+        return verses
+
+    def get_verses_translations(self, translation_id):
+        verses_translations = {}
+
+        for verse_id in range(self.start_verse_id, self.end_verse_id):
+            verse = Verse.objects.get(id=verse_id)
+            verses_translations[verse_id] = verse.get_translation(translation_id)
+
+        return verses_translations
+

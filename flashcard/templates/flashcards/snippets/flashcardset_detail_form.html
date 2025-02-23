@@ -1,3 +1,8 @@
+<style type="text/css">
+  .verse_text{
+    font-size: 20px !important;
+    }
+</style>
 <form id="flashcards_questions_form" method="post" align="center" enctype="multipart/form-data">
   {% csrf_token %}
         <span class="center" style="{% if  flashcardset.type != "Phrase" %}display: none;{% endif %}">

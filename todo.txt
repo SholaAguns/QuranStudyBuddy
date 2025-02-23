@@ -1,13 +1,13 @@
+- User stats
+- Landing page
+- Deck name
+- favicon
+- Category dropdown or input
 - search by tag and category (show tags)
 - Fitering by tag and category and name etc
-- flashcard verse details
-- Rename phrase
-- favicon
-- User stats
-- Deck name
-- Category dropdown or input
-- Save Form options
 
+
+- Save Form options
 - fix unanwsered for non-audio
 - Check audio validity
 - Plural, masc, fem, present, verb, noun
