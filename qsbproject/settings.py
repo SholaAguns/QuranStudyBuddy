@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'accounts',
     'quran',
     'arabic',
-    'flashcard'
+    'flashcard',
+    'scorecard'
 ]
 
 MIDDLEWARE = [

@@ -16,6 +16,7 @@ def populate_flashcards(amount, ids, flashcardset):
         flashcard.flashcardset = flashcardset
         flashcard.question = word.text_uthmani
         flashcard.answer = word.translation.text
+        flashcard.info = {'word_id': word.id, 'verse_id': word.verse.id, 'chapter_id': word.verse.chapter.id}
         flashcard.save()
 
 def remove_duplicate_words(all_words):

@@ -2,11 +2,14 @@
 {% load static %}
 {% block content %}
 
-  <br><br><div class="jumbotron" align="center" >
+  <br><br><div class="container" align="center" >
       <a href="{% url 'quran:populate_chapters' %}" role="button" class="btn btn-outline-secondary w-80">Add Chapters</a>
       <a href="{% url 'quran:populate_verses' %}" role="button" class="btn btn-outline-secondary w-80">Add Verses</a>
       <a href="{% url 'quran:populate_audio_editions' %}" role="button" class="btn btn-outline-secondary w-80">Add Audio Editions</a>
       <a href="{% url 'quran:populate_hosted_audio' %}" role="button" class="btn btn-outline-secondary w-80">Add Hosted Audio Objects</a>
+      <a href="{% url 'scorecard:manual_scorecard_creation' %}" role="button" class="btn btn-outline-secondary w-80">Add Scorecard</a>
+      <a href="{% url 'scorecard:manual_scorecard_update' %}" role="button" class="btn btn-outline-secondary w-80">Update Scorecard</a>
+        <a href="{% url 'scorecard:update_scorecard_stats' %}" role="button" class="btn btn-outline-secondary w-80">Update Scorecard Stats</a>
   </div>
 
 

@@ -9,13 +9,13 @@ def populate_flashcards(amount, ids, flashcardset):
     selected_ids = random.sample(ids, min(amount, len(ids)))
 
     selected_verses = Verse.objects.filter(id__in=selected_ids)
-
     for verse in selected_verses:
         flashcard = Flashcard()
         flashcard.flashcardset = flashcardset
         flashcard.question = verse.text_uthmani
         flashcard.answer = verse.chapter.name_simple
         populate_audio_filepaths(verse, flashcard)
+        flashcard.info = {'verse_id': verse.id, 'chapter_id': verse.chapter.id}
         flashcard.save()
 
 def populate_audio_filepaths(verse, flashcard):

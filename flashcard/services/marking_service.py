@@ -2,6 +2,7 @@ import re
 from rapidfuzz import fuzz
 
 from flashcard.models import Flashcard
+from scorecard.models import Scorecard
 
 
 class MarkingService:
@@ -47,5 +48,8 @@ class MarkingService:
         total_flashcards = flashcardset.flashcards.count()
         flashcardset.score = round((correct_answers / total_flashcards) * 100, 2)
         flashcardset.save()
+
+        scorecard = Scorecard.objects.get(user=flashcardset.user)
+        scorecard.scorecard_update(flashcardset)
 
 

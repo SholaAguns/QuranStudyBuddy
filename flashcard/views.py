@@ -45,9 +45,6 @@ class FlashcardSetDetail(LoginRequiredMixin, DetailView):
             except:
                 print(f"No audio edition {requested_audio_identifier} found for flashcard {flashcard.id}")
 
-            #if flashcardset.type == "VerseSelection":
-                #vs = VerseSelection.objects.get(id=int(flashcard.info))
-
         context = super().get_context_data(**kwargs)
         context['chapters']  = Chapter.objects.all()
         context['correct_answers_count'] = self.object.flashcards.filter(correct_answer_given=True).count()

@@ -28,6 +28,7 @@ urlpatterns = [
     path('quran/', include('quran.urls', namespace='quran')),
     path('arabic/', include('arabic.urls', namespace='arabic')),
     path('flashcards/', include('flashcard.urls', namespace='flashcards')),
+    path('scorecard/', include('scorecard.urls', namespace='scorecard')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

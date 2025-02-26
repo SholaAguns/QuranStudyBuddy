@@ -1,3 +1,4 @@
+{% load custom_filters %}
 {% for flashcard in flashcardset.flashcards.all %}
 <div class="card my-3">
   <div class="card-body">
@@ -27,8 +28,9 @@
               <p class="text-start">Your Answer: {{ flashcard.user_answer | safe }} <span class="green-tick">✔️</span></p>
               <p class="text-start">Acceptable Answers: {{ flashcard.answer | safe }}</p>
               {% if  flashcard.info %}
-              <p>Info:</p>
-              <p class="{% if  flashcardset.type != "Phrase" %}text-end verse_text{% endif %}">{{ flashcard.info | safe }}</p>
+              <p>Details:</p>
+              <p class="{% if  flashcardset.type != "Phrase" %}text-end verse_text{% endif %}">
+              {{ flashcard.info|get:'verse_info'}}</p>
               {% endif %}
           </span>
           <div class="form-check form-switch">
@@ -40,8 +42,8 @@
               <p class="text-start">Your Answer: {{ flashcard.user_answer | safe }} <span class="red-cross">❌</span></p>
               <p class="text-start">Acceptable Answers: {{ flashcard.answer | safe }}</p>
               {% if  flashcard.info %}
-              <p>Info:</p>
-              <p class="{% if  flashcardset.type != "Phrase" %}text-end verse_text{% endif %}">{{ flashcard.info | safe }}</p>
+              <p>Details:</p>
+              <p class="{% if  flashcardset.type != "Phrase" %}text-end verse_text{% endif %}">{{ flashcard.info|get:'verse_info'| safe }}</p>
               {% endif %}
           </span>
           <div class="form-check form-switch">

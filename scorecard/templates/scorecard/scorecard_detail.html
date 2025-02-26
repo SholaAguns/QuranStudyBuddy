@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="jumbotron d-flex flex-column align-items-center">
+
+    <h2>{{ scorecard.user }}</h2>
+
+    <h3>
+        No of flashcards completed: {{ scorecard.no_of_tests_completed }}
+        Overall Score: {{ scorecard.correct_percent }} %
+    </h3>
+
+</div>
+
+
+{% endblock %}

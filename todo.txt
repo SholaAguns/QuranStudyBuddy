@@ -1,6 +1,6 @@
 - User stats
 - Landing page
-- Deck name
+- Deck name (could use _int_)
 - favicon
 - Category dropdown or input
 - search by tag and category (show tags)

@@ -18,6 +18,7 @@ def populate_flashcards(amount, ids, flashcardset):
         flashcard.question = phrase.text
         flashcard.answer = phrase.translation
         flashcard.image = phrase.image
+        flashcard.info = {'category': phrase.category or ""}
         flashcard.save()
 
 
