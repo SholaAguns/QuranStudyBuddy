@@ -11,6 +11,7 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'qsbproject.settings')
+env = os.getenv("DJANGO_ENV", "prod")  # Default to prod in deployment
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", f"qsbproject.settings.{env}")
 
 application = get_wsgi_application()
