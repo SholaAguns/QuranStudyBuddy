@@ -1,4 +1,3 @@
-- User stats
 - Landing page
 - Deck name (could use _int_)
 - favicon

@@ -2,16 +2,49 @@
 {% load static %}
 {% block content %}
 
+<link href="{% static 'css/scorecard_style.css' %}" rel="stylesheet"/>
 <div class="jumbotron d-flex flex-column align-items-center">
 
-    <h2>{{ scorecard.user }}</h2>
+    <h2 class="page_title">My scores</h2>
 
-    <h3>
-        No of flashcards completed: {{ scorecard.no_of_tests_completed }}
-        Overall Score: {{ scorecard.correct_percent }} %
-    </h3>
+    <ul class="nav nav-tabs justify-content-center">
+        <li class="nav-item">
+          <a class="nav-link active swap_tab"  id="all_scores_tab"  href="#" onclick="swapTabs('all_scores_div')">All Scores</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link swap_tab" id="verse_score_tab" href="#" onclick="swapTabs('verse_score_div')">Verse Scores</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link swap_tab" id="phrase_score_tab" href="#" onclick="swapTabs('phrase_score_div')">Phrase Scores</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link swap_tab" id="verse_selection_score_tab" href="#" onclick="swapTabs('verse_selection_score_div')">VerseSelection Scores</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link swap_tab" id="word_score_tab" href="#" onclick="swapTabs('word_score_div')">Word Scores</a>
+        </li>
 
+    </ul>
+
+    <div class="swap_div" id="all_scores_div">
+        {% include 'scorecard/snippets/all_scores_report.html' %}
+    </div>
+    <div class="swap_div" id="verse_score_div" style="display: none;">
+        {% include 'scorecard/snippets/verse_scores_report.html' %}
+    </div>
+    <div class="swap_div" id="phrase_score_div" style="display: none;">
+        {% include 'scorecard/snippets/phrase_scores_report.html' %}
+    </div>
+    <div class="swap_div" id="verse_selection_score_div" style="display: none;">
+        {% include 'scorecard/snippets/verse_selection_scores_report.html' %}
+    </div>
+    <div class="swap_div" id="word_score_div" style="display: none;">
+        {% include 'scorecard/snippets/word_scores_report.html' %}
+    </div>
 </div>
+
+<script src="{% static 'js/swap_tabs.js' %}"></script>
+<script src="{% static 'js/scorecard/scorecard_detail.js' %}"></script>
 
 
 {% endblock %}

@@ -1,0 +1,38 @@
+<div class="card my-3">
+		<div class="card-body">
+            <p class="text-start score_field">
+              <span class="score_heading">No of flashcards completed:</span> <span class="score_value">{% if scorecard.no_of_tests_completed is not None %}
+                {{ scorecard.no_of_tests_completed }}
+                {% else %}
+                    N/A
+                {% endif %} </span>
+            </p>
+            <p class="text-start score_field">
+              <span class="score_heading">Overall Score:</span> <span class="score_value">
+                {% if scorecard.correct_percent is not None %}
+                    {{ scorecard.correct_percent }} %
+                {% else %}
+                    N/A
+                {% endif %}
+                </span>
+            </p>
+            <p class="text-start score_field">
+              <span class="score_heading">Strongest Chapter:</span> <span class="score_value">
+                {% if strongest_chapter is not None %}
+                    {{ strongest_chapter }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </span>
+            </p>
+            <p class="text-start score_field">
+              <span class="score_heading">Weakest Chapter:</span> <span class="score_value">
+                 {% if weakest_chapter is not None %}
+                    {{ weakest_chapter }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </span>
+            </p>
+		</div>
+</div>

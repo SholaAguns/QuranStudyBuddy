@@ -86,12 +86,12 @@ color: black;
   margin-bottom: auto;
 
 }
-.carousel-inner{
+#carouselExampleDark{
   border: solid 1px black;
   background-color: white;
   border-radius: 5px;
-  display: flex;
   align-items: center;
+  margin-top: 1rem;
 }
 
 .playback_controls{

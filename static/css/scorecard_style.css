@@ -1,0 +1,22 @@
+.score_field{
+    font-family: "Oswald", serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  padding: 4px;
+  font-size: 2rem;
+  border: 1px solid black;
+  padding: auto;
+  border-radius: 20px;
+  background-color: #A4D1A6;
+}
+.score_heading{
+    font-weight: bold;
+}
+
+.score_value{
+    font-family: "Oswald", serif;
+    font-weight: 400;
+  font-style: normal;
+  color: white;
+
+}

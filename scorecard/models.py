@@ -1,3 +1,4 @@
+from collections import Counter
 from itertools import chain
 from msilib.schema import Class
 
@@ -6,16 +7,17 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 
+from quran.models import Chapter
+
 User = get_user_model()
 from flashcard.models import FlashcardSet
+
 
 
 class Scorecard(models.Model):
     user = models.OneToOneField(User, related_name='scorecard', on_delete=models.CASCADE)
     no_of_tests_completed = models.IntegerField(null=True, blank=True)
     correct_percent = models.DecimalField(null=True, blank=True, decimal_places=2, max_digits=5)
-    strongest_chapter = models.CharField(null=True, blank=True, max_length=70)
-    weakest_chapter = models.CharField(null=True, blank=True, max_length=70)
 
     def get_absolute_url(self):
         return reverse('scorecard:scorecard_detail', kwargs={'pk': self.user.id})
@@ -63,7 +65,7 @@ class Scorecard(models.Model):
         self.update_stats()
 
     def scorecard_update(self, flashcardset):
-        if flashcardset.score:
+        if flashcardset.score is not None:
             flashcards = flashcardset.flashcards.all()
             for flashcard in flashcards:
                 score = self.get_score_type(flashcard.flashcardset.type)
@@ -79,10 +81,9 @@ class Scorecard(models.Model):
         self.no_of_tests_completed = len(all_scores)
 
         if self.no_of_tests_completed > 0:
-            correct_verse_answers = VerseScore.objects.filter(correct_answer_given=True).count()
             correct_count = sum(1 for score in all_scores if score.correct_answer_given == True)
             self.correct_percent = (correct_count / self.no_of_tests_completed) * 100
-            print(f"correct_count: {correct_count}, self.no_of_tests_completed: {self.no_of_tests_completed}, correct_verse_answers {correct_verse_answers}")
+
         else:
             self.correct_percent = 0
         self.save()
@@ -92,9 +93,117 @@ class Scorecard(models.Model):
             score.included_in_stats = True
             score.save()
             count +=1
-        print(f"score included count: {count}")
 
+    def get_strongest_chapter(self, scores):
+        if not scores:
+            return None, 0, 0
 
+        # Separate correct and total counts
+        correct_scores = [score.chapter_id for score in scores if score.correct_answer_given and score.chapter_id]
+        total_scores = [score.chapter_id for score in scores if score.chapter_id]
+
+        if not correct_scores:
+            return None, 0, 0  # No correct scores available
+
+        # Count occurrences
+        correct_counts = Counter(correct_scores)
+        total_counts = Counter(total_scores)
+
+        # Find max correct count
+        max_correct = max(correct_counts.values(), default=0)
+        candidates = [chap_id for chap_id, count in correct_counts.items() if count == max_correct]
+        print(f"max_correct: {max_correct}, candidates: {candidates}")
+
+        # Break tie using total occurrences
+        strongest_chapter_id = max(candidates, key=lambda chap_id: total_counts[chap_id])
+        strongest_chapter = Chapter.objects.get(id=strongest_chapter_id).name_simple
+        print(f"Strongest: {strongest_chapter}, total_strongest_count: {total_counts[strongest_chapter_id]}, correct_strongest_count: {correct_counts[strongest_chapter_id]}")
+
+        return strongest_chapter, total_counts[strongest_chapter_id], correct_counts[strongest_chapter_id]
+
+    def get_weakest_chapter(self, scores):
+        if not scores:
+            return None, 0, 0
+
+        # Separate correct and total counts
+        incorrect_scores = [score.chapter_id for score in scores if not score.correct_answer_given and score.chapter_id]
+        total_scores = [score.chapter_id for score in scores if score.chapter_id]
+
+        if not incorrect_scores:
+            return None, 0, 0  # No correct scores available
+
+        # Count occurrences
+        incorrect_counts = Counter(incorrect_scores)
+        total_counts = Counter(total_scores)
+
+        # Find max correct count
+        max_incorrect = max(incorrect_counts.values(), default=0)
+        candidates = [chap_id for chap_id, count in incorrect_counts.items() if count == max_incorrect]
+        print(f"max_correct: {max_incorrect}, candidates: {candidates}")
+
+        # Break tie using total occurrences
+        weakest_chapter_id = max(candidates, key=lambda chap_id: total_counts[chap_id])
+        weakest_chapter = Chapter.objects.get(id=weakest_chapter_id).name_simple
+
+        print(f"Weakest: {weakest_chapter_id}, total_weakest_count: {total_counts[weakest_chapter_id]}, correct_weakest_count: {incorrect_counts[weakest_chapter_id]}")
+
+        correct_count = total_counts[weakest_chapter_id] - incorrect_counts[weakest_chapter_id]
+
+        return weakest_chapter, total_counts[weakest_chapter_id], correct_count
+
+    def get_strongest_category(self, scores):
+        if not scores:
+            return None, 0, 0
+
+        # Separate correct and total counts
+        correct_scores = [score.chapter_id for score in scores if score.correct_answer_given and score.category]
+        total_scores = [score.category for score in scores if score.category]
+
+        if not correct_scores:
+            return None, 0, 0  # No correct scores available
+
+        # Count occurrences
+        correct_counts = Counter(correct_scores)
+        total_counts = Counter(total_scores)
+
+        # Find max correct count
+        max_correct = max(correct_counts.values(), default=0)
+        candidates = [cat for cat, count in correct_counts.items() if count == max_correct]
+        print(f"max_correct: {max_correct}, candidates: {candidates}")
+
+        # Break tie using total occurrences
+        strongest_category = max(candidates, key=lambda cat: total_counts[cat])
+        print(f"Strongest: {strongest_category}, total_strongest_count: {total_counts[strongest_category]}, correct_strongest_count: {correct_counts[strongest_category]}")
+
+        return strongest_category, total_counts[strongest_category], correct_counts[strongest_category]
+
+    def get_weakest_category(self, scores):
+        if not scores:
+            return None, 0, 0
+
+        # Separate correct and total counts
+        incorrect_scores = [score.category for score in scores if not score.correct_answer_given and score.category]
+        total_scores = [score.category for score in scores if score.category]
+
+        if not incorrect_scores:
+            return None, 0, 0  # No correct scores available
+
+        # Count occurrences
+        incorrect_counts = Counter(incorrect_scores)
+        total_counts = Counter(total_scores)
+
+        # Find max correct count
+        max_incorrect = max(incorrect_counts.values(), default=0)
+        candidates = [cat for cat, count in incorrect_counts.items() if count == max_incorrect]
+        print(f"max_correct: {max_incorrect}, candidates: {candidates}")
+
+        # Break tie using total occurrences
+        weakest_category = max(candidates, key=lambda cat: total_counts[cat])
+        print(f"Weakest: {weakest_category}, total_weakest_count: {total_counts[weakest_category]}, incorrect_weakest_count: {incorrect_counts[weakest_category]}")
+
+        correct_count = total_counts[weakest_category] - incorrect_counts[weakest_category]
+
+        return weakest_category, total_counts[weakest_category], correct_count
 
 class Score(models.Model):
     scorecard = models.ForeignKey(Scorecard, related_name="%(class)s_scores", on_delete=models.CASCADE)

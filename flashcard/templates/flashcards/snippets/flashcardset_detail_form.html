@@ -5,7 +5,7 @@
 </style>
 <form id="flashcards_questions_form" method="post" align="center" enctype="multipart/form-data">
   {% csrf_token %}
-        <span class="center" style="{% if  flashcardset.type != "Phrase" %}display: none;{% endif %}">
+        <span align="center" style="{% if  flashcardset.type != "Phrase" %}display: none;{% endif %}">
             <input type="checkbox" id="show-all-images-checkbox"> Show All Images
         </span>
   <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="false">
