@@ -17,11 +17,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterField(
             model_name='phrase',
-            name='text',
-            field=models.TextField(max_length=300),
-        ),
-        migrations.AlterField(
-            model_name='phrase',
             name='translation',
             field=models.TextField(max_length=300),
         ),

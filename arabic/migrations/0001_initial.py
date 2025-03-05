@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
             name='Phrase',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('text', models.TextField()),
+                ('text', models.CharField(max_length=300)),
                 ('category', models.TextField(max_length=100)),
                 ('translation', models.TextField()),
                 ('image', models.ImageField(null=True, upload_to='images')),

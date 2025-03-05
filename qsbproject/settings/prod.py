@@ -1,7 +1,5 @@
 from .base import *
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-
 ALLOWED_HOSTS = [env("ALLOWED_HOSTS")]
 
 DATABASES = {

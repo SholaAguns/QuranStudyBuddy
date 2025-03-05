@@ -1,7 +1,5 @@
 from .base import *
 
-#SECRET_KEY = os.environ.get('QSB_SECRET_KEY')
-
 ALLOWED_HOSTS = [env("ALLOWED_HOSTS")]
 
 DATABASES = {
