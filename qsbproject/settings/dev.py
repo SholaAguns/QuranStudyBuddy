@@ -2,7 +2,7 @@ from .base import *
 
 #SECRET_KEY = os.environ.get('QSB_SECRET_KEY')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [env("ALLOWED_HOSTS")]
 
 DATABASES = {
     'default': {
@@ -13,7 +13,7 @@ DATABASES = {
 
 # DATABASES = {
 #     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
+#         "ENGINE": env("DB_ENGINE"),
 #         "NAME": env("DB_NAME"),
 #         "USER": env("DB_USER"),
 #         "PASSWORD": env("DB_PASSWORD"),
@@ -21,6 +21,8 @@ DATABASES = {
 #         "PORT": env("DB_PORT"),
 #     }
 # }
+
+
 
 STATICFILES_DIRS = [BASE_DIR / "static"]
 #STATIC_ROOT = BASE_DIR / "staticfiles"

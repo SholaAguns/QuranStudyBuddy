@@ -29,10 +29,9 @@ def populate_flashcards(amount, ids, flashcardset):
         flashcard.question = f"{verses[0].text_uthmani}\n.\n.\n.\n{verses[len(verses)-1].text_uthmani}"
         flashcard.answer = verses[0].chapter.name_simple
         verse_text = ""
-        flashcard.info = {}
         for verse in verses:
             verse_text += f"<span class='verse_key'>{verse.verse_key}</span> {verse.text_uthmani}\n"
-        flashcard.info['verse_info'] = verse_text
+        flashcard.info = {'verse_info': verse_text, 'chapter_id': selection.start_chapter_id}
         #populate_audio_filepaths(verse, flashcard)
         flashcard.save()
 

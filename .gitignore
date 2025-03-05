@@ -3,6 +3,8 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+bkp
+
 # C extensions
 *.so
 
@@ -60,8 +62,8 @@ cover/
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
-dbv2.sqlite3
-dump.sql
+bkp/dbv2.sqlite3
+bkp/dump.sql
 
 # Flask stuff:
 instance/

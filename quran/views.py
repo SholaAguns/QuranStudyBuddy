@@ -181,7 +181,6 @@ class CreateVerseSelection(LoginRequiredMixin, TemplateView):
 
 class DeleteVerseSelection(LoginRequiredMixin, DeleteView):
     model = VerseSelection
-    print("here")
 
     def get_queryset(self):
         queryset = super().get_queryset()

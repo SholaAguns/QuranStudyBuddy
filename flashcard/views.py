@@ -218,9 +218,10 @@ def submit_flashcardset_answers(request, pk):
                     flashcard = flashcardset.flashcards.get(pk=flashcard_id)
                     format, audio_str = audio_data.split(';base64,')
                     ext = format.split('/')[-1]
-                    audio_file = ContentFile(base64.b64decode(audio_str), name=f"flashcard_{flashcard_id}_audio_answer.{ext}")
-                    flashcard.audio_answer = audio_file
-                    flashcard.save()
+
+                    decoded_audio = base64.b64decode(audio_str)
+                    audio_file = ContentFile(decoded_audio, name=f"flashcard_{flashcard_id}_audio_answer.{ext}")
+                    flashcard.audio_answer.save(audio_file.name, audio_file, save=True)
 
             marking_service.calculate_score(flashcardset)
             return JsonResponse({'success': True})

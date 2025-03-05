@@ -1,6 +1,4 @@
 from collections import Counter
-from itertools import chain
-from msilib.schema import Class
 
 from django.db import models
 
