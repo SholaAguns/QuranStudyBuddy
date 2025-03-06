@@ -15,26 +15,21 @@
   {% else %}
     <div class="container">
 
-    <div class="container text-center mt-4 d-flex justify-content-between">
-      <div class="flex-grow-1 align-items-center">
-        <a href="{% url 'flashcards:update_flashcardset' pk=flashcardset.id %}" class="page_title">
-          <h2>{{ flashcardset.title }}</h2>
-        </a>
-      </div>
-
-      <div class="dropdown" align="right">
-          <button class="btn btn-outline-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="bi bi-list"></i>
-          </button>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton2">
-              <li><a class="dropdown-item" href="{% url 'flashcards:delete_flashcardset' pk=flashcardset.id %}">Delete</a></li>
-          </ul>
-      </div>
-
-      <div class="flex-grow-1 align-items-center">
-          <h5 class="text-muted">{{ flashcardset.type }}</h5>
-      </div>
+  <div class="container text-center mt-4 d-flex flex-column flex-md-row align-items-center justify-content-between">
+    
+    <!-- Flashcard Set Title -->
+    <div class="flex-grow-1 text-center order-1 order-md-0">
+      <a href="{% url 'flashcards:update_flashcardset' pk=flashcardset.id %}" class="page_title text-decoration-none">
+        <h2 class="mb-0">{{ flashcardset.title }}</h2>
+      </a>
     </div>
+
+    <!-- Flashcard Set Type -->
+    <div class="flex-grow-1 text-center order-2">
+      <h5 class="text-muted mb-0">{{ flashcardset.type }}</h5>
+    </div>
+
+  </div>
 
 
 

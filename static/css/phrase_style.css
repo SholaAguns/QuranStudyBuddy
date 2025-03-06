@@ -27,25 +27,25 @@ a{
 
 .phrase_item {
   background-color: #A4D1A6;
-    height: 7rem;
-   width: 35rem;
+  width: 100%; /* Full width on mobile */
+  max-width: 35rem; /* Limit size on larger screens */
+  padding: 1rem;
+  position: relative;
 }
 
-.phrase_text{
-  text-align: center;
+.phrase_text {
   font-family: "Darumadrop One", serif;
   font-weight: 400;
-  font-style: normal;
   color: white;
-  text-shadow:
-    -2px -2px 0 black,
-     2px -2px 0 black,
-    -2px  2px 0 black,
-     2px  2px 0 black;
+  text-shadow: -2px -2px 0 black, 2px -2px 0 black, -2px 2px 0 black, 2px 2px 0 black;
+  font-size: 1.5rem; /* Adjust font size */
+  text-align: center;
+  word-wrap: break-word; /* Ensure long words don't break layout */
 }
 
-.phrase_translation{
+.phrase_translation {
   font-style: italic;
+  font-size: 1rem;
 }
 
 .phrase_card{
@@ -59,4 +59,22 @@ a{
 .phrase_card .card-body{
   background-color: #A4D1A6;
   border-top: black solid 2px;
+}
+
+
+@media (max-width: 768px) {
+  .phrase_item {
+    height: auto; /* Allow height to adjust dynamically */
+    padding: 0.8rem;
+  }
+  .phrase_text {
+    font-size: 1.2rem; /* Reduce font size on small screens */
+  }
+  .phrase_translation {
+    font-size: 0.9rem;
+  }
+}
+
+.checkbox {
+  transform: scale(1.2); /* Make checkboxes easier to tap */
 }

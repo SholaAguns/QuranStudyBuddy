@@ -28,7 +28,7 @@
             {% csrf_token %}
         <div id="vs_list">
         {% for selection in object_list %}
-            <div class="card my-3 verse_selection_item">
+            <div class="card my-3 w-100 verse_selection_item">
                 <a href="{% url 'quran:verse_selection_detail' pk=selection.id %}">
                     <div class="card-body">
                       <div class="text-end">

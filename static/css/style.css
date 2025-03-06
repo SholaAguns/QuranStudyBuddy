@@ -2,6 +2,10 @@
   margin: 0;
   background-color: #E2EFE3;
 }
+
+.header_section{
+  background-color: #E2EFE3 !important;
+}
 .nav-item .nav-link{
   color: #68B76C;
 }

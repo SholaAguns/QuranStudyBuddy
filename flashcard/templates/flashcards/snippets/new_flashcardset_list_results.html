@@ -1,6 +1,6 @@
 {% for flashcardset in flashcardset_list %}
   {% if flashcardset.score is None %}
-    <div class="card my-3 flashcardset_item">
+    <div class="card my-3 flashcardset_item w-100">
         <a href="{% url 'flashcards:flashcardset_detail' pk=flashcardset.id %}">
             <div class="card-body">
               <div class="text-end">

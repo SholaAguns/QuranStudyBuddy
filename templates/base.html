@@ -40,79 +40,86 @@
  </head>
 <body class="base_body">
 
-  <header class="header_section">
+<header class="header_section">
   <div class="container-fluid">
-    <nav class="navbar navbar-expand-lg custom_nav-container">
-        <ul class="navbar-nav mr-auto">
-          <a class="navbar-brand mynav" id="brandname" href="{% url 'home' %}">
-              <i class="bi bi-book-half"></i> Quran Study Buddy
-          </a>
-        </ul>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: #E2EFE3 !important;">
+      <!-- Brand Name -->
+      <a class="navbar-brand mynav" id="brandname" href="{% url 'home' %}">
+        <i class="bi bi-book-half"></i> Quran Study Buddy
+      </a>
 
-          <ul class="navbar-nav ms-auto">
-            {% if user.is_authenticated %}
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                {{user.username}}
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                {%if user.scorecard %}
-                <li><a class="dropdown-item" href="{% url 'scorecard:scorecard_detail' pk=user.scorecard.id %}">My Scorecard</a></li>
-                {% endif %}
-                <li><a class="dropdown-item" href="{% url 'arabic:phrase_list' %}">My Phrases</a></li>
-                <li><a class="dropdown-item" href="{% url 'flashcards:flashcardset_list' %}">My Flashcards</a></li>
-                <li><a class="dropdown-item" href="{% url 'quran:verse_selection_list' %}">My Verse Selections</a></li>
-              </ul>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Create
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="{% url 'arabic:add_phrase' %}">Create Phrase</a></li>
-                <li><a class="dropdown-item" href="{% url 'flashcards:add_flashcardset' %}">Create Flashcard deck</a></li>
-                <li><a href="{% url 'quran:verse_selection_form' %}" class="dropdown-item" >Create Verse Selection</a></li>
-              </ul>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="chapterNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Chapters
-              </a>
-              <ul class="dropdown-menu" id="chapterFields" aria-labelledby="chapterNavbarDropdown">
-                <!-- Dropdown items will be populated here -->
-              </ul>
-            </li>
-            {% if user.username == 'admin' %}
-              <li class="nav-item">
-              <a class="nav-link" href="{% url 'quran:admin' %}">Quran Admin</a>
-              </li>
-              <li class="nav-item">
-              <a class="nav-link" href="{% url 'quran:audio_edition_list' %}">Audio Editions</a>
-              </li>
-              <li class="nav-item">
-              <a class="nav-link" href="{% url 'test' %}">Testpage</a>
-              </li>
-            {% endif %}
-            <li class="nav-item">
-                <a id="logoutbtn" href="#" data-logout-url="{% url 'accounts:logout' %}" class="nav-link">Logout</a>
-            </li>
-            {% else %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'home' %}"> Home </a>
-            </li>
-            <li class="nav-item">
-            <a id="loginbtn" class="nav-link" href="{% url 'accounts:login' %}">Login</a>
-            </li>
-            <li class="nav-item">
-            <a id="signupbtn" class="nav-link" href="{% url 'accounts:signup' %}">Signup</a>
-            </li>
-            {% endif %}
-          </ul>
+      <!-- Navbar Toggler for Mobile -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Navbar Content -->
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ms-auto">
+          {% if user.is_authenticated %}
+          <!-- User Dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ user.username }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+              {% if user.scorecard %}
+              <li><a class="dropdown-item" href="{% url 'scorecard:scorecard_detail' pk=user.scorecard.id %}">My Scorecard</a></li>
+              {% endif %}
+              <li><a class="dropdown-item" href="{% url 'arabic:phrase_list' %}">My Phrases</a></li>
+              <li><a class="dropdown-item" href="{% url 'flashcards:flashcardset_list' %}">My Flashcards</a></li>
+              <li><a class="dropdown-item" href="{% url 'quran:verse_selection_list' %}">My Verse Selections</a></li>
+            </ul>
+          </li>
+
+          <!-- Create Dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="createDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Create
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="createDropdown">
+              <li><a class="dropdown-item" href="{% url 'arabic:add_phrase' %}">Create Phrase</a></li>
+              <li><a class="dropdown-item" href="{% url 'flashcards:add_flashcardset' %}">Create Flashcard Deck</a></li>
+              <li><a class="dropdown-item" href="{% url 'quran:verse_selection_form' %}">Create Verse Selection</a></li>
+            </ul>
+          </li>
+
+          <!-- Chapters Dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="chapterDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Chapters
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" id="chapterFields" aria-labelledby="chapterDropdown">
+              <!-- Dropdown items will be populated dynamically -->
+            </ul>
+          </li>
+
+          <!-- Admin Links (Only for Admins) -->
+          {% if user.username == 'admin' %}
+          <li class="nav-item"><a class="nav-link" href="{% url 'quran:admin' %}">Quran Admin</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'quran:audio_edition_list' %}">Audio Editions</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'test' %}">Test Page</a></li>
+          {% endif %}
+
+          <!-- Logout Button -->
+          <li class="nav-item">
+            <a id="logoutbtn" href="#" data-logout-url="{% url 'accounts:logout' %}" class="nav-link">Logout</a>
+          </li>
+
+          {% else %}
+          <!-- Guest Navigation -->
+          <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+          <li class="nav-item"><a id="loginbtn" class="nav-link" href="{% url 'accounts:login' %}">Login</a></li>
+          <li class="nav-item"><a id="signupbtn" class="nav-link" href="{% url 'accounts:signup' %}">Signup</a></li>
+          {% endif %}
+        </ul>
+      </div>
     </nav>
   </div>
 </header>
 
-<section class=" content_section">
+
+<section class="content_section">
 
 
   {% block content %}
