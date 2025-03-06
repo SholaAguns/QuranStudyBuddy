@@ -15,21 +15,20 @@
   {% else %}
     <div class="container">
 
-  <div class="container text-center mt-4 d-flex flex-column flex-md-row align-items-center justify-content-between">
+
     
     <!-- Flashcard Set Title -->
-    <div class="flex-grow-1 text-center order-1 order-md-0">
+    <br><div class="flex-grow-1 text-center order-md-0">
       <a href="{% url 'flashcards:update_flashcardset' pk=flashcardset.id %}" class="page_title text-decoration-none">
         <h2 class="mb-0">{{ flashcardset.title }}</h2>
       </a>
-    </div>
+    </div><br>
 
     <!-- Flashcard Set Type -->
-    <div class="flex-grow-1 text-center order-2">
+    <div class="flex-grow-1 text-center">
       <h5 class="text-muted mb-0">{{ flashcardset.type }}</h5>
-    </div>
+    </div><br>
 
-  </div>
 
 
 

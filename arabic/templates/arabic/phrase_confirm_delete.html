@@ -4,7 +4,7 @@
 <link href="{% static 'css/phrase_style.css' %}" rel="stylesheet"/>
 
 <div class="container text-center">
-	<div class="card mb-3 phrase_card mx-auto w-100">
+	<div class="card mb-3 phrase_card w-50">
 	  {% if phrase.image %}
 	  <img src="{{ phrase.image.url }}" class="card-img-top" alt="Phrase Image">
 	  {% endif %}
@@ -24,9 +24,9 @@
 	<div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
 		<form method="POST">
 			{% csrf_token %}
-			<input type="submit" value="Confirm Delete" class="btn btn-danger w-100 w-sm-auto">
-		</form>
-		<a href="{% url 'arabic:phrase_list' %}" class="btn btn-secondary w-100 w-sm-auto">Cancel</a>
-	</div>
+			<input type="submit" value="Confirm Delete" class="btn btn-danger w-sm-auto">
+			<a href="{% url 'arabic:phrase_list' %}" class="btn btn-secondary w-sm-auto">Cancel</a>
+		</form>	
+	</div><br>
 </div>
 {% endblock %}
