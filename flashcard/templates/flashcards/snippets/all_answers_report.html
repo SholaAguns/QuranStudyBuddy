@@ -11,8 +11,8 @@
         </audio>
       </div>
       {% endif %}
-        <p class="{% if  flashcardset.type != "Phrase" %}verse_text{% endif %}">
-          {{ flashcard.question }}
+        <p class="verse_text text-end">
+          {{ flashcard.question }} |
         </p>
     </div>
     {%if flashcard.audio_answer %}
@@ -29,8 +29,8 @@
               <p class="text-start">Acceptable Answers: {{ flashcard.answer | safe }}</p>
               {% if  flashcard.info %}
               <p>Details:</p>
-              <p class="{% if  flashcardset.type != "Phrase" %}text-end verse_text{% endif %}">
-              {{ flashcard.info|get:'verse_info'}}</p>
+              <p class="text-end verse_text">
+              {{ flashcard.info|get:'verse_info' | safe}}</p>
               {% endif %}
           </span>
           <div class="form-check form-switch">
@@ -41,9 +41,9 @@
           <span class="incorrect_answer">
               <p class="text-start">Your Answer: {{ flashcard.user_answer | safe }} <span class="red-cross">❌</span></p>
               <p class="text-start">Acceptable Answers: {{ flashcard.answer | safe }}</p>
-              {% if  flashcard.info %}
+              {% if  flashcard.info.verse_info %}
               <p>Details:</p>
-              <p class="{% if  flashcardset.type != "Phrase" %}text-end verse_text{% endif %}">{{ flashcard.info|get:'verse_info'| safe }}</p>
+              <p class="text-end verse_text">{{ flashcard.info|get:'verse_info'| safe }}</p>
               {% endif %}
           </span>
           <div class="form-check form-switch">
