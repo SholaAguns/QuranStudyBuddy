@@ -40,7 +40,14 @@ $('#verse_selection_form').submit(function (e) {
     if (isNaN(verseRangeStart) || isNaN(verseRangeEnd) || verseRangeEnd < verseRangeStart) {
         alert('Error: The end of the range must be greater than the start.');
         return;
-      }
+    }
+
+    if (verseRangeEnd - verseRangeStart > 300) {
+            alert('Error: List cannot contain more than 300 vereses.');
+            return;
+    }
+
+
       const formData = $(this).serializeArray();
 
     $.post('/quran/create_verse_selection', formData, function (response) {

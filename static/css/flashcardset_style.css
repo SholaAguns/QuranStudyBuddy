@@ -122,8 +122,7 @@ color: black;
 }
 
 #flashcard_form{
-    width: 50%; /* Adjust this width as needed */
-    min-width: 400px; /* Ensure it's not too small */
+    width: auto;
     background-color: #A5C399; /* Light green background like in your UI */
     padding: 20px;
     border-radius: 8px;
