@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.shortcuts import render, redirect
 from .models import Phrase
 from .forms import PhraseForm
@@ -56,8 +57,9 @@ class PhraseList(LoginRequiredMixin, ListView):
         queryset = Phrase.objects.filter(user=self.request.user)  # Filter by user
         search_query = self.request.GET.get('q')  # Get the search query from the URL
         if search_query:
-            # Filter phrases that contain the search query (case-insensitive)
-            queryset = queryset.filter(text__icontains=search_query)
+            queryset = queryset.filter(
+                Q(text__icontains=search_query) | Q(translation__icontains=search_query)
+            )
         return queryset
 
     def get_context_data(self, **kwargs):

@@ -14,8 +14,9 @@
         <button id="reset-button" style="display:none;"><i class="bi bi-stop"></i></button>
     </div>
     <div class="dropdown" align="right">
-        <button class="btn btn-outline-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-            <i class="bi bi-list"></i>
+        <button type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false"
+                style="outline: none; box-shadow: none; border: none; background: transparent;">
+        <i class="bi bi-three-dots"></i>
         </button>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton2">
             <li><a class="dropdown-item" href="{% url 'quran:update_verse_selection' pk=verseselection.id %}">Edit</a></li>

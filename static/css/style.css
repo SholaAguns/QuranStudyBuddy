@@ -63,6 +63,10 @@
     top: 20px;
 }
 
+.content_section{
+    margin-bottom: 2rem !important;
+}
+
 .swap_tab{
   background-color: #E2EFE3 !important;
 }

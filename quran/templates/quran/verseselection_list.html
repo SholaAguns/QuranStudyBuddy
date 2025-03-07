@@ -9,8 +9,9 @@
 
     {% if user.is_authenticated %}
     <div class="dropdown options_controls" align="right">
-      <button class="btn btn-outline-secondary" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="bi bi-list"></i>
+      <button type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false"
+              style="outline: none; box-shadow: none; border: none; background: transparent;">
+        <i class="bi bi-three-dots"></i>
       </button>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <li><a class="dropdown-item" id="select_all_button" href="#">Select All</a></li>
