@@ -60,11 +60,11 @@ class VerseSelectionFlashcardService(IFlashcardService):
     def get_request_types(self):
         request_types = [
             {
-                'label': 'All verse selections',
+                'label': 'All verses lists',
                 'value': 'default'
             },
             {
-                'label': 'Select Verse Selection',
+                'label': 'Select by verses list',
                 'value': 'byIds'
             },
             {

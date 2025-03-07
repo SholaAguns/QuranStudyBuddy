@@ -268,7 +268,6 @@ def create_verse_selection(request):
     if request.method == 'POST':
         verse_range_start = request.POST.get('verse_range_start', '')
         verse_range_end = request.POST.get('verse_range_end', '')
-        title = request.POST.get('title', '')
         start_verse = None
         end_verse = None
 
@@ -287,7 +286,7 @@ def create_verse_selection(request):
             print("End verse does not exist")
 
         try:
-            verse_selection.title = title
+            verse_selection.title = f"{start_verse.chapter.name_simple} v{start_verse.verse_number} - {end_verse.chapter.name_simple} v{end_verse.verse_number}"
             verse_selection.start_verse_id = verse_range_start
             verse_selection.end_verse_id = verse_range_end
             verse_selection.start_chapter_id = start_verse.chapter.id

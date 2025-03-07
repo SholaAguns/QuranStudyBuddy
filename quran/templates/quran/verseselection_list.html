@@ -5,7 +5,7 @@
 {% block content %}
 <link href="{% static 'css/quran_style.css' %}" rel="stylesheet"/>
 <div class="container quran_page" >
-    <h2 class="page_title">My Verse Selections</h2>
+    <h2 class="page_title">My Verses Lists</h2>
 
     {% if user.is_authenticated %}
     <div class="dropdown options_controls" align="right">
@@ -18,7 +18,7 @@
       </ul>
     </div>
     <div class="container controls">
-      <a href="{% url 'quran:verse_selection_form' %}" role="button" class="btn btn-outline-secondary w-80 create_btn"> <i class="bi bi-plus"></i>Create Verse Selection</a>
+      <a href="{% url 'quran:verse_selection_form' %}" role="button" class="btn btn-outline-secondary w-80 create_btn"> <i class="bi bi-plus"></i>Create Verses List</a>
     </div>
     {% endif %}
     <div class="container d-flex flex-column align-items-center">
@@ -37,7 +37,6 @@
                         <h3 class="card-title phrase_text">
                           {{ selection.title}}
                         </h3>
-                          <p class="card-text text-start phrase_translation" >{{selection.title }}</p>
                     </div>
                 </a>
             </div>
