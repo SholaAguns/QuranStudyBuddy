@@ -37,9 +37,9 @@ a{
 }
 
 .flashcardset_card_info {
-  display: flex;
-  justify-content: space-between; /* Pushes type left, date right */
-  align-items: center;
+  float: right;
+
+  font-size: 0.75rem;
 }
 
 /* This ensures the score div stays left-aligned */

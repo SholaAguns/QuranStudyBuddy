@@ -35,8 +35,12 @@
         {% endif %}
         <div class="card-body">
           <h5 class="card-title phrase_text verse_text">{{ phrase.text }}</h5>
-          <p class="card-text phrase_translation">{{ phrase.translation }}</p>
+          {%if phrase.transliteration  %}
+          <h6 class="card-text">[{{ phrase.transliteration }}]</h6>
+          {% endif %}
           <p class="card-text"><small class="text-muted">{{ phrase.category }}</small></p>
+          <p class="card-text phrase_translation">{{ phrase.translation }}</p>
+          
         </div>
       </div>
     </div>

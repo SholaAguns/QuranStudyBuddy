@@ -14,6 +14,7 @@
         <i class="bi bi-three-dots"></i>
       </button>
       <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <li><a class="dropdown-item" id="select_button" href="#">Select</a></li>
         <li><a class="dropdown-item" id="select_all_button" href="#">Select All</a></li>
         <li><a class="dropdown-item" id="delete_selected_button" href="#" disabled>Delete</a></li>
       </ul>
@@ -33,7 +34,7 @@
                 <a href="{% url 'quran:verse_selection_detail' pk=selection.id %}">
                     <div class="card-body">
                       <div class="text-end">
-                        <input type="checkbox" name="selected_verse_selections" value="{{ selection.id }}" class="checkbox vs_list_checkbox">
+                        <input type="checkbox" name="selected_verse_selections" value="{{ selection.id }}" class="checkbox select_checkbox vs_list_checkbox">
                       </div>
                         <h3 class="card-title phrase_text">
                           {{ selection.title}}

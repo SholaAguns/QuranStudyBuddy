@@ -99,6 +99,16 @@ font-size: 30px;
     font-size: 15px;
     color: red;
 }
+
+.select_checkbox, #select_all_button{
+  display: none;
+}
+
+.highlight {
+    color: #057d27 !important;
+    color: black;
+}
+
 .list-group-item{
     font-size: 20px;
     color: black;

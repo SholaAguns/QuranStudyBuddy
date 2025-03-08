@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
 
+    const selectButton = document.getElementById('select_button');
     const checkboxes = document.querySelectorAll('.checkbox');
     const deleteButton = document.getElementById('delete_selected_button');
     const form = document.getElementById('delete_selected_form');
@@ -11,10 +12,28 @@ document.addEventListener("DOMContentLoaded", function () {
         deleteButton.disabled = !anyChecked;
     }
 
+    selectButton.addEventListener('click', function (event) {
+        event.preventDefault();
+        
+        document.querySelectorAll('.select_checkbox').forEach(function (checkbox) {
+            if (checkbox.style.display === 'none' || checkbox.style.display === '') {
+                selectButton.classList.add('highlight');
+                checkbox.style.display = 'block';
+                selectAllButton.style.display = 'block';
+            } else {
+                 selectButton.classList.remove('highlight');
+                checkbox.style.display = 'none';
+                selectAllButton.style.display = 'none';
+            }
+        });
+    });
+
     // Add event listeners to checkboxes
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener('change', updateDeleteButton);
     });
+
+
 
     // Add event listener to the delete button
     deleteButton.addEventListener('click', function (event) {
