@@ -154,7 +154,7 @@ class Scorecard(models.Model):
             return None, 0, 0
 
         # Separate correct and total counts
-        correct_scores = [score.chapter_id for score in scores if score.correct_answer_given and score.category]
+        correct_scores = [score.category for score in scores if score.correct_answer_given and score.category]
         total_scores = [score.category for score in scores if score.category]
 
         if not correct_scores:

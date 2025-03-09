@@ -57,34 +57,7 @@
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav ms-auto">
           {% if user.is_authenticated %}
-          <!-- User Dropdown -->
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              {{ user.username }}
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-              {% if user.scorecard %}
-              <li><a class="dropdown-item" href="{% url 'scorecard:scorecard_detail' pk=user.scorecard.id %}">My Scorecard</a></li>
-              {% endif %}
-              <li><a class="dropdown-item" href="{% url 'arabic:phrase_list' %}">My Phrases</a></li>
-              <li><a class="dropdown-item" href="{% url 'flashcards:flashcardset_list' %}">My Flashcards</a></li>
-              <li><a class="dropdown-item" href="{% url 'quran:verse_selection_list' %}">My Verses Lists</a></li>
-            </ul>
-          </li>
-
-          <!-- Create Dropdown -->
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="createDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Create
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="createDropdown">
-              <li><a class="dropdown-item" href="{% url 'arabic:add_phrase' %}">Create Phrase</a></li>
-              <li><a class="dropdown-item" href="{% url 'flashcards:add_flashcardset' %}">Create Flashcard Deck</a></li>
-              <li><a class="dropdown-item" href="{% url 'quran:verse_selection_form' %}">Create Verses List</a></li>
-            </ul>
-          </li>
-
-          <!-- Chapters Dropdown -->
+                    <!-- Chapters Dropdown -->
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="chapterDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Chapters
@@ -94,6 +67,36 @@
             </ul>
           </li>
 
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'arabic:phrase_list' %}">My Phrases</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'flashcards:flashcardset_list' %}">My Flashcards</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'quran:verse_selection_list' %}">My Verses Lists</a>
+          </li>
+
+          <!-- User Dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ user.username }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+              {% if user.scorecard %}
+              <li>
+                <a class="dropdown-item" href="{% url 'scorecard:scorecard_detail' pk=user.scorecard.id %}">My Scorecard</a>
+              </li>
+              <li >
+                <a class="dropdown-item" id="logoutbtn" href="#" data-logout-url="{% url 'accounts:logout' %}">Logout</a>
+              </li>
+              {% endif %}
+              
+            </ul>
+          </li>
+
+
+
           <!-- Admin Links (Only for Admins) -->
           {% if user.username == 'admin' %}
           <li class="nav-item"><a class="nav-link" href="{% url 'quran:admin' %}">Quran Admin</a></li>
@@ -101,10 +104,7 @@
           <li class="nav-item"><a class="nav-link" href="{% url 'test' %}">Test Page</a></li>
           {% endif %}
 
-          <!-- Logout Button -->
-          <li class="nav-item">
-            <a id="logoutbtn" href="#" data-logout-url="{% url 'accounts:logout' %}" class="nav-link">Logout</a>
-          </li>
+
 
           {% else %}
           <!-- Guest Navigation -->
