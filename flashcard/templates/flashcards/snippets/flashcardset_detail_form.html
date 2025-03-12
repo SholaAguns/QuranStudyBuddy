@@ -21,10 +21,11 @@
               </audio>
             </div>
             {% endif %}
-              <p class="verse_text">
+              <p class="flashcard_verse_text" id="{% if "Verse" not in flashcardset.type %}flashcard_question_text{% endif %}">
                 {{ flashcard.question }}
               </p>
-          </div>
+          </div><br><br>
+          <div class="mb-3 user_input" align="center">
               {% if flashcard.image %}
                   <div class="image_container">
                       <img src="{{ flashcard.image.url }}" alt="Question Image" class="flashcard_image">
@@ -32,22 +33,25 @@
                       <input type="checkbox" class="show_image_checkbox"> Show Image
                   </div><br><br>
               {% endif %}
-            {% if "VerseSelection" in flashcardset.type %}
-                <div class="mb-3 user_input" align="center">
+            {% if "Verse" in flashcardset.type %}
+
                   <select name="user_answer_{{ flashcard.id }}" class="form-select form-select-sm" aria-label=".form-select-sm example">
                     <option selected>Choose a chapter</option>
                       {% for chapter in chapters %}
                           <option value="{{ chapter.name_simple }}">{{ chapter.id }} - {{ chapter.name_simple }}</option>
                       {% endfor %}
                   </select><br><br>
+                  {% if "VerseSelection" in flashcardset.type %}
                   <audio id="playback_{{ flashcard.id }}" class="playback_controls" controls style="display: none;"></audio>
                   <button id="record_{{ flashcard.id }}" class="record_btn"><i class="bi bi-mic-fill"></i></button>
                   <button id="stop_{{ flashcard.id }}" class="stop_btn" disabled><i class="bi bi-stop-circle-fill"></i></button>
                   <input type="hidden" id="audio_data_{{ flashcard.id }}" class="audio_data" name="audio_data_{{ flashcard.id }}">
-                </div>
+                
+                {% endif %}
             {% else %}
-          <input class="text_answer" type="text" name="user_answer_{{ flashcard.id }}" placeholder="Your Answer" size="30">
+              <input class="text_answer" type="text" name="user_answer_{{ flashcard.id }}" placeholder="Your Answer" size="25">
             {% endif %}
+          </div>
         </div>
       {% endfor %}
     </div>

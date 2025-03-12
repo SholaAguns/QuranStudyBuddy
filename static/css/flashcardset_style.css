@@ -72,14 +72,6 @@ a{
   background-color: #68B76C;
   border: solid 0.5px black
 }
-.verse_text{
-font-family: "Noto Naskh Arabic", serif;
-font-weight: 500;
-font-style: normal;
-font-size: 2rem;
-white-space: pre-line;
-color: black;
-}
 .form-select-sm{
   width: auto;
   border: solid 0.5px black;
@@ -103,8 +95,18 @@ color: black;
 }
 
 .flashcard_image{
-  max-height: 200px;
+  height: 10rem;
+  width: 15rem;
+  border-radius: 8px;
   filter: blur(8px);
+}
+
+.user_input{
+  margin:2rem;
+}
+
+.text_answer{
+  margin-bottom: auto;
 }
 
 #form_page{
@@ -177,7 +179,14 @@ input, select, button {
   color: white;
 }
 
-
+.flashcard_verse_text{
+font-family: "Noto Naskh Arabic", serif;
+font-optical-sizing: auto;
+font-weight: 500;
+font-style: normal;
+font-size: 1.4rem;
+font-optical-sizing: auto;
+}
 .text_answer{
   margin-bottom: 1rem;
 }
@@ -187,9 +196,12 @@ input, select, button {
     align-items: center;  /* Aligns items (icon + text) in a single line */
     gap: 10px;           /* Adds spacing between the icon and the text */
     justify-content: center;
-    margin-left: 2rem;
-    margin-right: 2rem;
+    margin: 2rem;
     text-align: center;
+    white-space: pre-line;
+}
+#flashcard_question_text{
+  font-size: 40px !important;
 }
 
 .flashcard_question_report{
