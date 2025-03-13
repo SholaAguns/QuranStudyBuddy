@@ -41,15 +41,12 @@
                           <option value="{{ chapter.name_simple }}">{{ chapter.id }} - {{ chapter.name_simple }}</option>
                       {% endfor %}
                   </select><br><br>
-                  {% if "VerseSelection" in flashcardset.type %}
                   <div class="playback_container" align="center">
                       <audio id="playback_{{ flashcard.id }}" class="playback_controls" controls style="display: none;"></audio>
                   </div>
                   <button id="record_{{ flashcard.id }}" class="record_btn"><i class="bi bi-mic-fill"></i></button>
                   <button id="stop_{{ flashcard.id }}" class="stop_btn" disabled><i class="bi bi-stop-circle-fill"></i></button>
-                  <input type="hidden" id="audio_data_{{ flashcard.id }}" class="audio_data" name="audio_data_{{ flashcard.id }}">
-                
-                {% endif %}
+                  <input type="hidden" id="audio_data_{{ flashcard.id }}" class="audio_data" name="audio_data_{{ flashcard.id }}">   
             {% else %}
               <input class="text_answer" type="text" name="user_answer_{{ flashcard.id }}" placeholder="Your Answer" size="25">
             {% endif %}

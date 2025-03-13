@@ -103,7 +103,7 @@
         const audioAnswers = {};
         let unansweredFlashcards = [];
         let unanswered = false;
-        let requiresAudioAnswer = flashcardsetType === 'VerseSelection';
+        let requiresAudioAnswer = flashcardsetType.includes("Verse");
 
         document.querySelectorAll('.carousel-indicators button').forEach(button => {
            button.classList.remove("bg-danger");
