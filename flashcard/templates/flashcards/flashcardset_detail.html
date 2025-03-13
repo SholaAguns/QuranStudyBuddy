@@ -7,7 +7,7 @@
 
 <link href="{% static 'css/flashcardset_style.css' %}" rel="stylesheet"/>
 <div class="container" id="flashcardset_detail_page">
-  <div id="flashcardset" data-id="{{ flashcardset.id }}"></div>
+  <div id="flashcardset" data-id="{{ flashcardset.id }}" data-type="{{ flashcardset.type }}"></div>
   {% if not flashcardset.flashcards.all %}
   <div class="jumbotron">
     <h2>No {{flashcardset.type}}s returned</h2>
@@ -32,7 +32,7 @@
 
 
 
-    {% if flashcardset.type == "Verse" %}
+    {% if "Verse" in flashcardset.type %}
       <div class="container" align="right">
         <form method="get">
             <label for="translation">Select Reciter:</label>

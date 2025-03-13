@@ -86,8 +86,14 @@ a{
   margin-top: 1rem;
 }
 
-.playback_controls{
-  margin-bottom: 1rem;
+.carousel-control-prev, .carousel-control-next {
+  width: 3rem;
+  margin: auto;
+}
+
+.playback_container {
+    text-align: center;
+    width: 100%;
 }
 
 .record_btn, .stop_btn{
@@ -187,6 +193,7 @@ font-style: normal;
 font-size: 1.4rem;
 font-optical-sizing: auto;
 }
+
 .text_answer{
   margin-bottom: 1rem;
 }

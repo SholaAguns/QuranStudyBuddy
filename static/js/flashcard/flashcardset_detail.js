@@ -98,10 +98,12 @@
     form.addEventListener("submit", function (event) {
         event.preventDefault();
         const flashcardsetId = document.getElementById("flashcardset").getAttribute("data-id");
+        const flashcardsetType = document.getElementById("flashcardset").getAttribute("data-type");
         const answers = {};
         const audioAnswers = {};
         let unansweredFlashcards = [];
         let unanswered = false;
+        let requiresAudioAnswer = flashcardsetType === 'VerseSelection';
 
         document.querySelectorAll('.carousel-indicators button').forEach(button => {
            button.classList.remove("bg-danger");
@@ -112,10 +114,11 @@
             const flashcardId = input.name.split("_")[2];
             const value = input.tagName === "SELECT" && input.value === "Choose a chapter" ? "" : input.value.trim();
             const audioInput = document.querySelector(`input[name='audio_data_${flashcardId}']`);
+            let noAudioAnswerProvided = !audioInput || !audioInput.value;
 
             answers[flashcardId] = value;
 
-            if (!value || !audioInput || !audioInput.value) {
+            if (!value || (requiresAudioAnswer && noAudioAnswerProvided)) {
                     unanswered = true;
                     unansweredFlashcards.push(flashcardId);
                     const indicatorButton = document.querySelector(`[data-bs-slide-to="${index}"]`);

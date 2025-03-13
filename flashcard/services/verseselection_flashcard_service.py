@@ -28,6 +28,7 @@ def populate_flashcards(amount, ids, flashcardset):
         verses = Verse.objects.filter(id__gte=selection.start_verse_id, id__lte=selection.end_verse_id)
         flashcard.question = f"{verses[0].text_uthmani}\n.\n.\n.\n{verses[len(verses)-1].text_uthmani}"
         flashcard.answer = verses[0].chapter.name_simple
+        populate_audio_filepaths(verses[0], flashcard)
         verse_text = ""
         for verse in verses:
             verse_text += f"<span class='verse_key'>{verse.verse_key}</span> {verse.text_uthmani}\n"
